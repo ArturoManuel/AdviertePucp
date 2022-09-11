@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    @GetMapping(value = {"", "/"})
+    @GetMapping(value = {"/suspendido"})
     public String index(){
         return "suspendido";
     }
