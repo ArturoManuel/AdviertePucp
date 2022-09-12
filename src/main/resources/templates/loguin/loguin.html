@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/loguin.css">
+
+    <meta charset="UTF-8">
+    <title>AdviertePUCP-loguin</title>
+
+
+    <style>
+        @media only screen and (max-width: 500px) {
+            .logueoimg {
+                display: none;
+            }
+            .ardilla{
+
+                max-width: 50%;
+                margin-bottom: -100px;
+                margin-left: -40px;
+            }
+
+
+        }
+
+
+
+        .bg-image-vertical {
+            position: relative;
+            overflow: hidden;
+            background-repeat: no-repeat;
+            background-position: right center;
+            background-size: auto 100%;
+        }
+
+        @media (min-width: 1025px) {
+            .h-custom-2 {
+                height: 65%;
+            }
+            .formulario{
+                margin-left: 20%;
+            }
+            .advnav{
+                margin-left: 16%;
+                margin-top: 5%;
+            }
+
+        }
+
+
+
+    </style>
+
+    <meta name="google-signin-client_id" content="YOUR_CLIENT_ID.apps.googleusercontent.com">
+</head>
+<body>
+
+<!--    <img class="logueoimg"  style="position: absolute;height: 100%;z-index: -1"  src="/images/loguin.png">-->
+    <section class="vh-100">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-6 px-0 d-none d-sm-block">
+                    <img src="/images/loguin.png"
+                         alt="Login image" class="logueoimg w-100 vh-100" style="object-fit: cover; object-position: left;">
+                </div>
+                <div class="col-sm-6 text-black">
+
+
+                    <div  class=" px-5 ms-xl-4 " >
+
+
+
+                        <div class="advnav " >
+                            <img style="height: 189px;width: 219px" class="ardilla " src="/images/quilla.png"> <!--<p style="font-family: roboto;font-size:60px;margin-top:-20%;margin-left: 15%" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte<b style="margin-left: 15%">PUCP</b></p>-->
+
+                            <p class="advierte" style="font-family: Roboto;font-size: 60px;margin-top: -25%;margin-left: 33%">Advierte</p>
+                            <p class="pucp" style="font-family: Roboto;font-size: 60px;margin-top: -5%;margin-left: 33%;font-weight: bold">PUCP</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
+
+                        <form class="formulario" style="width: 23rem">
+
+                            <div class="card text-center" style="margin-top: -50px;margin-bottom: 30px">
+                                <div class="card-header" style="font-family: Roboto;font-size: 20px">
+                                    Sistema de Reporte de Incidencias
+                                </div>
+                            </div>
+
+                            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;font-family: Roboto">Ingresa con tu cuenta</h3>
+
+                            <div class="form-outline mb-4">
+                                <input type="email" id="form2Example18" class="form-control form-control-lg" placeholder="a2001@pucp.edu.pe" />
+                                <label class="form-label" for="form2Example18">Código PUCP</label>
+                            </div>
+
+                            <div class="form-outline mb-4">
+                                <input type="password" id="form2Example28" class="form-control form-control-lg" />
+                                <label class="form-label" for="form2Example28">Contraseña</label><br><br>
+                                <div class="d-flex justify-content-start"><input class="form-check-input" type="checkbox" onclick="myFunction()">&nbsp;Mostrar contraseña&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a  class="text-muted" href="#!">¿Olvidaste tu contraseña?</a></div>
+
+
+                            </div>
+                            <div class="d-flex justify-content-center">
+                            <div class="form-outline mb-4">
+                                <button class="btn-hover color-3" type="button"  style="border-radius: 5px;height: 75%;padding: 10px;">Iniciar Sesión</button>
+                            </div>
+                            </div>
+
+                            <div class="hr-sect" style="padding-bottom: 15px">o</div>
+                            <div class="d-flex justify-content-center">
+                                <div class="form-outline mb-4">
+                            <div id="my-signin2"></div>
+                            </div>
+                            </div>
+
+
+
+
+
+                            <p>¿Aún no tienes una cuenta? <a href="#!"  style="color: blue;font-family: Roboto">¡Registrate!</a></p>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</body>
+
+<script>
+    function onSuccess(googleUser) {
+        console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
+    }
+    function onFailure(error) {
+        console.log(error);
+    }
+    function renderButton() {
+        gapi.signin2.render('my-signin2', {
+            'scope': 'profile email',
+            'width': 240,
+            'height': 50,
+            'longtitle': true,
+            'theme': 'dark',
+            'onsuccess': onSuccess,
+            'onfailure': onFailure
+        });
+    }
+</script>
+
+<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
+
+<script>
+
+    function myFunction() {
+        var x = document.getElementById("form2Example28");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>
+</html>
