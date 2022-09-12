@@ -11,6 +11,6 @@ public class LoguinController {
 
     @GetMapping({""})
     public String index() {
-        return "/loguin/loguin";
+        return "/usuario/lista";
     }
 }
