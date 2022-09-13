@@ -84,7 +84,10 @@
     <div class="container px-4 justify-content-around">
         <div class="title-28 py-1 d-flex mb-3">
             Lista de Usuarios
-            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Aplicar filtros</button>
+            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+                    <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5z"/>
+                </svg>Filtrar</button>
             <div class="ms-auto">
                 <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button"
                         class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#registrar">Registrar</button>
@@ -98,13 +101,13 @@
                             </div>
                             <div class="modal-body" style="overflow-x: auto">
                                 <div class="modal-body mx-3">
-                                    <div class="md-form mb-5">
+                                    <div class="form-group mb-2">
                                         <i class="fas fa-code prefix grey-text"></i>
                                         <input type="email" id="email" class="form-control validate">
                                         <label data-error="wrong" data-success="right" for="defaultForm-email">Código</label>
                                     </div>
 
-                                    <div class="md-form mb-4">
+                                    <div class="md-form mb-2">
                                         <i class="fas fa-user prefix grey-text"></i>
                                         <input type="text" id="name" class="form-control validate">
                                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
@@ -123,6 +126,13 @@
                                         <i class="fas fa-envelope prefix grey-text"></i>
                                         <input type="text" id="correo" class="form-control validate">
                                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                    </div>
+                                    <div class="md-form mb-4">
+                                        <i class="fas fa-photo prefix grey-text"></i>
+                                        <input type="file" id="profile_pic" name="profile_pic" class="form-control validate"
+                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
                                     </div>
 
                                 </div>
@@ -178,45 +188,47 @@
                             <button type="button"; class="btn btn-redtele accion_button"
                                     data-bs-toggle="modal" data-bs-target="#editar1"
                                     style="background-color: #3a7dec">Editar</button>  <!--Editar1 es el ID de este Usuario-->
-                        <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #c50606">Suspender</button>
-                        <button type="button"; class="btn btn-redtele disabled"
-                                style="background-color: limegreen">Reactivar</button>
 
                             <!--Modal Editar 1-->
                             <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                                     <div class="modal-content">
                                         <div class="modal-header" style="padding: 0px">
-                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrar</h5>
+                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                            <img src=https://media-exp1.licdn.com/dms/image/C4D03AQGiJgn4I5EHaQ/profile-displayphoto-shrink_200_200/0/1642133637953?e=2147483647&v=beta&t=qppaPsmBD1eSQXlnX362qhVbVv_Bh88WTvVpW1kx_mY
+
+                                                 alt="avatar" class="rounded-circle img-responsive"
+                                                 style="width: 150px; height: 150px">
+
                                         </div>
                                         <div class="modal-body" style="overflow-x: auto">
                                             <div class="modal-body mx-3">
-                                                <div class="md-form mb-5">
-                                                    <i class="fas fa-code prefix grey-text"></i>
-                                                    <input type="email" id="_email" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-email">Código</label>
-                                                </div>
-
-                                                <div class="md-form mb-4">
+                                                <div class="md-form mb-1">
                                                     <i class="fas fa-user prefix grey-text"></i>
                                                     <input type="text" id="_name" class="form-control validate">
                                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
                                                 </div>
-                                                <div class="md-form mb-4">
+                                                <div class="md-form mb-1">
                                                     <i class="fas fa-user prefix grey-text"></i>
                                                     <input type="text" id="_dni" class="form-control validate">
                                                     <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
                                                 </div>
-                                                <div class="md-form mb-4">
+                                                <div class="md-form mb-1">
                                                     <i class="fas fa-phone prefix grey-text"></i>
                                                     <input type="number" id="_telefono" class="form-control validate">
                                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
                                                 </div>
-                                                <div class="md-form mb-4">
+                                                <div class="md-form mb-1">
                                                     <i class="fas fa-envelope prefix grey-text"></i>
                                                     <input type="text" id="_correo" class="form-control validate">
                                                     <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-photo prefix grey-text"></i>
+                                                    <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                           accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
                                                 </div>
 
                                             </div>
@@ -253,16 +265,104 @@
                         <span class="status" style="background-color: #c50606">Suspendida</span>
                         </div>
                     </td>
-                    <td>Rol</td>
+                    <td>Alumno</td>
 
                     <td>
                         <div>
                             <button type="button"; class="btn btn-redtele accion_button"
+                                    data-bs-toggle="modal" data-bs-target="#editar2"
                                     style="background-color: #3a7dec">Editar</button>
+
+
+                            <div class="modal fade" id="editar2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="padding: 0px">
+                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                                                 alt="avatar" class="rounded-circle img-responsive"
+                                                 style="width: 150px; height: 150px">
+
+                                        </div>
+                                        <div class="modal-body" style="overflow-x: auto">
+                                            <div class="modal-body mx-3">
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-user prefix grey-text"></i>
+                                                    <input type="text" id="_name" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-user prefix grey-text"></i>
+                                                    <input type="text" id="_dni" class="form-control validate">
+                                                    <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-phone prefix grey-text"></i>
+                                                    <input type="number" id="_telefono" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-envelope prefix grey-text"></i>
+                                                    <input type="text" id="_correo" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-photo prefix grey-text"></i>
+                                                    <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                           accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-redtele">Guardar</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
                             <button type="button"; class="btn btn-redtele disabled"
                                     style="background-color: #c50606">Suspender</button>
                             <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: limegreen">Reactivar</button>
+                                    style="background-color: limegreen"
+                                    data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+
+                            <!--ACTTIVAR MODAL-->
+
+                            <div class="modal fade" id="Activar1" tabindex="-1" aria-hidden="true" aria-labelleby="modalTitle">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+
+                                        <div class="modal-body">
+                                            <p> ¿Quieres activar la cuenta del Usuario 20197567?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                Cerrar
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                Activar
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
                         </div>
                     </td>
 
@@ -293,9 +393,96 @@
                     <td>
                         <div>
                             <button type="button"; class="btn btn-redtele accion_button"
+                                    data-bs-toggle="modal" data-bs-target="#editar3"
                                     style="background-color: #3a7dec">Editar</button>
+
+                            <!--EDITAR 3 MODAL-->
+                            <div class="modal fade" id="editar3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="padding: 0px">
+                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                            <img src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
+                                                 alt="avatar" class="rounded-circle img-responsive"
+                                                 style="width: 150px; height: 150px">
+
+                                        </div>
+                                        <div class="modal-body" style="overflow-x: auto">
+                                            <div class="modal-body mx-3">
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-user prefix grey-text"></i>
+                                                    <input type="text" id="_name" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-user prefix grey-text"></i>
+                                                    <input type="text" id="_dni" class="form-control validate">
+                                                    <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-phone prefix grey-text"></i>
+                                                    <input type="number" id="_telefono" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-envelope prefix grey-text"></i>
+                                                    <input type="text" id="_correo" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                </div>
+                                                <div class="md-form mb-1">
+                                                    <i class="fas fa-photo prefix grey-text"></i>
+                                                    <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                           accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-redtele">Guardar</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
                             <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #c50606">Suspender</button>
+                                    style="background-color: #c50606"
+                                    data-bs-toggle="modal" data-bs-target="#suspender3">Suspender</button>
+
+                            <!-- Modal Eliminar -->
+                            <div class="modal fade" id="suspender3" tabindex="-1" aria-hidden="true" aria-labelleby="modalTitle">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+
+
+                                        <div class="modal-body">
+                                            <p> ¿Esta seguro que quieres suspender el usuario 20189652?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                Cerrar
+                                            </button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                Suspender
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
                             <button type="button"; class="btn btn-redtele disabled"
                                     style="background-color: limegreen">Reactivar</button>
                         </div>
