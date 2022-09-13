@@ -13,4 +13,10 @@ public class LoguinController {
     public String index() {
         return "/loguin/loguin";
     }
+
+
+    @GetMapping({"/verificacionpasos"})
+    public String verificacion() {
+        return "/loguin/verificaciondospasos";
+    }
 }
