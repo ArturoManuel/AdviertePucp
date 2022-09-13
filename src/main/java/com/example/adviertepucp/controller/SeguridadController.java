@@ -12,7 +12,7 @@ public class SeguridadController {
         return "seguridad/listaMapa";
     }
 
-    @GetMapping("info")
+    @GetMapping("/info")
     String masInformacion(){
         return "seguridad/MasInfoSeguridad";
     }
