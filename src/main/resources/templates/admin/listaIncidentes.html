@@ -2,10 +2,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-
-
-
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
@@ -15,13 +11,21 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
     <meta charset="UTF-8">
     <title>ListaUsuarios</title>
 
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
     <link rel="stylesheet" href="/css/suspendido.css">
     <style>
+      body {
+
+        background-image: url("https://drive.google.com/uc?export=view&id=1npBw0a1IAYQ6OmCwMgOl5oQmtntBxUge");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+
+      }
       .activo{
         align-items: center;
         background-color: seagreen;
@@ -105,10 +109,8 @@
     </style>
 
 
-    </script>
-
   </head>
-  <body>
+  <body >
    <div class="header px-4 py-5" >
       <div class="bSalir">
         <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Inicio</button>
@@ -121,7 +123,7 @@
     </div>
     </div>
 
-      <div class="container px-4 py-5">
+      <div class="container px-4 py-0">
         <div class="d-flex justify-content-around">
           <div class="title-28 py-1" >
             Tipo de Incidencias </div>
@@ -169,9 +171,9 @@
               </td>
 
               <td>
-
+                <!-- botton Modal elimnar -->
                 <button type="button" class="btn btn btn-danger"  data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
-
+                <!-- Modal Eliminar -->
                 <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true" aria-labelleby="modalTitle">
                   <div class="modal-dialog">
                     <div class="modal-content">
@@ -199,10 +201,45 @@
                   </div>
 
                 </div>
-                <!-- Button trigger modal1 -->
-                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <!-- Button Modal editar -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal" data-bs-target="#ModalEditar">
                   Editar
                 </button>
+
+                <!-- ModalEditar-->
+                <div class="modal fade" id="ModalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Incidencia</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="d-flex flex-row">
+                          <label> Color : </label>
+                          <input name="MyColorPicker" type="color"  id="MyColorPicker" style="margin-left: 10px" />
+                        </div>
+
+                        <div class="d-flex flex-row">
+                          <label> Icono : </label>
+                          <input type="file" id="profile_pic" name="profile_pic"
+                                 accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                        </div>
+
+                        <div class="d-flex flex-row">
+                          <label> Nombre : </label>
+                          <input type="text" class="form-control " placeholder="incidencia"/>
+                        </div>
+
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                        <button type="button" class="btn btn-primary">Guardar </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </td>
             </tr>
             <tr>
@@ -234,6 +271,11 @@
                 <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal2" data-bs-target="#exampleModal2">
                   Editar
                 </button>
+
+
+
+
+
               </td>
             </tr>
             <tr>
@@ -367,42 +409,26 @@
 
           </tbody>
         </table>
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item disabled">
+              <span class="page-link">Previous</span>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active" aria-current="page">
+      <span class="page-link">
+        2
+        <span class="visually-hidden">(current)</span>
+      </span>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
       </div>
 
-      <!-- Modal1 -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Incidencia</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <div class="d-flex flex-row">
-                <label> Color : </label>
-                <input name="MyColorPicker" type="color"  id="MyColorPicker" style="margin-left: 10px" />
-              </div>
-
-              <div class="d-flex flex-row">
-                <label> Icono : </label>
-                <input type="file" id="profile_pic" name="profile_pic"
-                       accept=".jpg, .jpeg, .png" style="margin-left: 10px">
-              </div>
-
-              <div class="d-flex flex-row">
-                <label> Nombre : </label>
-                <input type="text" class="form-control " placeholder="incidencia"/>
-              </div>
-
-
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
-              <button type="button" class="btn btn-primary">Guardar </button>
-            </div>
-          </div>
-        </div>
-      </div>
 
 
     <!-- Modal2 -->

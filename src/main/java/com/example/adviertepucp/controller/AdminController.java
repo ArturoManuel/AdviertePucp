@@ -10,8 +10,13 @@ public class AdminController {
     public AdminController(){
 
     }
-    @GetMapping("lista")
-    public String lista(){
+    @GetMapping("/lista")
+    public String listaUsuarios(){
         return "admin/listaUsuarios";
+    }
+
+    @GetMapping("/incidencias")
+    public String listaIncidencias(){
+        return "admin/listaIncidentes";
     }
 }
