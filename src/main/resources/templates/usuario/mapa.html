@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head >
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <title th:text="ola"></title>
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
+  <!--JQUery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Google Fonts -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+  <!-- MDB -->
+
+  <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+  <link rel="stylesheet" href="/css/suspendido.css">
 </head>
 <body>
-$END$
+<div class="header px-4 py-5" >
+  <div class="bSalir">
+    <a style="margin-left: 5px;align-self: self-end" type="button" href="/seguridad" class="btn btn-outline-dark">Inicio</a>
+    <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Mi perfil</button>
+    <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
+  </div>
+  <div class="advnav ">
+    <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
+  </div>
+</div>
+<div class="container py-3" >
+  <!-- Lista incidencias -->
+  <div class="title-28" >
+    Todas las Incidencias
+    <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Aplicar filtros</button>
+    <a style="margin-left: 5px" type="button" href="/usuario" class="btn btn-outline-dark">Ver Lista</a>
+
+  </div>
+  <form method="post">
+  </form>
+
+  <div class="row">
+
+    <iframe src="https://my.atlistmaps.com/map/fd716d1a-a3fd-4159-9deb-dc0810423683?share=true" allow="geolocation" width="100%" height="650px" frameborder="0" scrolling="no" allowfullscreen></iframe>
+
+  </div>
+</div>
+</div>
+
+<!-- Footer -->
 </body>
 </html>

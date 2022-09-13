@@ -7,9 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping({"/usuarios"})
+@RequestMapping({"/usuario"})
 public class UsuarioController {
-    public UsuarioController() {
+    @GetMapping("")
+    String listaUsuario(){
+        return "usuario/lista";
+    }
+
+    @GetMapping("/info")
+    String masInformacion(){
+        return "usuario/MasInfoSeguridad";
+    }
+
+    @GetMapping("/mapa")
+    String mapa(){
+        return "usuario/mapa";
     }
 
     @GetMapping({"/suspendido"})
