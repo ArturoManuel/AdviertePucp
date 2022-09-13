@@ -22,4 +22,9 @@ public class SeguridadController {
         return "seguridad/mapa";
     }
 
+    @GetMapping("/estadisticas")
+    String dashboard(){
+        return "seguridad/dashboard";
+    }
+
 }
