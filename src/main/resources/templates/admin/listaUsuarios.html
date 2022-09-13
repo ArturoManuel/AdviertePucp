@@ -15,39 +15,22 @@
     <title>ListaUsuarios</title>
 
     <!--<link rel="stylesheet" th:href="@{/css/mdb.min.css}" />-->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
     <link rel="stylesheet" href="/css/suspendido.css">
     <style>
-        .activo{
-            align-items: center;
-            background-color: seagreen;
+
+        .status{
+            letter-spacing: 0; line-height: 16px;
+            white-space: nowrap; width: fit-content;
+            display: flex; flex-direction: column;
+            justify-content: center;
+            color: var(--bs-white);
+            font-family: var(--bs-body-font-family);
+            font-size: var(--bs-body-font-size);
+            font-weight: 700;
+            font-style: normal;
             border: 1px none;
             border-radius: 2px;
-            display: flex;
-            gap: 10px;
-            height: 18px;
-            justify-content: center;
-            margin-top: 37.84px;
-            padding: 0px 4px;
-            width: fit-content;
-        }
-        .suspendido{
-            align-items: center;
-            background-color: darkred;
-            border: 1px none;
-            border-radius: 2px;
-            display: flex;
-            gap: 10px;
-            height: 18px;
-            justify-content: center;
-            margin-top: 37.84px;
-            padding: 0px 4px;
-            width: fit-content;
-        }
-        .editar1{
-            align-items: center;
-            background-color: dodgerblue;
-            border: 1px none;
-            border-radius: 6px;
             display: flex;
             gap: 4px;
             height: 24px;
@@ -55,14 +38,75 @@
             margin-top: 37.84px;
             left: 132px;
             padding: 8px;
-            position: absolute;
+            margin-top: -8px;
             top: 0;
             width: fit-content;
+        }
+        .accion_button{
+            letter-spacing: 0; line-height: 16px;
+            white-space: nowrap; width: fit-content;
+            display: flex; flex-direction: column;
+            justify-content: center;
+            color: var(--bs-white);
+            font-family: var(--bs-body-font-family);
+            font-size: var(--bs-body-font-size);
+            font-weight: 700;
+            font-style: normal;
+            border: 1px none;
+            border-radius: 12px;
+            display: inline-block;
+            gap: 4px;
+            height: 24px;
+            justify-content: center;
+            margin-top: 37.84px;
+            margin-right: 20px;
+            left: 132px;
+            padding: 15px 12px;
+            margin-top: -8px;
+            top: 0;
+            width: fit-content;
+            float: left;
+            cursor: pointer;
+        }
+        .disabled{
+            letter-spacing: 0; line-height: 16px;
+            white-space: nowrap; width: fit-content;
+            display: flex; flex-direction: column;
+            justify-content: center;
+            color: var(--bs-white);
+            font-family: var(--bs-body-font-family);
+            font-size: var(--bs-body-font-size);
+            font-weight: 700;
+            font-style: normal;
+            border: 1px none;
+            border-radius: 12px;
+            display: inline-block;
+            gap: 4px;
+            height: 24px;
+            justify-content: center;
+            margin-top: 37.84px;
+            margin-right: 20px;
+            left: 132px;
+            padding: 15px 12px;
+            margin-top: -8px;
+            top: 0;
+            width: fit-content;
+            float: left;
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .title-28{
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--mdb-black);
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important
         }
     </style>
 
 </head>
 <body>
+
     <div class="header px-4 py-5" >
         <div class="bSalir">
             <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Inicio</button>
@@ -73,9 +117,12 @@
             <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
         </div>
     </div>
-    </div>
     <main>
-    <div class="container px-4 py-5">
+    <div class="container px-4">
+        <div class="title-28 py-1" >
+            Lista de Usuarios
+            <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Aplicar filtros</button>
+        </div>
         <table class="table align-middle mb-0 bg-white">
             <thead class="bg-light">
             <tr>
@@ -91,42 +138,40 @@
             </tr>
             <tbody>
                 <tr>
-                    <td>Codigo</td>
+                    <td>20196898</td>
                     <td>
                         <div class="d-flex align-items-center">
                             <img
-                                    src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                                    src=https://media-exp1.licdn.com/dms/image/C4D03AQGiJgn4I5EHaQ/profile-displayphoto-shrink_200_200/0/1642133637953?e=2147483647&v=beta&t=qppaPsmBD1eSQXlnX362qhVbVv_Bh88WTvVpW1kx_mY
                                     alt=""
                                     style="width: 45px; height: 45px"
                                     class="rounded-circle"
                             />
                             <div class="ms-3">
-                                <p class="fw-bold mb-1">John Doe</p>
-                                <p class="text-muted mb-0">john.doe@gmail.com</p>
+                                <p class="fw-bold mb-1">Casapaico Meléndez, Rubén Caleb</p>
+                                <p class="text-muted mb-0">calebp@pucp.edu.pe</p>
                             </div>
                         </div>
                     </td>
 
 
                     <td>
-                        <div class="activo" style="align-items: center; margin-top: -8px">
-                        <span class="badge badge-success rounded-pill d-inline"
-                              style="letter-spacing: 0; line-height: 16px;
-                        white-space: nowrap; width: fit-content;
-                        display: flex; flex-direction: column;
-                        justify-content: center;
-                        color: var(--bs-white);
-                        font-family: var(--bs-body-font-family);
-                        font-size: var(--bs-body-font-size);
-                        font-weight: 700;
-                        font-style: normal">Activo</span>
+                        <span class="status" style="background-color: limegreen"> Activo</span>
+                    </td>
+                    <td>Administrador</td>
+                    <td>
+                        <div>
+                        <button type="button"; class="accion_button"
+                                style="background-color: #3a7dec">Editar</button>
+                        <button type="button"; class="accion_button"
+                                    style="background-color: #c50606">Suspender</button>
+                        <button type="button"; class="disabled"
+                                style="background-color: limegreen">Reactivar</button>
                         </div>
                     </td>
-                    <td>Rol</td>
-                    <td>Acción</td>
                 </tr>
                 <tr>
-                    <td>20177567</td>
+                    <td>20197567</td>
                     <td>
                         <div class="d-flex align-items-center">
                             <img
@@ -136,77 +181,296 @@
                                     class="rounded-circle"
                             />
                             <div class="ms-3">
-                                <p class="fw-bold mb-1">Caleb Casapaico</p>
-                                <p class="text-muted mb-0">calebp@pucp.edu.pe</p>
+                                <p class="fw-bold mb-1">Noriega Noriega, Arturo Paulo</p>
+                                <p class="text-muted mb-0">king_arthur@pucp.edu.pe</p>
                             </div>
                         </div>
                     </td>
                     <td>
                         <div class="suspendido" style="align-items: center; margin-top: -8px">
-                        <span class="badge badge-success rounded-pill d-inline"
-                        style="letter-spacing: 0; line-height: 16px;
-                        white-space: nowrap; width: fit-content;
-                        display: flex; flex-direction: column;
-                        justify-content: center;
-                        color: var(--bs-white);
-                        font-family: var(--bs-body-font-family);
-                        font-size: var(--bs-body-font-size);
-                        font-weight: 700;
-                        font-style: normal">Suspendida</span>
+                        <span class="status" style="background-color: #c50606">Suspendida</span>
                         </div>
                     </td>
                     <td>Rol</td>
 
                     <td>
-                        <button
-                        class="editar1"
-                        type="button"
-                        style="letter-spacing: 0; line-height: 16px;
-                        white-space: nowrap; width: fit-content;
-                        display: flex; flex-direction: column;
-                        justify-content: center;
-                        color: var(--bs-white);
-                        font-family: var(--bs-body-font-family);
-                        font-size: var(--bs-body-font-size);
-                        font-weight: 700;
-                        font-style: normal">Editar</button>
-
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: #3a7dec">Editar</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
                     </td>
 
                 </tr>
                 </tr>
                 <tr>
-                    <td>Codigo</td>
-                    <td>Apellido y Nombre</td>
-                    <td>Estado de la cuenta</td>
-                    <td>Rol</td>
+                    <td>20189652</td>
                     <td>
-                        <button
-                                style="letter-spacing: 0; line-height: 16px;
-                        white-space: nowrap; width: fit-content;
-                        display: flex; flex-direction: column;
-                        justify-content: center;
-                        color: var(--bs-white);
-                        font-family: var(--bs-body-font-family);
-                        font-size: var(--bs-body-font-size);
-                        font-weight: 700;
-                        font-style: normal">Editar</button>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">Chomón Rojas, Marcelo</p>
+                                <p class="text-muted mb-0">marcelin.r@pucp.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: limegreen"> Activo</span>
+                    </td>
+                    <td>Alumno</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>20189652</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://yt3.ggpht.com/ytc/AMLnZu_DRiYS6n49aEeTmFYsAlzix26g_4SoltvMmh_Fuw=s900-c-k-c0x00ffffff-no-rj
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">Alonso Pepian, Jorge</p>
+                                <p class="text-muted mb-0">george.p@pucp.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: limegreen"> Activo</span>
+                    </td>
+                    <td>Alumno</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>20196696</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://yt3.ggpht.com/ytc/AMLnZu__Ux21Z1Yp2KOlwpD4TQ1diQCWc8wTcb3RUgnVsg=s900-c-k-c0x00ffffff-no-rj
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">Vasquez Asenjo, Rubén</p>
+                                <p class="text-muted mb-0">ruben.vas@pucp.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: #c50606"> Suspendido</span>
+                    </td>
+                    <td>Alumno</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>08965393</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://solowrestling.mundodeportivo.com/uploads/RESEM109600roman-reigns.jpg
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">Riquelme Noriega, Roman</p>
+                                <p class="text-muted mb-0">roman.r@pucp.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: limegreen"> Activo</span>
+                    </td>
+                    <td>Seguridad</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>20209393</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://as01.epimg.net/img/comunes/fotos/fichas/deportistas/j/jes/large/14944.png
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">Catpo Yepez, Jesus</p>
+                                <p class="text-muted mb-0">jesus.catpo@pucp.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: rgba(140,130,130,0.83)"> No Registrado</span>
+                    </td>
+                    <td>Alumno</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>20159638</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://upload.wikimedia.org/wikipedia/commons/2/26/Oscar-romero.png_390307073.png
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">Rugger Ramirez, Oscar</p>
+                                <p class="text-muted mb-0">osquitar.r@pucp.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: limegreen"> Activo</span>
+                    </td>
+                    <td>Alumno</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>201969398</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://es.web.img3.acsta.net/pictures/19/06/14/09/39/3055545.jpg
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">Pedraza Lagarto, Saulo</p>
+                                <p class="text-muted mb-0">saulo.ped@pucp.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: #c50606"> Suspendido</span>
+                    </td>
+                    <td>Alumno</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
 
                     </td>
                 </tr>
                 <tr>
-                    <td>Codigo</td>
-                    <td>Apellido y Nombre</td>
-                    <td>Estado de la cuenta</td>
-                    <td>Rol</td>
-                    <td>Acción</td>
-                </tr>
-                <tr>
-                    <td>Codigo</td>
-                    <td>Apellido y Nombre</td>
-                    <td>Estado de la cuenta</td>
-                    <td>Rol</td>
-                    <td>Acción</td>
+                    <td>09609619</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    src=https://img.a.transfermarkt.technology/portrait/big/432895-1533634320.jpg?lm=1
+                                    alt=""
+                                    style="width: 45px; height: 45px"
+                                    class="rounded-circle"
+                            />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">La Torre Sarmiento, Pedro Jesus</p>
+                                <p class="text-muted mb-0">pedro.jesus@gmail.edu.pe</p>
+                            </div>
+                        </div>
+                    </td>
+
+
+                    <td>
+                        <span class="status" style="background-color: limegreen"> Activo</span>
+                    </td>
+                    <td>Seguridad</td>
+                    <td>
+                        <div>
+                            <button type="button"; class="accion_button"
+                                    style="background-color:#3a7dec">Editar</button>
+                            <button type="button"; class="accion_button"
+                                    style="background-color: #c50606">Suspender</button>
+                            <button type="button"; class="disabled"
+                                    style="background-color: limegreen">Reactivar</button>
+                        </div>
+
+                    </td>
                 </tr>
             </tbody>
             </thead>
@@ -214,116 +478,24 @@
 
 
         </table>
-        <table class="table align-middle mb-0 bg-white">
-            <thead class="bg-light">
-            <tr>
-                <th>Name</th>
-                <th>Title</th>
-                <th>Status</th>
-                <th>Position</th>
-                <th>Actions</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <img
-                                src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                                alt=""
-                                style="width: 45px; height: 45px"
-                                class="rounded-circle"
-                        />
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">John Doe</p>
-                            <p class="text-muted mb-0">john.doe@gmail.com</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <p class="fw-normal mb-1">Software engineer</p>
-                    <p class="text-muted mb-0">IT department</p>
-                </td>
-                <td>
-                    <span class="badge badge-success rounded-pill d-inline">Active</span>
-                </td>
-                <td>Senior</td>
-                <td>
-                    <button type="button" class="btn btn-link btn-sm btn-rounded">
-                        Edit
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <img
-                                src="https://mdbootstrap.com/img/new/avatars/6.jpg"
-                                class="rounded-circle"
-                                alt=""
-                                style="width: 45px; height: 45px"
-                        />
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">Alex Ray</p>
-                            <p class="text-muted mb-0">alex.ray@gmail.com</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <p class="fw-normal mb-1">Consultant</p>
-                    <p class="text-muted mb-0">Finance</p>
-                </td>
-                <td>
-        <span class="badge badge-primary rounded-pill d-inline"
-        >Onboarding</span
-        >
-                </td>
-                <td>Junior</td>
-                <td>
-                    <button
-                            type="button"
-                            class="btn btn-link btn-rounded btn-sm fw-bold"
-                            data-mdb-ripple-color="dark"
-                    >
-                        Edit
-                    </button>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <img
-                                src="https://mdbootstrap.com/img/new/avatars/7.jpg"
-                                class="rounded-circle"
-                                alt=""
-                                style="width: 45px; height: 45px"
-                        />
-                        <div class="ms-3">
-                            <p class="fw-bold mb-1">Kate Hunington</p>
-                            <p class="text-muted mb-0">kate.hunington@gmail.com</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <p class="fw-normal mb-1">Designer</p>
-                    <p class="text-muted mb-0">UI/UX</p>
-                </td>
-                <td>
-                    <span class="badge badge-warning rounded-pill d-inline">Awaiting</span>
-                </td>
-                <td>Senior</td>
-                <td>
-                    <button
-                            type="button"
-                            class="btn btn-link btn-rounded btn-sm fw-bold"
-                            data-mdb-ripple-color="dark"
-                    >
-                        Edit
-                    </button>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+        <nav aria-label="...">
+            <ul class="pagination">
+                <li class="page-item disabled">
+                    <span class="page-link">Previous</span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item active" aria-current="page">
+      <span class="page-link">
+        2
+        <span class="visually-hidden">(current)</span>
+      </span>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 
     </main>
