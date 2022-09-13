@@ -17,4 +17,9 @@ public class SeguridadController {
         return "seguridad/MasInfoSeguridad";
     }
 
+    @GetMapping("/mapa")
+    String mapa(){
+        return "seguridad/mapa";
+    }
+
 }
