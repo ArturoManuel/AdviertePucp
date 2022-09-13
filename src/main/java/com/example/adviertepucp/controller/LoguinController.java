@@ -6,8 +6,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class LoguinController {
-    public LoguinController() {
+    @GetMapping({"/autenticacion"})
+    public String autenticacion()
+    {
+        return "/loguin/autenticacion";
     }
+
+    @GetMapping({"/registro"})
+    public String registro()
+    {
+        return "/loguin/registro";
+    }
+
+    @GetMapping({"/nuevacontrasena"})
+    public String nuevacontrasena()
+    {
+        return "/loguin/nuevacontrasena";
+    }
+
+    @GetMapping({"/restablecercontrasena"})
+    public String restablececontrasena()
+    {
+        return "/loguin/restablececontrasena";
+    }
+
+
+
+
+
 
     @GetMapping({""})
     public String index() {
@@ -15,8 +41,5 @@ public class LoguinController {
     }
 
 
-    @GetMapping({"/verificacionpasos"})
-    public String verificacion() {
-        return "/loguin/verificaciondospasos";
-    }
+
 }

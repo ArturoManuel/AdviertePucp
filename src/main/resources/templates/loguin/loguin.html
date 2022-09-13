@@ -20,15 +20,20 @@
 
 
     <style>
-        @media only screen and (max-width: 500px) {
+
+        .logueoimg{
+            box-shadow: 10px 10px 80px rgba(0, 0, 0, 0.3);
+        }
+
+
+        @media only screen and (max-width: 800px) {
             .logueoimg {
                 display: none;
             }
             .ardilla{
-                max-height: 150px; !important;
+                max-height: 120px; !important;
                 max-width: 300px; !important;
             }
-
 
         }
 
@@ -72,11 +77,18 @@
 <!--    <img class="logueoimg"  style="position: absolute;height: 100%;z-index: -1"  src="/images/loguin.png">-->
     <section class="vh-100 vw-100">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-sm-6 px-0 d-none d-sm-block">
-                    <img src="/images/loguin.png"
-                         alt="Login image" style="object-position: left;height: 100%;width: 100%">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+
+
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img class="logueoimg" src="/images/loguin.png"
+                         alt="Login image" style="height: 80%;width: 100%;text-align: center">
                 </div>
+
+
+
+
+
                 <div class="col-sm-6 text-black">
 
 
