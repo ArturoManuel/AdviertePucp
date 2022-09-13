@@ -17,7 +17,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- MDB -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
     <link rel="stylesheet" href="/css/suspendido.css">
 </head>
@@ -32,36 +33,7 @@
             <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
         </div>
     </div>
-
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="https://s3.amazonaws.com/files.pucp.edu.pe/puntoedu/wp-content/uploads/2021/02/23071607/espacios-de-estudio-034-5000x3333.jpg" alt="Sede" class="d-block w-100"/>
-            </div>
-            <div class="carousel-item">
-                <img src="https://s3.amazonaws.com/files.pucp.edu.pe/puntoedu/wp-content/uploads/2021/02/23071607/espacios-de-estudio-034-5000x3333.jpg" alt="Sede" class="d-block w-100"/>
-
-            </div>
-            <div class="carousel-item">
-                <img src="https://s3.amazonaws.com/files.pucp.edu.pe/puntoedu/wp-content/uploads/2021/02/23071607/espacios-de-estudio-034-5000x3333.jpg" alt="Sede" class="d-block w-100"/>
-
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-
+    <div class="container py-3" >
         <div class="card-tele-body pb-2">
             <div class="card-tele-title" style="font-size: medium">Mucho ruido los cachimbos
                 <span class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
@@ -81,7 +53,55 @@
                 <span style="font-weight: bolder">En proceso</span>
             </div>
         </div>
+        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="https://s3.amazonaws.com/files.pucp.edu.pe/puntoedu/wp-content/uploads/2021/02/23071607/espacios-de-estudio-034-5000x3333.jpg" alt="Sede" class="d-block w-100" height="700px" width="100%"/>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://cdn02.pucp.education/administracion/2019/06/07222954/sistema-bibliotecas-772x432.jpg" alt="Sede" class="d-block w-100" height="700px" width="100%"/>
+                </div>
+                <div class="carousel-item">
+                    <img src="https://assets.website-files.com/60a6dd60c32dad3ddc38016c/60d9eebe4d2c9cb20f53b218_IMG_9308.jpeg" alt="Sede" class="d-block w-100" height="700px" width="100%"/>
+
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+
+            <div class="card-tele">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div class="card-tele-title" style="font-size: medium"> Información
+                </div>
+                <div>
+                    Hoy fui a cia a estudiar para una práctica que tengo mañana, sin embargo algunos alumnos estaban hablando en voz alta.
+                </div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+                <div style="font-size: medium">Información en el mapa</div>
+
+
+        </div>
 
     </div>
+
 </body>
 </html>
