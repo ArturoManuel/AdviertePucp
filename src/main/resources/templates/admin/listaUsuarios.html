@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    <!-- JavaScript Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>ListaUsuarios</title>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
+    <!--JQUery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+
+
 
     <!--<link rel="stylesheet" th:href="@{/css/mdb.min.css}" />-->
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
@@ -64,19 +71,71 @@
 
     <div class="header px-4 py-5" >
         <div class="bSalir">
-            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Inicio</button>
-            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Mi perfil</button>
-            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
-        </div>
+            <button style="margin-left: 5px" type="button" href="administrador/incidencias" class="btn btn-outline-dark">Gestionar Incidencias</button>
+            <button style="margin-left: 5px;align-self: self-end" type="button" href="/administrador" class="btn btn-outline-dark">Inicio</button>
+            <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Mi perfil</button>
+            <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Cerrar Sesión</button></div>
         <div class="advnav ">
             <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
         </div>
     </div>
     <main>
-    <div class="container px-4">
-        <div class="title-28 py-1" >
+
+    <div class="container px-4 justify-content-around">
+        <div class="title-28 py-1 d-flex mb-3">
             Lista de Usuarios
-            <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Aplicar filtros</button>
+            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Aplicar filtros</button>
+            <div class="ms-auto">
+                <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button"
+                        class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#registrar">Registrar</button>
+
+               <!--Modal Registrar Usuario-->
+                <div class="modal fade" id="registrar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header" style="padding: 0px">
+                                <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrar</h5>
+                            </div>
+                            <div class="modal-body" style="overflow-x: auto">
+                                <div class="modal-body mx-3">
+                                    <div class="md-form mb-5">
+                                        <i class="fas fa-code prefix grey-text"></i>
+                                        <input type="email" id="email" class="form-control validate">
+                                        <label data-error="wrong" data-success="right" for="defaultForm-email">Código</label>
+                                    </div>
+
+                                    <div class="md-form mb-4">
+                                        <i class="fas fa-user prefix grey-text"></i>
+                                        <input type="text" id="name" class="form-control validate">
+                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                    </div>
+                                    <div class="md-form mb-4">
+                                        <i class="fas fa-user prefix grey-text"></i>
+                                        <input type="text" id="dni" class="form-control validate">
+                                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                    </div>
+                                    <div class="md-form mb-4">
+                                        <i class="fas fa-phone prefix grey-text"></i>
+                                        <input type="number" id="telefono" class="form-control validate">
+                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                    </div>
+                                    <div class="md-form mb-4">
+                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                        <input type="text" id="correo" class="form-control validate">
+                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-redtele">Guardar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
         </div>
         <table class="table align-middle mb-0 bg-white">
             <thead class="bg-light">
@@ -116,12 +175,60 @@
                     <td>Administrador</td>
                     <td>
                         <div>
-                        <button type="button"; class="btn btn-redtele accion_button"
-                                style="background-color: #3a7dec">Editar</button>
+                            <button type="button"; class="btn btn-redtele accion_button"
+                                    data-bs-toggle="modal" data-bs-target="#editar1"
+                                    style="background-color: #3a7dec">Editar</button>  <!--Editar1 es el ID de este Usuario-->
                         <button type="button"; class="btn btn-redtele accion_button"
                                     style="background-color: #c50606">Suspender</button>
                         <button type="button"; class="btn btn-redtele disabled"
                                 style="background-color: limegreen">Reactivar</button>
+
+                            <!--Modal Editar 1-->
+                            <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="padding: 0px">
+                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrar</h5>
+                                        </div>
+                                        <div class="modal-body" style="overflow-x: auto">
+                                            <div class="modal-body mx-3">
+                                                <div class="md-form mb-5">
+                                                    <i class="fas fa-code prefix grey-text"></i>
+                                                    <input type="email" id="_email" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-email">Código</label>
+                                                </div>
+
+                                                <div class="md-form mb-4">
+                                                    <i class="fas fa-user prefix grey-text"></i>
+                                                    <input type="text" id="_name" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                </div>
+                                                <div class="md-form mb-4">
+                                                    <i class="fas fa-user prefix grey-text"></i>
+                                                    <input type="text" id="_dni" class="form-control validate">
+                                                    <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                </div>
+                                                <div class="md-form mb-4">
+                                                    <i class="fas fa-phone prefix grey-text"></i>
+                                                    <input type="number" id="_telefono" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                </div>
+                                                <div class="md-form mb-4">
+                                                    <i class="fas fa-envelope prefix grey-text"></i>
+                                                    <input type="text" id="_correo" class="form-control validate">
+                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-redtele">Guardar</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
                         </div>
                     </td>
                 </tr>
@@ -434,7 +541,7 @@
         <nav aria-label="...">
             <ul class="pagination">
                 <li class="page-item disabled">
-                    <span class="page-link">Previous</span>
+                    <span class="page-link">Previo</span>
                 </li>
                 <li class="page-item"><a class="page-link" href="#">1</a></li>
                 <li class="page-item active" aria-current="page">
@@ -445,7 +552,7 @@
                 </li>
                 <li class="page-item"><a class="page-link" href="#">3</a></li>
                 <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
+                    <a class="page-link" href="#">Siguiente</a>
                 </li>
             </ul>
         </nav>

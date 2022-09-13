@@ -7,16 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/administrador")
 public class AdminController {
-    public AdminController(){
-
-    }
-    @GetMapping("/lista")
+    @GetMapping("")
     public String listaUsuarios(){
         return "admin/listaUsuarios";
     }
 
     @GetMapping("/incidencias")
-    public String listaIncidencias(){
+    String listaIncidencias(){
         return "admin/listaIncidentes";
     }
 }
