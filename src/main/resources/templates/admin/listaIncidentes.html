@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+
+
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <meta charset="UTF-8">
+    <title>ListaUsuarios</title>
+
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+    <link rel="stylesheet" href="/css/suspendido.css">
+    <style>
+      .activo{
+        align-items: center;
+        background-color: seagreen;
+        border: 1px none;
+        border-radius: 2px;
+        display: flex;
+        gap: 10px;
+        height: 18px;
+        justify-content: center;
+        margin-top: 37.84px;
+        padding: 0px 4px;
+        width: fit-content;
+      }
+      .suspendido{
+        align-items: center;
+        background-color: darkred;
+        border: 1px none;
+        border-radius: 2px;
+        display: flex;
+        gap: 10px;
+        height: 18px;
+        justify-content: center;
+        margin-top: 37.84px;
+        padding: 0px 4px;
+        width: fit-content;
+      }
+      .editar1{
+        align-items: center;
+        background-color: dodgerblue;
+        border: 1px none;
+        border-radius: 6px;
+        display: flex;
+        gap: 4px;
+        height: 24px;
+        justify-content: center;
+        margin-top: 37.84px;
+        left: 132px;
+        padding: 8px;
+        position: absolute;
+        top: 0;
+        width: fit-content;
+      }
+      #Myelement {
+        background-color: #e52121;
+        width: 60px;
+        height: 40px;
+      }
+      #Myelement2 {
+        background-color: #34dacc;
+        width: 60px;
+        height: 40px;
+      }
+      #Myelement3 {
+        background-color: #a29225;
+        width: 60px;
+        height: 40px;
+      }
+      #Myelement4 {
+        background-color: #001580;
+        width: 60px;
+        height: 40px;
+      }
+      #Myelement5 {
+        background-color: #23d221;
+        width: 60px;
+        height: 40px;
+      }
+      #Myelement6 {
+        background-color: #677dc5;
+        width: 60px;
+        height: 40px;
+      }
+      .modal-footer{
+        border: 0;
+      }
+
+      .modal-header{
+        border: 0;
+      }
+
+    </style>
+
+
+    </script>
+
+  </head>
+  <body>
+   <div class="header px-4 py-5" >
+      <div class="bSalir">
+        <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Inicio</button>
+        <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Mi perfil</button>
+        <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
+      </div>
+      <div class="advnav ">
+        <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
+      </div>
+    </div>
+    </div>
+
+      <div class="container px-4 py-5">
+        <div class="d-flex justify-content-around">
+          <div class="title-28 py-1" >
+            Tipo de Incidencias </div>
+          <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Crear</button>
+
+
+        </div>
+        <br>
+        <br>
+        <table class="table align-middle mb-0 bg-white">
+          <thead class="bg-light">
+            <tr>
+              <th>#</th>
+              <th>
+                <img    alt=""
+                        class="icon_lis_admi"
+                        src="/images/Bold.png" />Color
+              </th>
+              <th><img class="icon_lis_admi" src="/images/Bold.png" />Icono</th>
+              <th><img class="icon_lis_admi" src="/images/Bold.png" />Nombre</th>
+              <th><img class="icon_lis_admi" src="/images/action.png" />Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                  1
+              </td>
+              <td>
+                  <div id="Myelement"
+                       onclick="changeColor()"
+                        class="d-flex align-items-center">
+                  </div>
+
+              </td>
+              <td>
+                <img class="icon_lis_admi" src="/images/img.png" />
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Infraestructura en mal estado</p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+
+                <button type="button" class="btn btn btn-danger"  data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
+
+                <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true" aria-labelleby="modalTitle">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+
+                      <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+
+
+                      <div class="modal-body">
+                        <p> ¿Esta seguro que quieres eliminar la incidencia :"D ?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                          Cerrar
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                          Aceptar
+                        </button>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+                <!-- Button trigger modal1 -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Editar
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                2
+              </td>
+              <td>
+                <div id="Myelement2"
+                     onclick="changeColor2()"
+                     class="d-flex align-items-center">
+                </div>
+
+              </td>
+              <td>
+                <img class="icon_lis_admi" src="/images/img_1.png" />
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Objetos perdidos</p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+
+                <button type="button" class="btn btn btn-danger">Eliminar</button>
+                <!-- Button trigger modal2 -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal2" data-bs-target="#exampleModal2">
+                  Editar
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                3
+              </td>
+              <td>
+                <div id="Myelement3"
+                     onclick="changeColor3()"
+                     class="d-flex align-items-center">
+                </div>
+
+              </td>
+              <td>
+                <img class="icon_lis_admi" src="/images/img_2.png" />
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Reporte de robos</p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+
+                <button type="button" class="btn btn btn-danger">Eliminar</button>
+                <!-- Button trigger modal2 -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white"  >
+                  Editar
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                4
+              </td>
+              <td>
+                <div id="Myelement4"
+                     onclick="changeColor4()"
+                     class="d-flex align-items-center">
+                </div>
+
+              </td>
+              <td>
+                <img class="icon_lis_admi" src="/images/img_3.png" />
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Ambulancia PUCP</p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+
+                <button type="button" class="btn btn btn-danger"  >Eliminar</button>
+                <!-- Button trigger modal2 -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" >
+                  Editar
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                5
+              </td>
+              <td>
+                <div id="Myelement5"
+                     onclick="changeColor5()"
+                     class="d-flex align-items-center">
+                </div>
+
+              </td>
+              <td>
+                <img class="icon_lis_admi" src="/images/img_4.png" />
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Incidente</p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+
+                <button type="button" class="btn btn btn-danger">Eliminar</button>
+                <!-- Button trigger modal2 -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" >
+                  Editar
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                6
+              </td>
+              <td>
+                <div id="Myelement6"
+                     onclick="changeColor6()"
+                     class="d-flex align-items-center">
+                </div>
+
+              </td>
+              <td>
+                <img class="icon_lis_admi" src="/images/img_5.jpg" />
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1">Otros</p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+
+                <button type="button" class="btn btn btn-danger">Eliminar</button>
+                <!-- Button trigger modal2 -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white"  >
+                  Editar
+                </button>
+              </td>
+            </tr>
+
+
+
+
+
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Modal1 -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Incidencia</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="d-flex flex-row">
+                <label> Color : </label>
+                <input name="MyColorPicker" type="color"  id="MyColorPicker" style="margin-left: 10px" />
+              </div>
+
+              <div class="d-flex flex-row">
+                <label> Icono : </label>
+                <input type="file" id="profile_pic" name="profile_pic"
+                       accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+              </div>
+
+              <div class="d-flex flex-row">
+                <label> Nombre : </label>
+                <input type="text" class="form-control " placeholder="incidencia"/>
+              </div>
+
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+              <button type="button" class="btn btn-primary">Guardar </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- Modal2 -->
+    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel2">Incidencia</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex flex-row">
+              <label> Color : </label>
+              <input name="MyColorPicker" type="color"  id="MyColorPicker2" style="margin-left: 10px" />
+            </div>
+
+            <div class="d-flex flex-row">
+              <label> Icono : </label>
+              <input type="file" id="profile_pic2" name="profile_pic"
+                     accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+            </div>
+
+            <div class="d-flex flex-row">
+              <label> Nombre : </label>
+              <input type="text" class="form-control " placeholder="incidencia"/>
+            </div>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+            <button type="button" class="btn btn-primary">Guardar </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+      <script>
+        function changeColor() {
+          document.getElementById(
+                  "Myelement").style.backgroundColor =
+                  document.getElementById(
+                          "MyColorPicker").value;
+        }
+      </script>
+      <script>
+        function changeColor2() {
+          document.getElementById(
+                  "Myelement2").style.backgroundColor =
+                  document.getElementById(
+                          "MyColorPicker2").value;
+        }
+      </script>
+    <script>
+      function changeColor3() {
+        document.getElementById(
+                "Myelement3").style.backgroundColor =
+                document.getElementById(
+                        "MyColorPicker3").value;
+      }
+    </script>
+    <script>
+      function changeColor4() {
+        document.getElementById(
+                "Myelement4").style.backgroundColor =
+                document.getElementById(
+                        "MyColorPicker4").value;
+      }
+    </script>
+    <script>
+      function changeColor5() {
+        document.getElementById(
+                "Myelement5").style.backgroundColor =
+                document.getElementById(
+                        "MyColorPicker5").value;
+      }
+    </script>
+    <script>
+      function changeColor6() {
+        document.getElementById(
+                "Myelement5").style.backgroundColor =
+                document.getElementById(
+                        "MyColorPicker5").value;
+      }
+    </script>
+  </body>
+</html>
+
+
+
+
