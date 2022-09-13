@@ -16,7 +16,7 @@ public class UsuarioController {
 
     @GetMapping("/info")
     String masInformacion(){
-        return "usuario/MasInfoSeguridad";
+        return "usuario/MasInfoUsuario";
     }
 
     @GetMapping("/mapa")
