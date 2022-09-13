@@ -39,10 +39,57 @@
     <!-- Lista incidencias -->
     <div class="title-28" >
         Todas las Incidencias
-        <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Aplicar filtros</button>
+        <button style="margin-left: 5px" type="button" class="btn btn-outline-dark"data-bs-toggle="modal" data-bs-target="#exampleModal">Aplicar filtros</button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel1">Filtrar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <label style="font-size: medium" >Estado</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="1">Todo</option>
+                            <option value="2">Registrado</option>
+                            <option value="3">En proceso</option>
+                            <option value="4">Atendido</option>
+                        </select>
+                        <label style="font-size: medium" >Tipo de incidencia</label>
+                        <select class="form-select" aria-label="Default select example">
+                            <option value="7">Todo</option>
+                            <option value="1">Reporte de robo</option>
+                            <option value="2">Objetos perdidos</option>
+                            <option value="3">Infraestructura en mal estado</option>
+                            <option value="4">Ambulancia PUCP</option>
+                            <option value="5">Accidente</option>
+                            <option value="6">Otros</option>
+                        </select>
+                        <label for="start" style="font-size: medium">Fecha de inicio:</label>
+
+                        <input style="font-size: medium" type="date" id="start" name="trip-start"
+                               value="2022-09-13"
+                               min="2018-01-01" max="2080-09-13">
+                        <br>
+                        <label for="start" style="font-size: medium">Fecha de fin:</label>
+
+                        <input style="font-size: medium" type="date" id="finish" name="trip-start"
+                               value="2080-09-13"
+                               min="2022-09-13" max="2080-09-13">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Aplicar filtro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <a style="margin-left: 5px" type="button" href="/seguridad/mapa" class="btn btn-outline-dark">Ver Mapa</a>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-redtele" data-bs-toggle="modal" data-bs-target="#exportar">
+        <button type="button" class="btn btn-redtele bSalir" data-bs-toggle="modal" data-bs-target="#exportar">
             Exportar
         </button>
 
