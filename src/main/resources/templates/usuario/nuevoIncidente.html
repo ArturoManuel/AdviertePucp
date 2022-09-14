@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title th:text="ola"></title>
+    <title th:text="AdviertePUCP"></title>
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
     <!--JQUery-->
@@ -20,7 +20,7 @@
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
     <link rel="stylesheet" href="/css/suspendido.css">
 </head>
-<body>
+<body style="background-color: #eee;">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- Container wrapper -->
     <div class="container-fluid">
@@ -72,24 +72,22 @@
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
                         <li class="breadcrumb-item" style="font-size: large"><a href="#">Inicio</a></li>
-                        <li class="breadcrumb-item active" style="font-size: large" aria-current="page">Mi perfil</li>
+                        <li class="breadcrumb-item active" style="font-size: large" aria-current="page">Crear incidencia</li>
                     </ol>
                 </nav>
             </div>
         </div>
 
         <div class="row">
+
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                             class="rounded-circle img-fluid" style="width: 150px;">
-                        <h5 class="my-3">John Smithy</h5>
-                        <p class="text-muted mb-1">ALUMNO</p>
-                        <p class="text-muted mb-4">Estado: Activo</p>
-                        <div class="d-flex justify-content-center mb-2">
-                            <button type="button" class="btn btn-primary">CAMBIAR FOTO</button>
-                            <button type="button" class="btn btn-outline-primary ms-1">CAMBIAR ICONO</button>
+                        <img src="https://img.freepik.com/premium-vector/camera-icon-cartoon-flat-design_387795-125.jpg?w=2000" alt="avatar"
+                             class=" img-fluid" style="width: 255px;">
+                        <h5 class="my-3">Fotos de lo sucedido</h5>
+                        <div class="d-flex justify-content-center mb-1">
+                            <button type="button" class="btn btn-lg-primary">agregar imagenes</button>
                         </div>
                     </div>
                 </div>
@@ -100,46 +98,56 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Nombre completo</p>
+                                <p class="mb-0">¿Qué sucedio?</p>
+
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">Johnatan Smith</p>
+                                <input type="text" id="form12" class="form-control" />
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">DNI</p>
+                                <p class="mb-0">Describe lo sucedido a detalle</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">70845236</p>
+                                <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Telefono</p>
+                                <p class="mb-0">¿Dónde sucedió?</p>
+
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">(097) 234-5678</p>
+                                <input type="text" id="form13" class="form-control" />
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Codigo PUCP</p>
+                                <p class="mb-0">Tipo de incidencia</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">20195677</p>
+                                <select name="select" class="form-select" style="font-size: small">
+                                    <option value="value1">Otro</option>
+                                    <option value="value2" selected>Infraestructura</option>
+                                    <option value="value3">Objetos perdidos</option>
+                                </select>
                             </div>
                         </div>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Correo</p>
+                                <p class="mb-0">Nivel de urgencia</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0">pepito.pecas@pucp.edu.pe</p>
+                                <select name="select" class="form-select" style="font-size: small">
+                                    <option value="value1">Leve</option>
+                                    <option value="value2" selected>Moderado</option>
+                                    <option value="value3">Crítico</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -147,27 +155,8 @@
                 <div class="row">
 
                     <div class="col-md-12">
-                        <div class="card mb-4 mb-md-0">
-                            <div class="card-body">
-                                <p class="mb-4"><span class="text-primary font-italic me-1">te presentamos</span> Tus estadisticas
-                                </p>
-                                <p class="mb-1" style="font-size: .77rem;">Incidencias publicadas</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Incidencias destacadas</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Reportes recibidos</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-
-                            </div>
+                        <div class="d-grid gap-2">
+                            <button type="button" class="btn btn-primary">PUBLICAR</button>
                         </div>
                     </div>
                 </div>

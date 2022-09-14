@@ -36,4 +36,8 @@ public class UsuarioController {
     public String perfil() {
         return "usuario/perfil";
     }
+    @GetMapping({"/nuevoIncidente"})
+    public String nuevo() {
+        return "usuario/nuevoIncidente";
+    }
 }
