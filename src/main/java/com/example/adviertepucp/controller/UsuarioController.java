@@ -28,4 +28,12 @@ public class UsuarioController {
     public String suspendido() {
         return "loguin/suspendido";
     }
+    @GetMapping({"/lista"})
+    public String listaIncidencias() {
+        return "usuario/lista";
+    }
+    @GetMapping({"/perfil"})
+    public String perfil() {
+        return "usuario/perfil";
+    }
 }
