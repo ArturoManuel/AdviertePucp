@@ -152,12 +152,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr th:each="incidencia,info : ${listaTipos}">
+              <td th:text="${info.index+1}"></td>
               <td>
-                  1
-              </td>
-              <td>
-                  <div id="Myelement"
+                  <div th:style="'background-color:'+${incidencia.colort}+';width: 60px;height: 40px;'"
                        onclick="changeColor()"
                         class="d-flex align-items-center">
                   </div>
@@ -169,7 +167,7 @@
               <td>
                 <div class="d-flex align-items-center">
                   <div class="ms-3">
-                    <p class="fw-bold mb-1">Infraestructura en mal estado</p>
+                    <p class="fw-bold mb-1" th:text="${incidencia.nombret}"></p>
                   </div>
                 </div>
               </td>
@@ -246,167 +244,6 @@
                 </div>
               </td>
             </tr>
-            <tr>
-              <td>
-                2
-              </td>
-              <td>
-                <div id="Myelement2"
-                     onclick="changeColor2()"
-                     class="d-flex align-items-center">
-                </div>
-
-              </td>
-              <td>
-                <img class="icon_lis_admi" src="/images/img_1.png" />
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <div class="ms-3">
-                    <p class="fw-bold mb-1">Objetos perdidos</p>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-
-                <button type="button" class="btn btn btn-danger">Eliminar</button>
-                <!-- Button trigger modal2 -->
-                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal2" data-bs-target="#exampleModal2">
-                  Editar
-                </button>
-
-
-
-
-
-              </td>
-            </tr>
-            <tr>
-              <td>
-                3
-              </td>
-              <td>
-                <div id="Myelement3"
-                     onclick="changeColor3()"
-                     class="d-flex align-items-center">
-                </div>
-
-              </td>
-              <td>
-                <img class="icon_lis_admi" src="/images/img_2.png" />
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <div class="ms-3">
-                    <p class="fw-bold mb-1">Reporte de robos</p>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-
-                <button type="button" class="btn btn btn-danger">Eliminar</button>
-                <!-- Button trigger modal2 -->
-                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white"  >
-                  Editar
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                4
-              </td>
-              <td>
-                <div id="Myelement4"
-                     onclick="changeColor4()"
-                     class="d-flex align-items-center">
-                </div>
-
-              </td>
-              <td>
-                <img class="icon_lis_admi" src="/images/img_3.png" />
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <div class="ms-3">
-                    <p class="fw-bold mb-1">Ambulancia PUCP</p>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-
-                <button type="button" class="btn btn btn-danger"  >Eliminar</button>
-                <!-- Button trigger modal2 -->
-                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" >
-                  Editar
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                5
-              </td>
-              <td>
-                <div id="Myelement5"
-                     onclick="changeColor5()"
-                     class="d-flex align-items-center">
-                </div>
-
-              </td>
-              <td>
-                <img class="icon_lis_admi" src="/images/img_4.png" />
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <div class="ms-3">
-                    <p class="fw-bold mb-1">Incidente</p>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-
-                <button type="button" class="btn btn btn-danger">Eliminar</button>
-                <!-- Button trigger modal2 -->
-                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" >
-                  Editar
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                6
-              </td>
-              <td>
-                <div id="Myelement6"
-                     onclick="changeColor6()"
-                     class="d-flex align-items-center">
-                </div>
-
-              </td>
-              <td>
-                <img class="icon_lis_admi" src="/images/img_5.jpg" />
-              </td>
-              <td>
-                <div class="d-flex align-items-center">
-                  <div class="ms-3">
-                    <p class="fw-bold mb-1">Otros</p>
-                  </div>
-                </div>
-              </td>
-
-              <td>
-
-                <button type="button" class="btn btn btn-danger">Eliminar</button>
-                <!-- Button trigger modal2 -->
-                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white"  >
-                  Editar
-                </button>
-              </td>
-            </tr>
-
 
 
 
@@ -432,44 +269,6 @@
           </ul>
         </nav>
       </div>
-
-
-
-    <!-- Modal2 -->
-    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel2">Incidencia</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="d-flex flex-row">
-              <label> Color : </label>
-              <input name="MyColorPicker" type="color"  id="MyColorPicker2" style="margin-left: 10px" />
-            </div>
-
-            <div class="d-flex flex-row">
-              <label> Icono : </label>
-              <input type="file" id="profile_pic2" name="profile_pic"
-                     accept=".jpg, .jpeg, .png" style="margin-left: 10px">
-            </div>
-
-            <div class="d-flex flex-row">
-              <label> Nombre : </label>
-              <input type="text" class="form-control " placeholder="incidencia"/>
-            </div>
-
-
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
-            <button type="button" class="btn btn-primary">Guardar </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
 
 
