@@ -29,7 +29,7 @@
 <div class="header px-4 py-5" >
     <div class="bSalir">
         <button style="margin-left: 5px;align-self: self-end" type="button" class="btn btn-outline-dark">Inicio</button>
-        <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Mi perfil</button>
+        <a style="margin-left: 5px" type="button" href="/usuario/perfil" class="btn btn-outline-dark">Mi perfil</a>
         <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
     </div>
     <div class="advnav ">
@@ -89,7 +89,9 @@
         </div>
 
         <a style="margin-left: 5px" type="button" href="/usuario/mapa" class="btn btn-outline-dark">Ver Mapa</a>
-
+        <a href="/usuario/nuevoIncidente" type="button" class="btn btn-redtele bSalir">
+            Nuevo Incidente
+        </a>
     </div>
     <form method="post">
         <input name="searchField" class="form-control mb-3" type="text" placeholder="Search"/>
