@@ -164,8 +164,8 @@
                 <th><img class="icon_lis_admi" src="/images/action.png" />Acción</th>
             </tr>
             <tbody>
-                <tr>
-                    <td>20196898</td>
+                <tr th:each="usuarios: ${listaUsuarios}">
+                    <td th:text="${usuarios.getCodigo()}">20196898</td>
                     <td>
                         <div class="d-flex align-items-center">
                             <img
@@ -175,551 +175,149 @@
                                     class="rounded-circle"
                             />
                             <div class="ms-3">
-                                <p class="fw-bold mb-1">Casapaico Meléndez, Rubén Caleb</p>
-                                <p class="text-muted mb-0">calebp@pucp.edu.pe</p>
+                                <p class="fw-bold mb-1" th:text="${usuarios.getNombres()}" >Casapaico Meléndez, Rubén Caleb</p>
+                                <p class="text-muted mb-0" th:text="${usuarios.getCorreo()}">calebp@pucp.edu.pe</p>
                             </div>
                         </div>
                     </td>
 
 
                     <td>
-                        <span class="status" style="background-color: limegreen"> Activo</span>
+                        <div th:switch="${usuarios.getEstado()}">
+                            <span class="status" style="background-color: limegreen" th:case="'0'" th:text="Activo"> Activo</span>
+                            <span class="status" style="background-color: #c50606" th:case="'1'" th:text="Suspendido"> Activo</span>
+                            <span class="status" style="background-color: rgba(140,130,130,0.83)" th:case="'3'" th:text="Suspendido"> Activo</span>
+                        </div>
                     </td>
-                    <td>Administrador</td>
+                    <td th:text="${usuarios.getRol()}">Administrador</td>
                     <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    data-bs-toggle="modal" data-bs-target="#editar1"
-                                    style="background-color: #3a7dec">Editar</button>  <!--Editar1 es el ID de este Usuario-->
+                        <div th:switch="${usuarios.getId_ca()}">
+                            <div th:case="1">
+                                <button type="button"; class="btn btn-redtele accion_button"
+                                        data-bs-toggle="modal" data-bs-target="#editar1"
+                                        style="background-color: #3a7dec">Editar
+                                </button>  <!--Editar1 es el ID de este Usuario-->
 
-                            <!--Modal Editar 1-->
-                            <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="padding: 0px">
-                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
-                                            <img src=https://media-exp1.licdn.com/dms/image/C4D03AQGiJgn4I5EHaQ/profile-displayphoto-shrink_200_200/0/1642133637953?e=2147483647&v=beta&t=qppaPsmBD1eSQXlnX362qhVbVv_Bh88WTvVpW1kx_mY
+                                <!--Modal Editar 1
+                                <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px">
+                                                <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                                <img src=https://media-exp1.licdn.com/dms/image/C4D03AQGiJgn4I5EHaQ/profile-displayphoto-shrink_200_200/0/1642133637953?e=2147483647&v=beta&t=qppaPsmBD1eSQXlnX362qhVbVv_Bh88WTvVpW1kx_mY
 
-                                                 alt="avatar" class="rounded-circle img-responsive"
-                                                 style="width: 150px; height: 150px">
-
-                                        </div>
-                                        <div class="modal-body" style="overflow-x: auto">
-                                            <div class="modal-body mx-3">
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-user prefix grey-text"></i>
-                                                    <input type="text" id="_name" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-user prefix grey-text"></i>
-                                                    <input type="text" id="_dni" class="form-control validate">
-                                                    <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-phone prefix grey-text"></i>
-                                                    <input type="number" id="_telefono" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-envelope prefix grey-text"></i>
-                                                    <input type="text" id="_correo" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-photo prefix grey-text"></i>
-                                                    <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
-                                                           accept=".jpg, .jpeg, .png" style="margin-left: 10px">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
-
-                                                </div>
+                                                     alt="avatar" class="rounded-circle img-responsive"
+                                                     style="width: 150px; height: 150px">
 
                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-redtele">Guardar</button>
-                                        </div>
-                                    </div>
+                                            <div class="modal-body" style="overflow-x: auto">
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_name" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_dni" class="form-control validate">
+                                                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-phone prefix grey-text"></i>
+                                                        <input type="number" id="_telefono" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                                        <input type="text" id="_correo" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-photo prefix grey-text"></i>
+                                                        <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
 
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>20197567</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Noriega Noriega, Arturo Paulo</p>
-                                <p class="text-muted mb-0">king_arthur@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="suspendido" style="align-items: center; margin-top: -8px">
-                        <span class="status" style="background-color: #c50606">Suspendida</span>
-                        </div>
-                    </td>
-                    <td>Alumno</td>
-
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    data-bs-toggle="modal" data-bs-target="#editar2"
-                                    style="background-color: #3a7dec">Editar</button>
-
-
-                            <div class="modal fade" id="editar2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="padding: 0px">
-                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
-                                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                                                 alt="avatar" class="rounded-circle img-responsive"
-                                                 style="width: 150px; height: 150px">
-
-                                        </div>
-                                        <div class="modal-body" style="overflow-x: auto">
-                                            <div class="modal-body mx-3">
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-user prefix grey-text"></i>
-                                                    <input type="text" id="_name" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-user prefix grey-text"></i>
-                                                    <input type="text" id="_dni" class="form-control validate">
-                                                    <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-phone prefix grey-text"></i>
-                                                    <input type="number" id="_telefono" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-envelope prefix grey-text"></i>
-                                                    <input type="text" id="_correo" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-photo prefix grey-text"></i>
-                                                    <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
-                                                           accept=".jpg, .jpeg, .png" style="margin-left: 10px">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+                                                    </div>
 
                                                 </div>
-
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-redtele">Guardar</button>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-redtele">Guardar</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: limegreen"
-                                    data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
-
-                            <!--ACTTIVAR MODAL-->
-
-                            <div class="modal fade" id="Activar1" tabindex="-1" aria-hidden="true" aria-labelleby="modalTitle">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-
-                                        <div class="modal-header">
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-
-                                        <div class="modal-body">
-                                            <p> ¿Quieres activar la cuenta del Usuario 20197567?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                                Cerrar
-                                            </button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                                Activar
-                                            </button>
-
-                                        </div>
 
                                     </div>
-
-                                </div>
-
+                                </div>-->
+                                <button type="button"; class="btn btn-redtele accion_button"
+                                        style="background-color: #c50606">Suspender</button>
+                                <button type="button"; class="btn btn-redtele disabled"
+                                        style="background-color: limegreen"
+                                        data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
                             </div>
+                            <div th:case="2">
+                                <button type="button"; class="btn btn-redtele accion_button"
+                                        data-bs-toggle="modal" data-bs-target="#editar1"
+                                        style="background-color: #3a7dec">Editar
+                                </button>  <!--Editar1 es el ID de este Usuario-->
 
+                                <!--Modal Editar 1
+                                <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px">
+                                                <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                                <img src=https://media-exp1.licdn.com/dms/image/C4D03AQGiJgn4I5EHaQ/profile-displayphoto-shrink_200_200/0/1642133637953?e=2147483647&v=beta&t=qppaPsmBD1eSQXlnX362qhVbVv_Bh88WTvVpW1kx_mY
 
-                        </div>
-                    </td>
-
-                </tr>
-                </tr>
-                <tr>
-                    <td>20189652</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Chomón Rojas, Marcelo</p>
-                                <p class="text-muted mb-0">marcelin.r@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <span class="status" style="background-color: limegreen"> Activo</span>
-                    </td>
-                    <td>Alumno</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    data-bs-toggle="modal" data-bs-target="#editar3"
-                                    style="background-color: #3a7dec">Editar</button>
-
-                            <!--EDITAR 3 MODAL-->
-                            <div class="modal fade" id="editar3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="padding: 0px">
-                                            <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
-                                            <img src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
-                                                 alt="avatar" class="rounded-circle img-responsive"
-                                                 style="width: 150px; height: 150px">
-
-                                        </div>
-                                        <div class="modal-body" style="overflow-x: auto">
-                                            <div class="modal-body mx-3">
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-user prefix grey-text"></i>
-                                                    <input type="text" id="_name" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-user prefix grey-text"></i>
-                                                    <input type="text" id="_dni" class="form-control validate">
-                                                    <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-phone prefix grey-text"></i>
-                                                    <input type="number" id="_telefono" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-envelope prefix grey-text"></i>
-                                                    <input type="text" id="_correo" class="form-control validate">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
-                                                </div>
-                                                <div class="md-form mb-1">
-                                                    <i class="fas fa-photo prefix grey-text"></i>
-                                                    <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
-                                                           accept=".jpg, .jpeg, .png" style="margin-left: 10px">
-                                                    <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
-
-                                                </div>
+                                                     alt="avatar" class="rounded-circle img-responsive"
+                                                     style="width: 150px; height: 150px">
 
                                             </div>
+                                            <div class="modal-body" style="overflow-x: auto">
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_name" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_dni" class="form-control validate">
+                                                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-phone prefix grey-text"></i>
+                                                        <input type="number" id="_telefono" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                                        <input type="text" id="_correo" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-photo prefix grey-text"></i>
+                                                        <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-redtele">Guardar</button>
+                                            </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-redtele">Guardar</button>
-                                        </div>
+
                                     </div>
-
-                                </div>
+                                </div>-->
                             </div>
 
-
-
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #c50606"
-                                    data-bs-toggle="modal" data-bs-target="#suspender3">Suspender</button>
-
-                            <!-- Modal Eliminar -->
-                            <div class="modal fade" id="suspender3" tabindex="-1" aria-hidden="true" aria-labelleby="modalTitle">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-
-                                        <div class="modal-header">
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-
-
-                                        <div class="modal-body">
-                                            <p> ¿Esta seguro que quieres suspender el usuario 20189652?</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                                Cerrar
-                                            </button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                                Suspender
-                                            </button>
-
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: limegreen">Reactivar</button>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>20189652</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://yt3.ggpht.com/ytc/AMLnZu_DRiYS6n49aEeTmFYsAlzix26g_4SoltvMmh_Fuw=s900-c-k-c0x00ffffff-no-rj
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Alonso Pepian, Jorge</p>
-                                <p class="text-muted mb-0">george.p@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
 
-
-                    <td>
-                        <span class="status" style="background-color: limegreen"> Activo</span>
-                    </td>
-                    <td>Alumno</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #3a7dec">Editar</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: limegreen">Reactivar</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>20196696</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://yt3.ggpht.com/ytc/AMLnZu__Ux21Z1Yp2KOlwpD4TQ1diQCWc8wTcb3RUgnVsg=s900-c-k-c0x00ffffff-no-rj
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Vasquez Asenjo, Rubén</p>
-                                <p class="text-muted mb-0">ruben.vas@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <span class="status" style="background-color: #c50606"> Suspendido</span>
-                    </td>
-                    <td>Alumno</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #3a7dec">Editar</button>
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: limegreen">Reactivar</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>08965393</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://solowrestling.mundodeportivo.com/uploads/RESEM109600roman-reigns.jpg
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Riquelme Noriega, Roman</p>
-                                <p class="text-muted mb-0">roman.r@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <span class="status" style="background-color: limegreen"> Activo</span>
-                    </td>
-                    <td>Seguridad</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #3a7dec">Editar</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: limegreen">Reactivar</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>20209393</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://as01.epimg.net/img/comunes/fotos/fichas/deportistas/j/jes/large/14944.png
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Catpo Yepez, Jesus</p>
-                                <p class="text-muted mb-0">jesus.catpo@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <span class="status" style="background-color: rgba(140,130,130,0.83)"> No Registrado</span>
-                    </td>
-                    <td>Alumno</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #3a7dec">Editar</button>
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: limegreen">Reactivar</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>20159638</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://upload.wikimedia.org/wikipedia/commons/2/26/Oscar-romero.png_390307073.png
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Rugger Ramirez, Oscar</p>
-                                <p class="text-muted mb-0">osquitar.r@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <span class="status" style="background-color: limegreen"> Activo</span>
-                    </td>
-                    <td>Alumno</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #3a7dec">Editar</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: limegreen">Reactivar</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>201969398</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://es.web.img3.acsta.net/pictures/19/06/14/09/39/3055545.jpg
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">Pedraza Lagarto, Saulo</p>
-                                <p class="text-muted mb-0">saulo.ped@pucp.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <span class="status" style="background-color: #c50606"> Suspendido</span>
-                    </td>
-                    <td>Alumno</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #3a7dec">Editar</button>
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: limegreen">Reactivar</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>09609619</td>
-                    <td>
-                        <div class="d-flex align-items-center">
-                            <img
-                                    src=https://img.a.transfermarkt.technology/portrait/big/432895-1533634320.jpg?lm=1
-                                    alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
-                            <div class="ms-3">
-                                <p class="fw-bold mb-1">La Torre Sarmiento, Pedro Jesus</p>
-                                <p class="text-muted mb-0">pedro.jesus@gmail.edu.pe</p>
-                            </div>
-                        </div>
-                    </td>
-
-
-                    <td>
-                        <span class="status" style="background-color: limegreen"> Activo</span>
-                    </td>
-                    <td>Seguridad</td>
-                    <td>
-                        <div>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #3a7dec">Editar</button>
-                            <button type="button"; class="btn btn-redtele accion_button"
-                                    style="background-color: #c50606">Suspender</button>
-                            <button type="button"; class="btn btn-redtele disabled"
-                                    style="background-color: limegreen">Reactivar</button>
-                        </div>
                     </td>
                 </tr>
             </tbody>
