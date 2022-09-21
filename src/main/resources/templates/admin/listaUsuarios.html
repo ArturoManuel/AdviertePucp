@@ -250,11 +250,22 @@
 
                                     </div>
                                 </div>
-                                <button type="button"; class="btn btn-redtele accion_button"
-                                        style="background-color: #c50606">Suspender</button>
-                                <button type="button"; class="btn btn-redtele disabled"
-                                        style="background-color: limegreen"
-                                        data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                <div th:switch="${usuarios.getEstado()}">
+                                    <div th:case="0">
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                    <div th:case="1">
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                </div>
                             </div>
                             <div th:case="2">
                                 <button type="button"; class="btn btn-redtele accion_button"
