@@ -184,9 +184,9 @@
 
                     <td>
                         <div th:switch="${usuarios.getEstado()}">
-                            <span class="status" style="background-color: limegreen" th:case="'0'" th:text="Activo"> Activo</span>
-                            <span class="status" style="background-color: #c50606" th:case="'1'" th:text="Suspendido"> Activo</span>
-                            <span class="status" style="background-color: rgba(140,130,130,0.83)" th:case="'3'" th:text="Suspendido"> Activo</span>
+                            <p  th:case="0" class="status" style="background-color: limegreen" > Activo</p>
+                            <p  th:case="1" class="status" style="background-color: #c50606" > Suspendido</p>
+                            <p th:case="3" class="status" style="background-color: rgba(140,130,130,0.83)"  >No registrado</p>
                         </div>
                     </td>
                     <td th:text="${usuarios.getRol()}">Administrador</td>
