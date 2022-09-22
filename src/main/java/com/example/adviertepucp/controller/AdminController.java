@@ -26,8 +26,11 @@ public class AdminController {
         model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
         return "admin/listaIncidentes";
     }
+    @GetMapping("/prueba")
 
-
+    String pruebas(){
+        return "admin/prueba";
+    }
 
 
 
