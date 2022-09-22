@@ -1,41 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head >
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title th:text="ola"></title>
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
-    <!--JQUery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Google Fonts -->
+<head>
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Página de prueba')">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- MDB -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </div>
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
-    <link rel="stylesheet" href="/css/suspendido.css">
+
     <link rel="stylesheet" href="/css/main.css">
-    <style>
-        *{font-family: Roboto}
-    </style>
 </head>
+
 <body>
-<div class="header px-4 py-5" >
-    <div class="bSalir">
-        <button style="margin-left: 5px;align-self: self-end" type="button" class="btn btn-outline-dark">Inicio</button>
-        <a style="margin-left: 5px" type="button" href="/usuario/perfil" class="btn btn-outline-dark">Mi perfil</a>
-        <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
-    </div>
-    <div class="advnav ">
-        <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
-    </div>
-</div>
+<header th:replace="fragmentos/newnavbar.html :: navbar">
+
+</header>
 <div class="container py-3" >
     <!-- Lista incidencias -->
     <div class="title-28" >

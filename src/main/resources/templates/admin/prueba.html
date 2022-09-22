@@ -1,95 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.88.1">
-    <title>Carousel Template · Bootstrap v5.1</title>
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Página de prueba')">
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/5.1/examples/carousel/">
+    </div>
 
-    <!-- Bootstrap core CSS -->
-    <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-      .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show>.nav-link {
-        color: #212529;
-      }
-
-      .navbar-dark .navbar-nav .nav-link {
-        color: #212529;
-      }
-
-      .navbar-dark .navbar-nav .nav-link.disabled {
-        color: #212529;
-      }
-
-
-      .navbar-toggler {
-        padding: 0.25rem 0.75rem;
-        font-size: 1.25rem;
-        line-height: 1;
-        background-color: #212529;
-        border: 1px solid #f9fafb;
-        border-radius: 0.25rem;
-        transition: box-shadow .15s ease-in-out;
-      }
-      .custom-toggler.navbar-toggler {
-        border-color: white;
-      }
-
-      .navbar-dark .navbar-toggler {
-        color: #f9fafb;
-        border-color: #41464b;
-      }
-      .bg-white{
-        background: #FFFFFF;
-        box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.08);
-        margin-bottom:5%;
-      }
-    </style>
-    <!-- Custom styles for this template -->
-    <link href="carousel.css" rel="stylesheet">
   </head>
   <body>
 
-    <header>
-      <nav style="border: black" class="navbar navbar-expand-md navbar-dark fixed-top bg-white  ">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="#">  <img  style="width: 240px ; height: 39px" src="/images/logoNavbar.png"> </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse " id="navbarCollapse">
-            <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Incio</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Mi perfil</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled">Cerrar Sesion</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+    <header th:replace="fragmentos/newnavbar.html :: navbar">
+
     </header>
 
     <main>
