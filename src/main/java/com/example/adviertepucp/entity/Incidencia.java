@@ -1,68 +1,165 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.example.adviertepucp.entity;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.Instant;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(
-        name = "incidencia"
-)
+@Table(name = "incidencia")
 public class Incidencia {
     @Id
-    @Column(
-            name = "idincidencia",
-            nullable = false
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idincidencia", nullable = false)
     private Integer id;
-    @Column(
-            name = "titulo",
-            nullable = false,
-            length = 45
-    )
-    private String titulo;
-    @Column(
-            name = "descripcion",
-            length = 300
-    )
-    private String descripcion;
-    @Column(
-            name = "fecha",
-            nullable = false
-    )
-    private Instant fecha;
-    @Column(
-            name = "estado",
-            nullable = false,
-            length = 10
-    )
-    private String estado;
-    @Column(
-            name = "urgencia",
-            nullable = false,
-            length = 8
-    )
-    private String urgencia;
-    @Column(
-            name = "ubicacion",
-            nullable = false,
-            length = 100
-    )
-    private String ubicacion;
-    @Column(
-            name = "zonapucp",
-            nullable = false,
-            length = 100
-    )
-    private String zonapucp;
 
-    public Incidencia() {
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "titulo", nullable = false, length = 45)
+    private String titulo;
+
+    @Size(max = 300)
+    @NotNull
+    @Column(name = "descripcion", nullable = false, length = 300)
+    private String descripcion;
+
+    @NotNull
+    @Column(name = "fecha", nullable = false)
+    private Instant fecha;
+
+    @Size(max = 10)
+    @NotNull
+    @Column(name = "estado", nullable = false, length = 10)
+    private String estado;
+
+    @Size(max = 8)
+    @NotNull
+    @Column(name = "urgencia", nullable = false, length = 8)
+    private String urgencia;
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "tipoincidencia", nullable = false)
+    private Tipoincidencia tipoincidencia;
+
+    @NotNull
+    @Column(name = "latitud", nullable = false)
+    private Double latitud;
+
+    @NotNull
+    @Column(name = "longitud", nullable = false)
+    private Double longitud;
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "zonapucp", nullable = false)
+    private Zonapucp zonapucp;
+
+    @OneToMany(mappedBy = "incidencia")
+    private Set<Favorito> favoritos = new LinkedHashSet<>();
+
+    @ManyToMany
+    @JoinTable(name = "incidenciatienefoto",
+            joinColumns = @JoinColumn(name = "idincidencia"),
+            inverseJoinColumns = @JoinColumn(name = "idfotoalmacenada"))
+    private Set<Fotoalmacenada> fotoalmacenadas = new LinkedHashSet<>();
+
+    public Integer getId() {
+        return id;
     }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Instant getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Instant fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getUrgencia() {
+        return urgencia;
+    }
+
+    public void setUrgencia(String urgencia) {
+        this.urgencia = urgencia;
+    }
+
+    public Tipoincidencia getTipoincidencia() {
+        return tipoincidencia;
+    }
+
+    public void setTipoincidencia(Tipoincidencia tipoincidencia) {
+        this.tipoincidencia = tipoincidencia;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(Double latitud) {
+        this.latitud = latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(Double longitud) {
+        this.longitud = longitud;
+    }
+
+    public Zonapucp getZonapucp() {
+        return zonapucp;
+    }
+
+    public void setZonapucp(Zonapucp zonapucp) {
+        this.zonapucp = zonapucp;
+    }
+
+    public Set<Favorito> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(Set<Favorito> favoritos) {
+        this.favoritos = favoritos;
+    }
+
+    public Set<Fotoalmacenada> getFotoalmacenadas() {
+        return fotoalmacenadas;
+    }
+
+    public void setFotoalmacenadas(Set<Fotoalmacenada> fotoalmacenadas) {
+        this.fotoalmacenadas = fotoalmacenadas;
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.example.adviertepucp.repository;
 
-import com.example.adviertepucp.entity.AdminUsuariosDto;
+import com.example.adviertepucp.dto.AdminUsuariosDto;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

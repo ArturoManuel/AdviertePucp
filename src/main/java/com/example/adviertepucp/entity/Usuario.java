@@ -1,77 +1,175 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.example.adviertepucp.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
-@Table(
-        name = "usuario"
-)
+@Table(name = "usuario")
 public class Usuario {
     @Id
-    @Column(
-            name = "codigo",
-            nullable = false,
-            length = 8
-    )
+    @Size(max = 8)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo", nullable = false, length = 8)
     private String id;
-    @Column(
-            name = "nombre",
-            nullable = false,
-            length = 45
-    )
+
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
-    @Column(
-            name = "apellido",
-            nullable = false,
-            length = 45
-    )
+
+    @Size(max = 45)
+    @NotNull
+    @Column(name = "apellido", nullable = false, length = 45)
     private String apellido;
-    @Column(
-            name = "dni",
-            length = 8
-    )
+
+    @Size(max = 8)
+    @Column(name = "dni", length = 8)
     private String dni;
-    @Column(
-            name = "celular",
-            length = 9
-    )
+
+    @Size(max = 9)
+    @Column(name = "celular", length = 9)
     private String celular;
-    @Column(
-            name = "correo",
-            nullable = false,
-            length = 80
-    )
+
+    @Size(max = 80)
+    @NotNull
+    @Column(name = "correo", nullable = false, length = 80)
     private String correo;
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(
-            name = "categoria",
-            nullable = false
-    )
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "categoria", nullable = false)
     private Categoria categoria;
-    @Column(
-            name = "foto"
-    )
-    private byte[] foto;
-    @Column(
-            name = "suspendido",
-            nullable = false
-    )
+
+    @NotNull
+    @Column(name = "suspendido", nullable = false)
     private Integer suspendido;
 
-    public Usuario() {
+    @Size(max = 64)
+    @Column(name = "codigoverificacion", length = 64)
+    private String codigoverificacion;
+
+    @Size(max = 256)
+    @NotNull
+    @Column(name = "pwd", nullable = false, length = 256)
+    private String pwd;
+
+    @ManyToOne
+    @JoinColumn(name = "foto")
+    private Fotoalmacenada foto;
+
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "icono", nullable = false)
+    private Icono icono;
+
+    @OneToMany(mappedBy = "usuario")
+    private Set<Favorito> favoritos = new LinkedHashSet<>();
+
+    public String getId() {
+        return id;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
+    public Integer getSuspendido() {
+        return suspendido;
+    }
+
+    public void setSuspendido(Integer suspendido) {
+        this.suspendido = suspendido;
+    }
+
+    public String getCodigoverificacion() {
+        return codigoverificacion;
+    }
+
+    public void setCodigoverificacion(String codigoverificacion) {
+        this.codigoverificacion = codigoverificacion;
+    }
+
+    public String getPwd() {
+        return pwd;
+    }
+
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
+    }
+
+    public Fotoalmacenada getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Fotoalmacenada foto) {
+        this.foto = foto;
+    }
+
+    public Icono getIcono() {
+        return icono;
+    }
+
+    public void setIcono(Icono icono) {
+        this.icono = icono;
+    }
+
+    public Set<Favorito> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(Set<Favorito> favoritos) {
+        this.favoritos = favoritos;
+    }
+
 }

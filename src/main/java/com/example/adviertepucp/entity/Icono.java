@@ -7,19 +7,22 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "categoria")
-public class Categoria {
+@Table(name = "iconos")
+public class Icono {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idcategoria", nullable = false)
+    @Column(name = "idicono", nullable = false)
     private Integer id;
 
     @Size(max = 45)
-    @NotNull
-    @Column(name = "nombre", nullable = false, length = 45)
+    @Column(name = "nombre", length = 45)
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria")
+    @NotNull
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "foto", nullable = false)
+    private Fotoalmacenada foto;
+
+    @OneToMany(mappedBy = "icono")
     private Set<Usuario> usuarios = new LinkedHashSet<>();
 
     public Integer getId() {
@@ -36,6 +39,14 @@ public class Categoria {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Fotoalmacenada getFoto() {
+        return foto;
+    }
+
+    public void setFoto(Fotoalmacenada foto) {
+        this.foto = foto;
     }
 
     public Set<Usuario> getUsuarios() {

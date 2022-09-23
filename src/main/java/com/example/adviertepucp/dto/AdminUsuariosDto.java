@@ -1,4 +1,4 @@
-package com.example.adviertepucp.entity;
+package com.example.adviertepucp.dto;
 
 public interface AdminUsuariosDto {
 
