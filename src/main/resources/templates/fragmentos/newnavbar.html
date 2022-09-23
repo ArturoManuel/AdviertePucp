@@ -17,16 +17,15 @@
   <link rel="stylesheet" href="/css/template_navbar.css">
   <link rel="stylesheet" href="/css/owl.css">
   <link rel="stylesheet" href="/css/animate.css">
-  <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
   <!--
   -->
 </head>
 
 <body>
 
-
 <!-- ***** Header Area Start ***** -->
-<header class="header-area header-sticky" th:fragment="navbar">
+<header class="header-area header-sticky" th:fragment="navbar (user)">
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -52,9 +51,11 @@
           <!-- ***** Search End ***** -->
           <!-- ***** Menu Start ***** -->
           <ul class="nav">
+            <li><a th:if="${user=='Administrador'}" href="index.html">Gestionar</a></li>
+            <li><a th:if="${user=='Seguridad'}" href="index.html">Estadísticas</a></li>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="streams.html">Cerrar Sesión</a></li>
-            <li><a href="profile.html">Perfil:Angel Bautista <span style="color: blue;">(Admin)</span> <img src="/images/profile-header.jpg" alt=""></a></li>
+            <li><a href="profile.html" th:text="'Perfil: Nombre Apellido'"> <span th:text="'(Rol)'" style="color: blue;"> </span> <img src="/images/profile-header.jpg" alt=""></a></li>
           </ul>
           <a class='menu-trigger'>
             <span>Menu</span>
