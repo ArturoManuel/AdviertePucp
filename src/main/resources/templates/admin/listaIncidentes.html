@@ -13,6 +13,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta charset="UTF-8">
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Perfil')">
+
+    </div>
     <title>ListaUsuarios</title>
     <link rel="stylesheet" href="/css/main.css">
     <style>
@@ -129,9 +132,9 @@
       </div>
     </div>
     -->
-    <nav th:replace="fragmentos/navbar.html :: navbar"></nav>
+  <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
 
-
+  </header>
 
       <div class="container px-4 py-0">
         <div class="d-flex justify-content-around">
