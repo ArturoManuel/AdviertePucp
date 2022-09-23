@@ -23,20 +23,11 @@ public class Fotoalmacenada {
     @Column(name = "tipofoto", nullable = false)
     private String tipofoto;
 
-    @OneToMany(mappedBy = "logo")
-    private Set<Tipoincidencia> tipoincidencias = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "foto")
-    private Set<Icono> iconos = new LinkedHashSet<>();
-
     @ManyToMany
     @JoinTable(name = "incidenciatienefoto",
             joinColumns = @JoinColumn(name = "idfotoalmacenada"),
             inverseJoinColumns = @JoinColumn(name = "idincidencia"))
     private Set<Incidencia> incidencias = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "foto")
-    private Set<Usuario> usuarios = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -62,22 +53,6 @@ public class Fotoalmacenada {
         this.tipofoto = tipofoto;
     }
 
-    public Set<Tipoincidencia> getTipoincidencias() {
-        return tipoincidencias;
-    }
-
-    public void setTipoincidencias(Set<Tipoincidencia> tipoincidencias) {
-        this.tipoincidencias = tipoincidencias;
-    }
-
-    public Set<Icono> getIconos() {
-        return iconos;
-    }
-
-    public void setIconos(Set<Icono> iconos) {
-        this.iconos = iconos;
-    }
-
     public Set<Incidencia> getIncidencias() {
         return incidencias;
     }
@@ -85,13 +60,4 @@ public class Fotoalmacenada {
     public void setIncidencias(Set<Incidencia> incidencias) {
         this.incidencias = incidencias;
     }
-
-    public Set<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(Set<Usuario> usuarios) {
-        this.usuarios = usuarios;
-    }
-
 }

@@ -18,10 +18,6 @@ public class Zonapucp {
     @NotNull
     @Column(name = "nombre", nullable = false, length = 64)
     private String nombre;
-
-    @OneToMany(mappedBy = "zonapucp")
-    private Set<Incidencia> incidencias = new LinkedHashSet<>();
-
     public Integer getId() {
         return id;
     }
@@ -36,14 +32,6 @@ public class Zonapucp {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Set<Incidencia> getIncidencias() {
-        return incidencias;
-    }
-
-    public void setIncidencias(Set<Incidencia> incidencias) {
-        this.incidencias = incidencias;
     }
 
 }

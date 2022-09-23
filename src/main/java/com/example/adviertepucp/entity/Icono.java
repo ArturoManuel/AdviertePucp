@@ -22,9 +22,6 @@ public class Icono {
     @JoinColumn(name = "foto", nullable = false)
     private Fotoalmacenada foto;
 
-    @OneToMany(mappedBy = "icono")
-    private Set<Usuario> usuarios = new LinkedHashSet<>();
-
     public Integer getId() {
         return id;
     }
@@ -47,14 +44,6 @@ public class Icono {
 
     public void setFoto(Fotoalmacenada foto) {
         this.foto = foto;
-    }
-
-    public Set<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(Set<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 
 }

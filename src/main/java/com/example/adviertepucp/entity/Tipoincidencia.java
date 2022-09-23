@@ -29,9 +29,6 @@ public class Tipoincidencia {
     @JoinColumn(name = "logo", nullable = false)
     private Fotoalmacenada logo;
 
-    @OneToMany(mappedBy = "tipoincidencia")
-    private Set<Incidencia> incidencias = new LinkedHashSet<>();
-
     public Integer getId() {
         return id;
     }
@@ -62,14 +59,6 @@ public class Tipoincidencia {
 
     public void setLogo(Fotoalmacenada logo) {
         this.logo = logo;
-    }
-
-    public Set<Incidencia> getIncidencias() {
-        return incidencias;
-    }
-
-    public void setIncidencias(Set<Incidencia> incidencias) {
-        this.incidencias = incidencias;
     }
 
 }

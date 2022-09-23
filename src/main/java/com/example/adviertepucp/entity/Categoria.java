@@ -19,9 +19,6 @@ public class Categoria {
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 
-    @OneToMany(mappedBy = "categoria")
-    private Set<Usuario> usuarios = new LinkedHashSet<>();
-
     public Integer getId() {
         return id;
     }
@@ -36,14 +33,6 @@ public class Categoria {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public Set<Usuario> getUsuarios() {
-        return usuarios;
-    }
-
-    public void setUsuarios(Set<Usuario> usuarios) {
-        this.usuarios = usuarios;
     }
 
 }

@@ -64,10 +64,6 @@ public class Usuario {
     @ManyToOne(optional = false)
     @JoinColumn(name = "icono", nullable = false)
     private Icono icono;
-
-    @OneToMany(mappedBy = "usuario")
-    private Set<Favorito> favoritos = new LinkedHashSet<>();
-
     public String getId() {
         return id;
     }
@@ -162,14 +158,6 @@ public class Usuario {
 
     public void setIcono(Icono icono) {
         this.icono = icono;
-    }
-
-    public Set<Favorito> getFavoritos() {
-        return favoritos;
-    }
-
-    public void setFavoritos(Set<Favorito> favoritos) {
-        this.favoritos = favoritos;
     }
 
 }

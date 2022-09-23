@@ -10,12 +10,12 @@ public class Incidenciatienefoto {
     private IncidenciatienefotoId id;
 
     @MapsId("idfotoalmacenada")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "idfotoalmacenada", nullable = false)
     private Fotoalmacenada idfotoalmacenada;
 
     @MapsId("idincidencia")
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "idincidencia", nullable = false)
     private Incidencia idincidencia;
 

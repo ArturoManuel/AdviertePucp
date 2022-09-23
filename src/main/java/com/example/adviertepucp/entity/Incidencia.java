@@ -57,9 +57,6 @@ public class Incidencia {
     @JoinColumn(name = "zonapucp", nullable = false)
     private Zonapucp zonapucp;
 
-    @OneToMany(mappedBy = "incidencia")
-    private Set<Favorito> favoritos = new LinkedHashSet<>();
-
     @ManyToMany
     @JoinTable(name = "incidenciatienefoto",
             joinColumns = @JoinColumn(name = "idincidencia"),
@@ -144,14 +141,6 @@ public class Incidencia {
 
     public void setZonapucp(Zonapucp zonapucp) {
         this.zonapucp = zonapucp;
-    }
-
-    public Set<Favorito> getFavoritos() {
-        return favoritos;
-    }
-
-    public void setFavoritos(Set<Favorito> favoritos) {
-        this.favoritos = favoritos;
     }
 
     public Set<Fotoalmacenada> getFotoalmacenadas() {

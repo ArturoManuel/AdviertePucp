@@ -46,7 +46,7 @@ public class AdminController {
 
     //Para obtener imagenes de la base de datos
     //Para ver al el llamado vayan al archivo listaIncidentes.html
-    @GetMapping("/image/{id}")
+  /*@GetMapping("/image/{id}")
     public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
         Optional<Tipoincidencia> opt = tipoincidenciaRepository.findById(id);
         if (opt.isPresent()) {
@@ -65,7 +65,7 @@ public class AdminController {
         } else {
             return null;
         }
-    }
+    } */
 
 
 
