@@ -36,7 +36,86 @@
     <style>
         *{font-family: Roboto}
     </style>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
+    <style>
+
+
+
+        .b-skills
+        {
+            border-top: 1px solid #f9f9f9;
+            padding-top: 46px;
+            text-align: center;
+        }
+
+        .b-skills:last-child { margin-bottom: -30px; }
+
+        .b-skills h2 { margin-bottom: 50px; font-weight: 900; text-transform: uppercase;}
+
+        .skill-item
+        {
+            position: relative;
+            max-width: 250px;
+            width: 100%;
+            margin-bottom: 30px;
+            color: #555;
+        }
+
+        .chart-container
+        {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-top: 100%;
+            margin-bottom: 27px;
+        }
+
+        .skill-item .chart,
+        .skill-item .chart canvas
+        {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .skill-item .chart:before
+        {
+            content: "";
+            width: 0;
+            height: 100%;
+        }
+
+        .skill-item .chart:before,
+        .skill-item .percent
+        {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .skill-item .percent
+        {
+            position: relative;
+            line-height: 1;
+            font-size: 40px;
+            font-weight: 900;
+            z-index: 2;
+        }
+
+        .skill-item  .percent:after
+        {
+            content: attr(data-after);
+            font-size: 20px;
+        }
+
+        p{
+            font-weight: 900;
+        }
+
+
+    </style>
     <title>Dashboard</title>
 
     <!-- Custom fonts for this template-->
@@ -170,20 +249,7 @@
                                 <div
                                         class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Resumen de incidencias</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id=""
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
+
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
@@ -206,30 +272,23 @@
                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                         </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                             aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
+
                                     </div>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                                        <canvas id="myPieChart" width="406" height="312" style="display: block; height: 208px; width: 271px;" class="chartjs-render-monitor"></canvas>
+                                    <div class="chart-pie pt-4 pb-2">
+                                        <canvas id="myPieChart"></canvas>
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
+                                            <i class="fas fa-circle text-primary"></i> tontodromo
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
+                                            <i class="fas fa-circle text-success"></i> cia
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
+                                            <i class="fas fa-circle text-info"></i> eeggcc
                                         </span>
                                     </div>
                                 </div>
@@ -282,6 +341,61 @@
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <script src="plugins/jquery-2.2.4.min.js"></script>
+    <script src="plugins/jquery.appear.min.js"></script>
+    <script src="plugins/jquery.easypiechart.min.js"></script>
+    <script>
+        'use strict';
+
+        var $window = $(window);
+
+        function run()
+        {
+            var fName = arguments[0],
+                aArgs = Array.prototype.slice.call(arguments, 1);
+            try {
+                fName.apply(window, aArgs);
+            } catch(err) {
+
+            }
+        };
+
+        /* chart
+        ================================================== */
+        function _chart ()
+        {
+            $('.b-skills').appear(function() {
+                setTimeout(function() {
+                    $('.chart').easyPieChart({
+                        easing: 'easeOutElastic',
+                        delay: 3000,
+                        barColor: '#369670',
+                        trackColor: '#fff',
+                        scaleColor: false,
+                        lineWidth: 21,
+                        trackWidth: 21,
+                        size: 250,
+                        lineCap: 'round',
+                        onStep: function(from, to, percent) {
+                            this.el.children[0].innerHTML = Math.round(percent);
+                        }
+                    });
+                }, 150);
+            });
+        };
+
+
+        $(document).ready(function() {
+
+            run(_chart);
+
+
+        });
+
+
+
+    </script>
 
 
 
