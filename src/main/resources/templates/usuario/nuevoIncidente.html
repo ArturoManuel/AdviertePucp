@@ -46,9 +46,9 @@
                 </nav>
             </div>
         </div>
+        <form method="post" th:action="@{/guardarincidente}" enctype="multipart/form-data">
 
         <div class="row">
-
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
@@ -56,7 +56,8 @@
                              class=" img-fluid" style="width: 255px;">
                         <h5 class="my-3">Fotos de lo sucedido</h5>
                         <div class="d-flex justify-content-center mb-1">
-                            <button type="button" class="btn btn-lg-primary">agregar imagenes</button>
+                            <label for="subirfotos" class="btn btn-lg-primary">Agregar Imágenes</label>
+                            <input name="archivos" id="subirfotos" multiple hidden type="file">
                         </div>
                     </div>
                 </div>
@@ -80,7 +81,7 @@
                                 <p class="mb-0">Describe lo sucedido a detalle</p>
                             </div>
                             <div class="col-sm-9">
-                                <textarea class="form-control" id="textAreaExample" rows="4"></textarea>
+                                <textarea name="descripcion" class="form-control" id="textAreaExample" rows="4"></textarea>
                             </div>
                         </div>
                         <hr>
@@ -99,7 +100,7 @@
                                 <p class="mb-0">Tipo de incidencia</p>
                             </div>
                             <div class="col-sm-9">
-                                <select name="select" class="form-select" style="font-size: small">
+                                <select name="tipoincidencia" class="form-select" style="font-size: small">
                                     <option value="value1">Otro</option>
                                     <option value="value2" selected>Infraestructura</option>
                                     <option value="value3">Objetos perdidos</option>
@@ -112,10 +113,11 @@
                                 <p class="mb-0">Nivel de urgencia</p>
                             </div>
                             <div class="col-sm-9">
-                                <select name="select" class="form-select" style="font-size: small">
-                                    <option value="value1">Leve</option>
-                                    <option value="value2" selected>Moderado</option>
-                                    <option value="value3">Crítico</option>
+                                <select name="urgencia" class="form-select" style="font-size: small">
+                                    <option hidden>Seleccionar</option>
+                                    <option>Leve</option>
+                                    <option>Moderado</option>
+                                    <option>Crítico</option>
                                 </select>
                             </div>
                         </div>
@@ -131,6 +133,8 @@
                 </div>
             </div>
         </div>
+        </form>
+
     </div>
 </section>
 </body>
