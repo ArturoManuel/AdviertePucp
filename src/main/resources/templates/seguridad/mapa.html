@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <title th:text="ola"></title>
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Nuevo Incidente')">
+    
+    </div>
+
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
     <!--JQUery-->
@@ -25,17 +28,9 @@
     </style>
 </head>
 <body>
-<div class="header px-4 py-5" >
-    <div class="bSalir">
-        <a style="margin-left: 5px;align-self: self-end" type="button" class="btn btn-outline-dark" href="seguridad/estadisticas">Estadísticas</a>
-        <a style="margin-left: 5px;align-self: self-end" type="button" href="/seguridad" class="btn btn-outline-dark">Inicio</a>
-        <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Mi perfil</button>
-        <button style="margin-left: 5px" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
-    </div>
-    <div class="advnav ">
-        <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
-    </div>
-</div>
+    <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
+    
+    </header>
 <div class="container py-3" >
     <!-- Lista incidencias -->
     <div class="title-28" >
