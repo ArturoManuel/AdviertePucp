@@ -77,7 +77,7 @@ public class UsuarioController {
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
-            Incidencia incidencia,
+                                   Incidencia incidencia,
                                    Model model){
 
         ArrayList<Fotoalmacenada> listaFotoAlmacenada = new ArrayList<>();
@@ -109,20 +109,19 @@ public class UsuarioController {
         }
         }
 
-        try{
+       try{
             Double latitud = 1.5;
             Double longitud = 2.6;
+            String estado = "registrado";
             Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+            incidencia.setEstado(estado);
             incidencia.setLatitud(latitud);
             incidencia.setLongitud(longitud);
             incidencia.setFecha(datetime);
             incidenciaRepository.save(incidencia);
 
             for (Fotoalmacenada fotoDB: listaFotoAlmacenada) {
-                Incidenciatienefoto incidenciatienefoto = new Incidenciatienefoto();
-                incidenciatienefoto.setIdfotoalmacenada(fotoDB);
-                incidenciatienefoto.setIdincidencia(incidencia);
-                incidenciatienefotoRepository.save(incidenciatienefoto);
+                incidenciatienefotoRepository.insertarFotoEIncidencia(fotoDB.getId(),incidencia.getId());
             }
 
         }catch (Exception e){

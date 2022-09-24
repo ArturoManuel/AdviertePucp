@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -36,7 +37,7 @@ public class Incidencia {
 
     @Size(max = 8)
     @NotNull
-    @Column(name = "urgencia", nullable = false, length = 8)
+    @Column(name = "urgencia", nullable = false)
     private String urgencia;
 
     @NotNull

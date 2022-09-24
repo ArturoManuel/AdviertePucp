@@ -86,7 +86,7 @@
 
                             </div>
                             <div class="col-sm-9">
-                                <input type="text" id="form12" class="form-control" />
+                                <input name="titulo" type="text" id="form12" class="form-control" />
                             </div>
                         </div>
                         <hr>
@@ -107,7 +107,7 @@
                             <div class="col-sm-9">
                                 <input list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
                                 <datalist id="zonapucp">
-                                    <option th:each="zona:${listaZonas}" th:data-value="${zona.getId()}" th:text="${zona.getNombre()}">
+                                    <option th:each="zona:${listaZonas}" th:value="${zona.getId()}" th:text="${zona.getNombre()}">
                                 </datalist>
                             </div>
                         </div>
@@ -130,9 +130,9 @@
                             <div class="col-sm-9">
                                 <select name="urgencia" class="form-select" style="font-size: small">
                                     <option hidden>Seleccionar</option>
-                                    <option>Leve</option>
-                                    <option>Moderado</option>
-                                    <option>Crítico</option>
+                                    <option value="leve">Leve</option>
+                                    <option value="moderado">Moderado</option>
+                                    <option value="critico">Crítico</option>
                                 </select>
                             </div>
                         </div>
