@@ -27,6 +27,16 @@
             color:black;
 
         }
+        #galeria{
+            display: flex;
+        }
+        #galeria img{
+            width: 85px;
+            height: 85px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+            opacity: 85%;
+        }
     </style>
 </head>
 <body style="background-color: #eee;">
@@ -46,21 +56,25 @@
                 </nav>
             </div>
         </div>
-        <form method="post" th:action="@{/guardarincidente}" enctype="multipart/form-data">
+        <form method="post" th:action="@{'/usuario/guardarincidente'}" enctype="multipart/form-data">
 
         <div class="row">
             <div class="col-lg-4">
                 <div class="card mb-4">
                     <div class="card-body text-center">
-                        <img src="https://img.freepik.com/premium-vector/camera-icon-cartoon-flat-design_387795-125.jpg?w=2000" alt="avatar"
+                        <img id="preview2" src="https://img.freepik.com/premium-vector/camera-icon-cartoon-flat-design_387795-125.jpg?w=2000" alt="avatar"
                              class=" img-fluid" style="width: 255px;">
-                        <h5 class="my-3">Fotos de lo sucedido</h5>
+                        <h5 class="my-3" style="color: black">Fotos de lo sucedido</h5>
+                        <div id="galeria"></div>
                         <div class="d-flex justify-content-center mb-1">
                             <label for="subirfotos" class="btn btn-lg-primary">Agregar Imágenes</label>
-                            <input name="archivos" id="subirfotos" multiple hidden type="file">
+                            <input onchange="document.getElementById('preview2').src = window.URL.createObjectURL(this.files[0]);previewMultiple(event)" name="archivos" id="subirfotos" multiple hidden type="file">
+                            
                         </div>
                     </div>
+                    
                 </div>
+             
 
             </div>
             <div class="col-lg-8">
@@ -91,7 +105,10 @@
 
                             </div>
                             <div class="col-sm-9">
-                                <input type="text" id="form13" class="form-control" />
+                                <input list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
+                                <datalist id="zonapucp">
+                                    <option th:each="zona:${listaZonas}" th:data-value="${zona.getId()}" th:text="${zona.getNombre()}">
+                                </datalist>
                             </div>
                         </div>
                         <hr>
@@ -101,9 +118,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <select name="tipoincidencia" class="form-select" style="font-size: small">
-                                    <option value="value1">Otro</option>
-                                    <option value="value2" selected>Infraestructura</option>
-                                    <option value="value3">Objetos perdidos</option>
+                                    <option th:each="tipo:${listaTiposIncidencia}" th:value="${tipo.getId()}" th:text="${tipo.getNombre()}"></option>
                                 </select>
                             </div>
                         </div>
@@ -127,7 +142,7 @@
 
                     <div class="col-md-12">
                         <div class="d-grid gap-2">
-                            <button type="button" class="btn btn-primary">PUBLICAR</button>
+                            <button type="submit" class="btn btn-primary">PUBLICAR</button>
                         </div>
                     </div>
                 </div>
@@ -138,5 +153,18 @@
     </div>
 </section>
 </body>
-
+    
+    <script>
+    
+        function previewMultiple(event){
+            var saida = document.getElementById("subirfotos");
+            var quantos = saida.files.length;
+            for(i = 0; i < quantos; i++){
+                var urls = URL.createObjectURL(event.target.files[i]);
+                document.getElementById("galeria").innerHTML += '<img src="'+urls+'">';
+            }
+        }
+        
+    </script>
+    
 </html>

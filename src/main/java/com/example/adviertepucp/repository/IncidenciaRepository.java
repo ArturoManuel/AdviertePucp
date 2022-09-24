@@ -11,5 +11,4 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "t.idtipoincidencia as idt , t.nombre as nombret , t.color as colort from tipoincidencia t",nativeQuery = true)
     List<TipoIncidenciadto> listaTipo();
 
-
 }
