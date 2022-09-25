@@ -4,400 +4,247 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
     <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Nuevo Incidente')">
-    
+
     </div>
 
     <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/5d5f09a262.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
     <!--JQUery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
     <!-- MDB -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
     <link rel="stylesheet" href="/css/suspendido.css">
-    <link rel="stylesheet" href="/css/suspendido.css">
-    <link rel="stylesheet" href="/sb-admin-2/css/sb-admin-2.css">
-    <link rel="stylesheet" href="/sb-admin-2/sb-admin-2.min.css.">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <link rel="stylesheet" href="/css/main.css">
     <style>
         *{font-family: Roboto}
     </style>
-    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
-    <style>
-
-
-
-        .b-skills
-        {
-            border-top: 1px solid #f9f9f9;
-            padding-top: 46px;
-            text-align: center;
-        }
-
-        .b-skills:last-child { margin-bottom: -30px; }
-
-        .b-skills h2 { margin-bottom: 50px; font-weight: 900; text-transform: uppercase;}
-
-        .skill-item
-        {
-            position: relative;
-            max-width: 250px;
-            width: 100%;
-            margin-bottom: 30px;
-            color: #555;
-        }
-
-        .chart-container
-        {
-            position: relative;
-            width: 100%;
-            height: 0;
-            padding-top: 100%;
-            margin-bottom: 27px;
-        }
-
-        .skill-item .chart,
-        .skill-item .chart canvas
-        {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            height: 100% !important;
-        }
-
-        .skill-item .chart:before
-        {
-            content: "";
-            width: 0;
-            height: 100%;
-        }
-
-        .skill-item .chart:before,
-        .skill-item .percent
-        {
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .skill-item .percent
-        {
-            position: relative;
-            line-height: 1;
-            font-size: 40px;
-            font-weight: 900;
-            z-index: 2;
-        }
-
-        .skill-item  .percent:after
-        {
-            content: attr(data-after);
-            font-size: 20px;
-        }
-
-        p{
-            font-weight: 900;
-        }
-
-
-    </style>
-    <title>Dashboard</title>
-
-    <!-- Custom fonts for this template-->
-    <link href="seguridad/estadisticas" rel="stylesheet" type="text/css">
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>
+
 <body>
-    <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
-    
-    </header>
-    <!-- Page Wrapper -->
-    <div id="wrapper" class="container py-3">
-        <!-- End of Sidebar -->
+    <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)"></header>
 
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Page Wrapper -->
+        <div >
+            <!-- End of Sidebar -->
 
-            <!-- Main Content -->
-            <div id="content">
+            <!-- Page Wrapper -->
+            <div id="wrapper" class="container py-3">
+                <!-- End of Sidebar -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
 
-                    <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Estadísticas</h1>
-                        <a href="#" class="btn btn-redtele "><i
-                                class="fas fa-download fa-sm text-white-50"></i>Exportar</a>
-                    </div>
+                    <!-- Main Content -->
+                    <div id="content">
 
-                    <!-- Content Row -->
-                    <div class="row">
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid" id="reporte">
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                # de incidencias registradas (Mensual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">400,00</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Page Heading -->
+                            <p></p>
+                            <br>
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1 class="h3 m-0 font-weight-bold text-dark">Estadísticas</h1>
                             </div>
-                        </div>
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-success shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                                #  de incidencias registradas (Anual)</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">28,000</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            <!-- Content Row -->
+                            <div class="row">
 
-                        <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-info shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Incidencias atendidas
-                                            </div>
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
                                             <div class="row no-gutters align-items-center">
-                                                <div class="col-auto">
-                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">70%</div>
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                        # de incidencias registradas (Mensual)</div>
+
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${num_incidenciasPorMes}">  400,00  </div>
                                                 </div>
-                                                <div class="col">
-                                                    <div class="progress progress-sm mr-2">
-                                                        <div class="progress-bar bg-info" role="progressbar"
-                                                             style="width: 50%" aria-valuenow="70" aria-valuemin="0"
-                                                             aria-valuemax="100"></div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-success shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                        #  de incidencias registradas (Anual)</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${num_incidenciasPorAnio}">28,000</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="far fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-info shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Incidencias atendidas
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${num_incidenciasAtendidas}" >
+                                                                <span th:text="${num_incidenciasAtendidas}"></span>90%</div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="progress progress-sm mr-2">
+                                                                <div class="progress-bar bg-info" role="progressbar"
+                                                                     style="width: 90%" aria-valuenow="100" aria-valuemin="0"
+                                                                     aria-valuemax="100"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-auto">
+                                                    <br>
+                                                    <i class="far fa-solid fa-check fa-2x text-gray-300"></i>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Pending Requests Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                        # Usuarios reportados</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"  th:text="${num_usuariosReportados}">18</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <br>
+                                                    <i class="fas fa-solid fa-user-slash fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Pending Requests Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-warning shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                # Usuarios reportados</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                            <!-- Content Row -->
+
+                            <div class="row">
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-8 col-lg-7">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">Resumen de incidencias</h6>
+
                                         </div>
-                                        <div class="col-auto">
-                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area">
+                                                <canvas id="myAreaChart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Content Row -->
-
-                    <div class="row">
-
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Resumen de incidencias</h6>
-
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Ubicaciones PUCP</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-
-                                    </div>
-                                </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
+                                <!-- Pie Chart -->
+                                <div class="col-xl-4 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">Ubicaciones PUCP</h6>
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-pie pt-4 pb-2">
+                                                <canvas id="myPieChart"></canvas>
+                                            </div>
+                                            <div class="mt-4 text-center small">
                                         <span class="mr-2">
                                             <i class="fas fa-circle text-primary"></i> tontodromo
                                         </span>
-                                        <span class="mr-2">
+                                                <span class="mr-2">
                                             <i class="fas fa-circle text-success"></i> cia
                                         </span>
-                                        <span class="mr-2">
+                                                <span class="mr-2">
                                             <i class="fas fa-circle text-info"></i> eeggcc
                                         </span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Content Row -->
+
                         </div>
+                        <!-- /.container-fluid -->
+
                     </div>
+                    <!-- End of Main Content -->
 
-                    <!-- Content Row -->
-
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span>Copyright &copy; Advierte PUCP 2022</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Advierte PUCP 2022</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
-    </div>
-    <!-- End of Page Wrapper -->
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+        <!-- Page level plugins -->
+        <script src="vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
-
-    <script src="plugins/jquery-2.2.4.min.js"></script>
-    <script src="plugins/jquery.appear.min.js"></script>
-    <script src="plugins/jquery.easypiechart.min.js"></script>
-    <script>
-        'use strict';
-
-        var $window = $(window);
-
-        function run()
-        {
-            var fName = arguments[0],
-                aArgs = Array.prototype.slice.call(arguments, 1);
-            try {
-                fName.apply(window, aArgs);
-            } catch(err) {
-
-            }
-        };
-
-        /* chart
-        ================================================== */
-        function _chart ()
-        {
-            $('.b-skills').appear(function() {
-                setTimeout(function() {
-                    $('.chart').easyPieChart({
-                        easing: 'easeOutElastic',
-                        delay: 3000,
-                        barColor: '#369670',
-                        trackColor: '#fff',
-                        scaleColor: false,
-                        lineWidth: 21,
-                        trackWidth: 21,
-                        size: 250,
-                        lineCap: 'round',
-                        onStep: function(from, to, percent) {
-                            this.el.children[0].innerHTML = Math.round(percent);
-                        }
-                    });
-                }, 150);
-            });
-        };
+        <!-- Page level custom scripts -->
+        <script src="js/demo/chart-area-demo.js"></script>
+        <script src="js/demo/chart-pie-demo.js"></script>
 
 
-        $(document).ready(function() {
+        </body>
 
-            run(_chart);
-
-
-        });
-
-
-
-    </script>
-
-
-
-</body>
 </html>
