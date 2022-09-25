@@ -75,86 +75,86 @@
 <body>
 
 <!--    <img class="logueoimg"  style="position: absolute;height: 100%;z-index: -1"  src="/images/loguin.png">-->
-    <section class="vh-100 vw-100">
-        <div class="container-fluid">
-            <div class="row d-flex justify-content-center align-items-center h-100">
+<section class="vh-100 vw-100">
+    <div class="container-fluid">
+        <div class="row d-flex justify-content-center align-items-center h-100">
 
 
-                <div class="col-md-9 col-lg-6 col-xl-5">
-                    <img class="logueoimg" src="/images/loguin.png"
-                         alt="Login image" style="height: 80%;width: 100%;text-align: center">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img class="logueoimg" src="/images/loguin.png"
+                     alt="Login image" style="height: 80%;width: 100%;text-align: center">
+            </div>
+
+
+
+
+
+            <div class="col-sm-6 text-black">
+
+
+                <div  class=" px-5 ms-xl-4 " >
+
+
+
+                    <div class="advnav " >
+                        <img style="height: 184px;width: 423px" class="ardilla " src="/images/quillaloguin.png">
+                        <!--                            <img style="height: 150px;width: 300px" class="ardillamobile " src="/images/quillaloguin.png">-->
+
+                    </div>
                 </div>
 
+                <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
+                    <form class="formulario" style="width: 23rem">
 
+                        <div class="card text-center" style="margin-top: -50px;margin-bottom: 30px">
+                            <div class="card-header" style="font-family: Roboto;font-size: 20px">
+                                Sistema de Reporte de Incidencias
+                            </div>
+                        </div>
 
+                        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;font-family: Roboto">Ingresa con tu cuenta</h3>
+                        <div th:if="${registrado != null}" th:text="${registrado}" class="alert alert-success" role="alert"></div>
 
-                <div class="col-sm-6 text-black">
+                        <div class="form-outline mb-4">
+                            <input type="email" id="form2Example18" class="form-control form-control-lg" placeholder="a2001@pucp.edu.pe" />
+                            <label class="form-label" for="form2Example18">Código PUCP</label>
+                        </div>
 
-
-                    <div  class=" px-5 ms-xl-4 " >
-
-
-
-                        <div class="advnav " >
-                            <img style="height: 184px;width: 423px" class="ardilla " src="/images/quillaloguin.png">
-<!--                            <img style="height: 150px;width: 300px" class="ardillamobile " src="/images/quillaloguin.png">-->
+                        <div class="form-outline mb-4">
+                            <input type="password" id="form2Example28" class="form-control form-control-lg" />
+                            <label class="form-label" for="form2Example28">Contraseña</label><br><br>
+                            <div class="d-flex justify-content-start"><input class="form-check-input" type="checkbox" onclick="myFunction()">&nbsp;Mostrar contraseña&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a  class="text-muted" href="/restablecercontrasena">¿Olvidaste tu contraseña?</a></div>
 
                         </div>
-                    </div>
-
-                    <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
-
-                        <form class="formulario" style="width: 23rem">
-
-                            <div class="card text-center" style="margin-top: -50px;margin-bottom: 30px">
-                                <div class="card-header" style="font-family: Roboto;font-size: 20px">
-                                    Sistema de Reporte de Incidencias
-                                </div>
-                            </div>
-
-                            <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;font-family: Roboto">Ingresa con tu cuenta</h3>
-
-                            <div class="form-outline mb-4">
-                                <input type="email" id="form2Example18" class="form-control form-control-lg" placeholder="a2001@pucp.edu.pe" />
-                                <label class="form-label" for="form2Example18">Código PUCP</label>
-                            </div>
-
-                            <div class="form-outline mb-4">
-                                <input type="password" id="form2Example28" class="form-control form-control-lg" />
-                                <label class="form-label" for="form2Example28">Contraseña</label><br><br>
-                                <div class="d-flex justify-content-start"><input class="form-check-input" type="checkbox" onclick="myFunction()">&nbsp;Mostrar contraseña&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a  class="text-muted" href="/restablecercontrasena">¿Olvidaste tu contraseña?</a></div>
-
-
-                            </div>
-                            <div class="d-flex justify-content-center">
+                        <div class="d-flex justify-content-center">
                             <div class="form-outline mb-4">
                                 <a class="btn-hover color-3" type="button"  href="/usuario"  style="border-radius: 10px;height: 75%;padding: 10px;"><b style="color: white">Iniciar Sesión</b></a>
                             </div>
+                        </div>
+
+                        <div class="hr-sect" style="padding-bottom: 15px">o</div>
+                        <div class="d-flex justify-content-center">
+                            <div class="form-outline mb-4">
+                                <div id="my-signin2"></div>
                             </div>
-
-                            <div class="hr-sect" style="padding-bottom: 15px">o</div>
-                            <div class="d-flex justify-content-center">
-                                <div class="form-outline mb-4">
-                            <div id="my-signin2"></div>
-                            </div>
-                            </div>
+                        </div>
 
 
 
 
 
-                            <p>¿Aún no tienes una cuenta? <a href="/registro"  style="color: blue;font-family: Roboto">¡Registrate!</a></p>
+                        <p>¿Aún no tienes una cuenta? <a href="/registro"  style="color: blue;font-family: Roboto">¡Registrate!</a></p>
 
-                        </form>
-
-                    </div>
+                    </form>
 
                 </div>
 
             </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
 </body>
 
