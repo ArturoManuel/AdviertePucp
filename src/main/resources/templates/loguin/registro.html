@@ -119,9 +119,6 @@
             <div th:if="${success != null}" th:text="${success}" class="alert alert-success" role="alert"></div>
             <div th:if="${already != null}" th:text="${already}" class="alert alert-warning" role="alert"></div>
 
-
-
-
             <div class="form-outline mb-4">
               <input name="id" th:value="${id}" type="text" id="id" class="form-control form-control-lg"   />
               <label class="form-label" for="id">Código PUCP</label>
@@ -138,8 +135,8 @@
               </div>
             </div>
 
-            <p>¿Ya tienes una cuenta? <a href="#!"  style="color: blue;font-family: Roboto">¡Inicia Sesión!</a></p>
-
+            <p>¿Ya tienes una cuenta? <a href="/"  style="color: blue;font-family: Roboto">¡Inicia Sesión!</a></p>
+            <a  class="text-muted" href="/restablecercontrasena">¿Olvidaste tu contraseña?</a>
           </form>
 
         </div>

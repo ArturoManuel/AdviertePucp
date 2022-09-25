@@ -105,7 +105,7 @@
 
         <div class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-5 pt-5 pt-xl-0 mt-xl-n5">
 
-          <form class="formulario" style="width: 23rem">
+          <form th:action="@{'/enviaDatosRestablecer'}" method="post" class="formulario" style="width: 23rem">
 
             <div class="card text-center" style="margin-top: -50px;margin-bottom: 30px">
               <div class="card-header" style="font-family: Roboto;font-size: 20px">
@@ -115,24 +115,28 @@
 
             <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;font-family: Roboto">Restablecer Contraseña</h3>
 
+            <div th:if="${invalidtoken != null}" th:text="${invalidtoken}" class="alert alert-danger" role="alert"></div>
+            <div th:if="${fail != null}" th:text="${fail}" class="alert alert-danger" role="alert"></div>
+            <div th:if="${success != null}" th:text="${success}" class="alert alert-success" role="alert"></div>
+            <div th:if="${already != null}" th:text="${already}" class="alert alert-warning" role="alert"></div>
+
             <div class="form-outline mb-4">
-              <input type="email" id="form2Example18" class="form-control form-control-lg" placeholder="a2001@pucp.edu.pe" />
-              <label class="form-label" for="form2Example18">Código PUCP</label>
+              <input name="id" th:value="${id}" type="text" id="id" class="form-control form-control-lg"   />
+              <label class="form-label" for="id">Código PUCP</label>
             </div>
 
             <div class="form-outline mb-4">
-              <input type="text" id="form2Example28" class="form-control form-control-lg" />
-              <label class="form-label" for="form2Example28" >Correo PUCP</label><br><br>
-
+              <input name="correo" th:value="${correo}" type="text" id="correo" class="form-control form-control-lg"   />
+              <label class="form-label" for="correo" >Correo PUCP (@pucp.edu.pe/@pucp.pe)</label><br><br>
 
             </div>
             <div class="d-flex justify-content-center">
               <div class="form-outline mb-4">
-                <button class="btn-hover color-3" type="button"  style="border-radius: 10px;height: 75%;padding: 10px;"><b style="color: white">Enviar correo de confirmación</b></button>
+                <button class="btn-hover color-3" type="submit"  style="border-radius: 10px;height: 75%;padding: 10px;"><b style="color: white">Envia un correo de confirmación</b></button>
               </div>
             </div>
 
-            <p>Regresar al <a href="#!"  style="color: blue;font-family: Roboto"> inicio de sesión</a></p>
+            <p>Regresar al <a href="/"  style="color: blue;font-family: Roboto"> inicio de sesión</a></p>
 
           </form>
 

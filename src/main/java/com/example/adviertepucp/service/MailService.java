@@ -39,28 +39,55 @@ public class MailService {
     UsuarioRepository usuarioRepository;
 
 
+
+    /*Consideración:*/
+    /*tipoMensaje==1 : Nueva contraseña registro ;; tipoMensaje==2 : Restablecer Contraseña */
     @Async
-    public void sendVerificationEmail(Usuario user, String codigoVerificacion, String contextPath)
+    public void sendVerificationEmail(Usuario user, String codigoVerificacion, String contextPath,int tipoMensaje)
             throws MessagingException, UnsupportedEncodingException {
+
+        String subject =null;
+        String content = null;
         String verifyURL = contextPath +"nuevacontrasena"+ "?token=" + codigoVerificacion;
-        System.out.println(servletContext.getContextPath());
+
+        if (tipoMensaje==1){
+            subject = "Bienvenido a AdviertePUCP, completa tu registro";
+            content = "Estimado [[name]],<br>"
+                    + "Para completar tu registro en AdviertePUCP, has click en el enlace que se muestra a continuación para poder crear tu contraseña<br>"
+                    + "<h3><a style='color:#770077' href="+ "'"+ verifyURL+"'" + " >Crear una contraseña</a></h3><br>"
+                    + "Alternativamente, puedes registrarte usando el QR debajo:<br>"
+                    + "<img src='"+"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+verifyURL+"'>"
+                    + "<i><br>Si los links no funcionan, puedes copiar el enlace en tu navegador:<br>"+verifyURL+"</i>"
+                    + "<br>Muchas gracias,<br>"
+                    + "El equipo de AdviertePUCP.";
+
+        }
+        else if (tipoMensaje==2){
+
+            subject = "AdviertePUCP-Cambia tu contraseña";
+            content = "Estimado [[name]],<br>"
+                    + "Hemos recibido la solicitud para cambiar tu contraseña en AdviertePUCP, has click en el enlace que se muestra a continuación para poder crear tu contraseña<br>"
+                    + "<h3><a style='color:#770077' href="+ "'"+ verifyURL+"'" + " >Cambiar mi contraseña</a></h3><br>"
+                    + "Alternativamente, puedes registrarte usando el QR debajo:<br>"
+                    + "<img src='"+"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+verifyURL+"'>"
+                    + "<i><br>Si los links no funcionan, puedes copiar el enlace en tu navegador:<br>"+verifyURL+"</i>"
+                    + "<br>Muchas gracias,<br>"
+                    + "El equipo de AdviertePUCP.<br>"
+                    + "<i>Si no solicistaste el cambio de contraseña, ignora este mensaje</i>" ;
+
+        }
+
+
         String toAddress = user.getCorreo();
         String fromAddress = "noreply.adviertepucp@gmail.com";
-        String senderName = "AdviertePucpApplication";
-        String subject = "Bienvenido a AdviertePUCP, completa tu registro";
-        String content = "Estimado [[name]],<br>"
-                + "Para completar tu registro en AdviertePUCP, has click en el enlace que se muestra a continuación para poder crear tu contraseña<br>"
-                + "<h3><a style='color:#770077' href="+ "'"+ verifyURL+"'" + " >Crear una contraseña</a></h3><br>"
-                + "Alternativamente, puedes registrarte usando el QR debajo:<br>"
-                + "<img src='"+"https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+verifyURL+"'>"
-                + "<i><br>Si los links no funcionan, puedes copiar el enlace en tu navegador:<br>"+verifyURL+"</i>"
-                + "<br>Muchas gracias,<br>"
-                + "El equipo de AdviertePUCP.";
+        String senderName = "Equipo de AdviertePUCP";
+
 
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
         helper.setFrom(fromAddress, senderName);
         helper.setTo(toAddress);
+        assert subject != null;
         helper.setSubject(subject);
         content = content.replace("[[name]]", user.getNombre());
         content = content.replace("[[url]]", verifyURL);

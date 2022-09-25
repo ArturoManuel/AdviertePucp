@@ -30,6 +30,8 @@ public class LoguinController {
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,64}$";
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
 
+
+
     @Autowired
     MailService mailService;
 
@@ -77,7 +79,7 @@ public class LoguinController {
 
                     String codigoVerificacion = RandomString.make(64);
                     usuarioRepository.enviarcodigo(codigoVerificacion, id);
-                    mailService.sendVerificationEmail(usuarioEncontrado.get(0), codigoVerificacion,contextpath);
+                    mailService.sendVerificationEmail(usuarioEncontrado.get(0), codigoVerificacion,contextpath,1);
 
                     attr.addFlashAttribute("success", "Datos confirmados correctamente, se ha enviado un correo de confirmación.");
                 }
@@ -85,6 +87,7 @@ public class LoguinController {
         }
         return "redirect:/registro";
     }
+
 
     @GetMapping({"nuevacontrasena"})
     public String nuevacontrasena(@RequestParam("token") String token,Model model, RedirectAttributes attr)
@@ -136,12 +139,55 @@ public class LoguinController {
             attr.addFlashAttribute("fail", "Comprueba que los campos cumplan las condiciones minimas");
             return "redirect:"+ referer;
         }
-        usuarioRepository.establecerContrasena(pwd, usuario.getId());
-        usuarioRepository.deleteTokenbyId(usuario.getId());
-        attr.addFlashAttribute("registrado", "Cuanta registrada correctamente, ahora puedes ingresar al sistema");
 
+        if (usuario.getSuspendido()==4){
+            usuarioRepository.establecerContrasena(pwd, usuario.getId());
+            usuarioRepository.deleteTokenbyId(usuario.getId());
+            attr.addFlashAttribute("registrado", "Cuanta registrada correctamente, ahora puedes ingresar al sistema");
+        }
+        else if (usuario.getSuspendido()<4){
+            usuarioRepository.reestablecerContrasena(pwd, usuario.getId());
+            usuarioRepository.deleteTokenbyId(usuario.getId());
+            attr.addFlashAttribute("registrado", "Contraseña cambiada correctamente");
+        }
         return "redirect:/";
     }
+
+    @PostMapping("enviaDatosRestablecer")
+    public String enviaDatosRestablecer(@RequestParam("id")  String id,
+                                @RequestParam("correo")  String correo, RedirectAttributes attr, Model model, HttpServletRequest httpServletRequest) throws MessagingException, UnsupportedEncodingException {
+
+        attr.addFlashAttribute("id", id);
+        attr.addFlashAttribute("correo", correo);
+
+        List<Usuario> usuarioEncontrado=usuarioRepository.validarUsuario(id,correo);
+        if (usuarioEncontrado.size()==0){
+            attr.addFlashAttribute("fail", "Los datos ingresados no coinciden con el registro de usuarios.");
+        } else{
+            if(usuarioEncontrado.get(0).getSuspendido()!=4){
+                if (usuarioEncontrado.get(0).getCodigoverificacion()!=null){
+                    int minutes= mailService.contadorDiezMin();
+                    attr.addFlashAttribute("already","Ya se envió un correo de validación. Por favor, verifica la bandeja de entrada o spam en tu correo o inténtalo de nuevo dentro de "+minutes+" minuto(s).");
+                }
+                else {
+                    int endIndex=httpServletRequest.getRequestURL().length()-21;
+                    String contextpath=httpServletRequest.getRequestURL().substring(0,endIndex);
+
+                    String codigoVerificacion = RandomString.make(64);
+                    usuarioRepository.enviarcodigo(codigoVerificacion, id);
+                    mailService.sendVerificationEmail(usuarioEncontrado.get(0), codigoVerificacion,contextpath,2);
+
+                    attr.addFlashAttribute("success", "Datos confirmados correctamente, se ha enviado un correo de confirmación.");
+                }
+            }
+            else{
+                attr.addFlashAttribute("already", "Usuario no registrado.");
+            }
+        }
+        return "redirect:/restablecercontrasena";
+    }
+
+
 
 
 

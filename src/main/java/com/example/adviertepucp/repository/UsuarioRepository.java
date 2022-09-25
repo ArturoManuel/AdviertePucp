@@ -42,7 +42,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
     @Modifying
     @Transactional
-    @Query(value="update usuario set pwd=SHA2(?1,256) where codigo=?2",nativeQuery = true)
+    @Query(value="update usuario set pwd=SHA2(?1,256), suspendido=0 where codigo=?2",nativeQuery = true)
     void establecerContrasena(String pwd, String id);
+
+    @Modifying
+    @Transactional
+    @Query(value="update usuario set pwd=SHA2(?1,256) where codigo=?2",nativeQuery = true)
+    void reestablecerContrasena(String pwd, String id);
 
 }
