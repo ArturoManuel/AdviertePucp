@@ -9,11 +9,11 @@
     <link rel="stylesheet" href="/css/main.css">
 </head>
 
-<body>
+<body style="background-color: #eee;">
 <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
 
 </header>
-<div class="container py-3" >
+<div class="container py-5" >
     <!-- Lista incidencias -->
     <div class="title-28" >
         Todas las Incidencias
@@ -71,7 +71,7 @@
         </a>
     </div>
     <form method="post">
-        <input name="searchField" class="form-control mb-3" type="text" placeholder="Search"/>
+        <input name="searchField" class="form-control mb-3" type="text" placeholder="Buscar"/>
     </form>
 
     <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
