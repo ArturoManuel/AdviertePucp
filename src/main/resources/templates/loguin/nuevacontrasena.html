@@ -129,7 +129,7 @@
             </div>
 
             <div class="form-outline mb-4">
-              <label for="validationCustom03" class="form-label">Ingresa la contraseña nuevamente</label><br><br>
+              <label for="validationCustom03" class="form-label">Ingresa la contraseña nuevamente</label>
               <input type="password" id="validationCustom03"  class="form-control form-control-lg" th:value="${confirmpwd}" name="confirmpwd"
                      th:classappend="${fail==null?'':'is-invalid'}"/>
               <div  th:if="${fail != null}" th:text="${fail}" class="invalid-feedback"></div>

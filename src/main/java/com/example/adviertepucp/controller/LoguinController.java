@@ -38,6 +38,78 @@ public class LoguinController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    /*El código es número?*/
+    int parsearInt(String s) {
+        try {
+            return Integer.parseInt(s);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
+
+    /*Pagina principal:Loguin*/
+
+    @GetMapping({""})
+    public String index() {
+        return "/loguin/loguin";
+    }
+
+    @PostMapping({"/ingreso"})
+    public String ingreso(@RequestParam("id")  String id,
+                          @RequestParam("pwd")  String pswd,
+                          RedirectAttributes attr) {
+        boolean codigoinValido=id.length()!=8 || parsearInt(id)==0;
+        boolean pwdinValida=pswd.length()==0 || pswd.length()>64;
+
+
+        if (pwdinValida|| codigoinValido ){
+            if (pwdinValida){
+                attr.addFlashAttribute("validacionpwd","Ingrese una contraseña válida.");
+            }
+            if (codigoinValido){
+                attr.addFlashAttribute("validacionid","Ingrese un código válido.");
+                attr.addFlashAttribute("id",id);
+            }
+        }
+
+        Usuario usuarioexiste= usuarioRepository.usuarioExiste(id);
+        Usuario contrasenaescorrecta= usuarioRepository.contrasenaescorrecta(pswd);
+
+        if (usuarioexiste==null && !codigoinValido){
+            attr.addFlashAttribute("noexiste", "El código ingresado no corresponde a una cuenta.");
+            attr.addFlashAttribute("id",id);
+        }
+
+        else if (usuarioexiste!=null){
+            if (contrasenaescorrecta==null && usuarioexiste.getSuspendido()<4){
+                attr.addFlashAttribute("validacionpwd","La contraseña que ingresaste es incorrecta.");
+                attr.addFlashAttribute("id",id);
+            }
+            else if (usuarioexiste.getSuspendido()==4){
+                attr.addFlashAttribute("noregistrado","El código ingresado corresponde a una cuenta aún no registrada. Registrate siguiendo el link que está en la parte inferior.");
+                attr.addFlashAttribute("id",id);
+                return "redirect:/";
+            }
+            else if(usuarioexiste.getSuspendido()==3){
+                return "loguin/suspendido";
+            }
+            else if (usuarioexiste.getCategoria().getId()==1){
+                return "admin/listaUsuarios";
+            }
+            else if (usuarioexiste.getCategoria().getId()==2){
+                return "seguridad/listaMapa";
+            }
+            else{
+                return "usuario/lista";
+            }
+        }
+        return "redirect:/";
+    }
+
+
+
+    /*Autenticación de doble factor*/
 
 
 
@@ -46,6 +118,9 @@ public class LoguinController {
     {
         return "loguin/autenticacion";
     }
+
+
+    /*Registro de Usuario*/
 
     @GetMapping({"registro"})
     public String registro()
@@ -103,15 +178,12 @@ public class LoguinController {
             return "redirect:/registro";
     }
 
+    /*Restablecer Contraseña-Post mapping de registro*/
+
     @GetMapping({"/restablecercontrasena"})
     public String restablececontrasena()
     {
         return "/loguin/restablececontrasena";
-    }
-
-    @GetMapping({""})
-    public String index() {
-        return "/loguin/loguin";
     }
 
     @PostMapping({"/nuevopwd"})
@@ -128,27 +200,27 @@ public class LoguinController {
         boolean pwdvalido=matcher.matches();
 
         if (usuario == null){
-            attr.addFlashAttribute("invalidtoken", "Error:token inválido o vencido (El token de verificación vence cada media hora)");
+            attr.addFlashAttribute("invalidtoken", "Error:token inválido o vencido (El token de verificación vence cada media hora).");
             return "redirect:/registro";
         }
         if (!Objects.equals(pwd, confirmpwd)){
-            attr.addFlashAttribute("fail", "Los campos de contraseña no coinciden");
+            attr.addFlashAttribute("fail", "Los campos de contraseña no coinciden.");
             return "redirect:"+ referer;
         }
         if (!pwdvalido){
-            attr.addFlashAttribute("fail", "Comprueba que los campos cumplan las condiciones minimas");
+            attr.addFlashAttribute("fail", "Comprueba que los campos cumplan las condiciones mínimas.");
             return "redirect:"+ referer;
         }
 
         if (usuario.getSuspendido()==4){
             usuarioRepository.establecerContrasena(pwd, usuario.getId());
             usuarioRepository.deleteTokenbyId(usuario.getId());
-            attr.addFlashAttribute("registrado", "Cuanta registrada correctamente, ahora puedes ingresar al sistema");
+            attr.addFlashAttribute("registrado", "Cuanta registrada correctamente, ahora puedes ingresar al sistema.");
         }
         else if (usuario.getSuspendido()<4){
             usuarioRepository.reestablecerContrasena(pwd, usuario.getId());
             usuarioRepository.deleteTokenbyId(usuario.getId());
-            attr.addFlashAttribute("registrado", "Contraseña cambiada correctamente");
+            attr.addFlashAttribute("registrado", "Contraseña cambiada correctamente.");
         }
         return "redirect:/";
     }
@@ -186,9 +258,5 @@ public class LoguinController {
         }
         return "redirect:/restablecercontrasena";
     }
-
-
-
-
 
 }
