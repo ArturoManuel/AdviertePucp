@@ -195,14 +195,97 @@
                     <td>
                         <div th:switch="${usuarios.getEstado()}">
                             <p  th:case="0" class="status" style="background-color: limegreen" > Activo</p>
-                            <p  th:case="1" class="status" style="background-color: #c50606" > Suspendido</p>
-                            <p th:case="3" class="status" style="background-color: rgba(140,130,130,0.83)"  >No registrado</p>
+                            <p  th:case="3" class="status" style="background-color: #c50606" > Suspendido</p>
+                            <p th:case="4" class="status" style="background-color: rgba(140,130,130,0.83)"  >No registrado</p>
                         </div>
                     </td>
                     <td th:text="${usuarios.getRol()}">Administrador</td>
                     <td>
+                        <div th:switch="${usuarios.getId_ca()}">
+                            <div th:case="2">
+                                <button type="button"; class="btn btn-redtele accion_button"
+                                        data-bs-toggle="modal" data-bs-target="#editar1"
+                                        style="background-color: #3a7dec">Editar
+                                </button>  <!--Editar1 es el ID de este Usuario-->
 
-                            <div th:unless="${usuarios.getId_ca()} == '2' or '3' or '4' or '5' or '6'">
+                                <!--Modal Editar 1-->
+                                <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px">
+                                                <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                                <img src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
+
+                                                     alt="avatar" class="rounded-circle img-responsive"
+                                                     style="width: 150px; height: 150px">
+
+                                            </div>
+                                            <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_name" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_dni" class="form-control validate">
+                                                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-phone prefix grey-text"></i>
+                                                        <input type="number" id="_telefono" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                                        <input type="text" id="_correo" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-photo prefix grey-text"></i>
+                                                        <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-redtele">Guardar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div th:switch="${usuarios.getEstado()}">
+                                    <form method="post" th:action="@{'/administrador/activarReac'}" th:object="${usuarios}">
+                                    <div th:case="0">
+                                        <imput type="submit"; class="btn btn-redtele accion_button"
+                                                th:value="3"
+                                                th:id="*{estado == '3'} "
+                                                th:name="suspendido"
+                                                style="background-color: #c50606">Suspender</imput>
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                    <div th:case="3">
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <input type="button"; class="btn btn-redtele accion_button"
+                                               th:value="0"
+                                               th:id="*{estado == '0'} "
+                                               th:name="suspendido"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</input>
+                                    </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div th:case="3">
                                 <button type="button"; class="btn btn-redtele accion_button"
                                         data-bs-toggle="modal" data-bs-target="#editar1"
                                         style="background-color: #3a7dec">Editar
@@ -268,7 +351,7 @@
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
                                     </div>
-                                    <div th:case="1">
+                                    <div th:case="3">
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
                                         <button type="button"; class="btn btn-redtele accion_button"
@@ -277,7 +360,232 @@
                                     </div>
                                 </div>
                             </div>
-                            <div th:unless="${usuarios.getId_ca()} == '1'">
+                            <div th:case="4">
+                                <button type="button"; class="btn btn-redtele accion_button"
+                                        data-bs-toggle="modal" data-bs-target="#editar1"
+                                        style="background-color: #3a7dec">Editar
+                                </button>  <!--Editar1 es el ID de este Usuario-->
+
+                                <!--Modal Editar 1-->
+                                <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px">
+                                                <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                                <img src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
+
+                                                     alt="avatar" class="rounded-circle img-responsive"
+                                                     style="width: 150px; height: 150px">
+
+                                            </div>
+                                            <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_name" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_dni" class="form-control validate">
+                                                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-phone prefix grey-text"></i>
+                                                        <input type="number" id="_telefono" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                                        <input type="text" id="_correo" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-photo prefix grey-text"></i>
+                                                        <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-redtele">Guardar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div th:switch="${usuarios.getEstado()}">
+                                    <div th:case="0">
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                    <div th:case="3">
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="5">
+                                <button type="button"; class="btn btn-redtele accion_button"
+                                        data-bs-toggle="modal" data-bs-target="#editar1"
+                                        style="background-color: #3a7dec">Editar
+                                </button>  <!--Editar1 es el ID de este Usuario-->
+
+                                <!--Modal Editar 1-->
+                                <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px">
+                                                <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                                <img src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
+
+                                                     alt="avatar" class="rounded-circle img-responsive"
+                                                     style="width: 150px; height: 150px">
+
+                                            </div>
+                                            <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_name" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_dni" class="form-control validate">
+                                                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-phone prefix grey-text"></i>
+                                                        <input type="number" id="_telefono" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                                        <input type="text" id="_correo" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-photo prefix grey-text"></i>
+                                                        <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-redtele">Guardar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div th:switch="${usuarios.getEstado()}">
+                                    <div th:case="0">
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                    <div th:case="3">
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="6">
+                                <button type="button"; class="btn btn-redtele accion_button"
+                                        data-bs-toggle="modal" data-bs-target="#editar1"
+                                        style="background-color: #3a7dec">Editar
+                                </button>  <!--Editar1 es el ID de este Usuario-->
+
+                                <!--Modal Editar 1-->
+                                <div class="modal fade" id="editar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="padding: 0px">
+                                                <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
+                                                <img src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
+
+                                                     alt="avatar" class="rounded-circle img-responsive"
+                                                     style="width: 150px; height: 150px">
+
+                                            </div>
+                                            <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
+                                                <div class="modal-body mx-3">
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_name" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre y Apellido</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-user prefix grey-text"></i>
+                                                        <input type="text" id="_dni" class="form-control validate">
+                                                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-phone prefix grey-text"></i>
+                                                        <input type="number" id="_telefono" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-envelope prefix grey-text"></i>
+                                                        <input type="text" id="_correo" class="form-control validate">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+                                                    </div>
+                                                    <div class="md-form mb-1">
+                                                        <i class="fas fa-photo prefix grey-text"></i>
+                                                        <input type="file" id="profile_pic1" name="profile_pic" class="form-control validate"
+                                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Foto</label>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                <button type="button" class="btn btn-redtele">Guardar</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div th:switch="${usuarios.getEstado()}">
+                                    <div th:case="0">
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                    <div th:case="3">
+                                        <button type="button"; class="btn btn-redtele disabled"
+                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="1">
                                 <button type="button"; class="btn btn-redtele accion_button"
                                         data-bs-toggle="modal" data-bs-target="#editar1"
                                         style="background-color: #3a7dec">Editar
@@ -337,6 +645,7 @@
                                 </div>-->
                             </div>
 
+                        </div>
 
                     </td>
                 </tr>

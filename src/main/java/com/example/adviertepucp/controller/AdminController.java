@@ -86,6 +86,19 @@ public class AdminController {
 
     }
 
+    @PostMapping("/activarReac")
+    public String activarReac(@RequestParam("suspendido") Integer suspendido){
+        Usuario usuario = new Usuario();
+        try{
+            usuario.setSuspendido(suspendido);
+            admiRepository.save(usuario);
+        } catch (Exception e){
+            e.printStackTrace();
+            return "redirect:/admin/listaUsuarios";
+        }
+        return null;
+    }
+
     @PostMapping("/guardaCrear")
     public String Crear(@RequestParam("nombre") String nombre ,
                            @RequestParam("archivo") MultipartFile logo ,
