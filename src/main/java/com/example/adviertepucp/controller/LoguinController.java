@@ -95,13 +95,16 @@ public class LoguinController {
                 return "loguin/suspendido";
             }
             else if (usuarioexiste.getCategoria().getId()==1){
-                return "admin/listaUsuarios";
+                attr.addFlashAttribute("textoadmin","Administrador");
+                return "redirect:/admin/";
             }
             else if (usuarioexiste.getCategoria().getId()==2){
-                return "seguridad/listaMapa";
+                attr.addFlashAttribute("textoseguridad","Seguridad");
+                return "redirect:/seguridad/";
             }
             else{
-                return "usuario/lista";
+                attr.addFlashAttribute("textouser","Usuario");
+                return "redirect:/usuario/";
             }
         }
         return "redirect:/";
