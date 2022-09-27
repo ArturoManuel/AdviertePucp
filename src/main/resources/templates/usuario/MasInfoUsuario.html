@@ -32,25 +32,25 @@
 
 <div class="container py-5" >
     <div >
-        <span style="font-size: medium">(Incidencia #001454)</span>
+        <span th:text="'Incidencia #'+ ${incidencia.idI}" style="font-size: medium">(Incidencia #001454)</span>
         <h2>Mucho ruido los cachimbos</h2>
         <div class="card-tele-title" style="font-size: medium">
-            <span class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                                    Leve
-                                    </span>
+            <span th:text="${incidencia.urgencia}"
+                   class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+            </span>
             <tr></tr>
-            <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                                    Objetos perdidos
-                                    </span>
-
+            <span th:text="${incidencia.tincidencia}"
+                  th:styleappend="';background-color:'+${incidencia.color}" class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                Objetos perdidos</span>
 
         </div>
         <div class="card-tele-subtitle">
-            <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+            <i class="bi bi-geo-alt" th:text="${incidencia.zonapucp}"></i>
         </div>
         <div class="card-tele-subtitle">
             <span>Estado:</span>
-            <span style="font-weight: bolder">En proceso</span>
+            <span th:text="${incidencia.estado}"
+                  style="font-weight: bolder">En proceso</span>
         </div>
     </div>
     <div class="row">
@@ -84,16 +84,8 @@
 
             <div class="card-tele-title" style="font-size: large"> Descripción
             </div>
-            <div>
-                Hoy fui a cia a estudiar para una práctica que tengo mañana, sin embargo algunos alumnos estaban hablando en voz alta.
-                Hoy fui a cia a estudiar para una práctica que tengo mañana, sin embargo algunos alumnos estaban hablando en voz alta.
-                Hoy fui a cia a estudiar para una práctica que tengo mañana, sin embargo algunos alumnos estaban hablando en voz alta.
-                Hoy fui a cia a estudiar para una práctica que tengo mañana, sin embargo algunos alumnos estaban hablando en voz alta.
-                Hoy fui a cia a estudiar para una práctica que tengo mañana, sin embargo algunos alumnos estaban hablando en voz alta.
-
-
+            <div th:text="${incidencia.descripcion}">
             </div>
-
         </div>
         </div>
         </div>

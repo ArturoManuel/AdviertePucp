@@ -2,6 +2,8 @@
 
 package com.example.adviertepucp.controller;
 
+import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.dto.TipoIncidenciadto;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Incidencia;
 import com.example.adviertepucp.entity.Incidenciatienefoto;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -50,7 +54,19 @@ public class UsuarioController {
     }
 
     @GetMapping("/info")
-    String masInformacion(){
+    String masInformacion(@RequestParam("id") int id,
+                          Model model){
+        IncidenciaListadto incidencia = null;
+
+        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
+       for( IncidenciaListadto lista : listaIncidencias){
+           if(id == lista.getIdI()){
+               incidencia=lista;
+               break;
+           }
+        }
+        model.addAttribute("incidencia",incidencia);
+
         return "usuario/MasInfoUsuario";
     }
 
@@ -134,7 +150,7 @@ public class UsuarioController {
         }
 
 
-        return "usuario/lista";
+        return "redirect:/usuario";
     }
 
 
