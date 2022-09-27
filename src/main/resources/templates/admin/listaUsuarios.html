@@ -102,7 +102,7 @@
                     <div class="modal fade" id="registrar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 
-                            <form method="post" th:action="@{'administrador/crearUsuario'}" class="modal-content">
+                            <form method="post" th:action="@{'administrador/crearUsuario'}" th:object="${usuario}" class="modal-content">
                                 <div class="modal-header" style="padding: 0px">
                                     <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Registrar</h5>
                                 </div>
@@ -112,45 +112,21 @@
                                     <div class="modal-body mx-3">
                                         <div class="form-group mb-2">
                                             <i class="fas fa-code prefix grey-text"></i>
-                                            <input type="text" id="codigo" name="codigo" >
+                                            <select class="form-select">
+                                                <option th:each="usuarios :${usuariosDB}"
+                                                th:value="${usuarios.getCodigo()}"
+                                                th:text="${usuarios.getNombre() + ' ' + usuarios.getApellido() + ' || ' + usuarios.getCodigo()}">
+                                                </option>
+                                            </select>
                                             <label  >Código</label>
-                                        </div>
-
-                                        <div class="md-form mb-2">
-                                            <i class="fas fa-user prefix grey-text"></i>
-                                            <input type="text" id="nombre" name="nombre" >
-                                            <label  >Nombre Compleot</label>
-                                        </div>
-                                        <div class="md-form mb-2">
-                                            <i class="fas fa-user prefix grey-text"></i>
-                                            <input type="text" id="apellido" name="apellido" >
-                                            <label>Apellidos</label>
-                                        </div>
-                                        <div class="md-form mb-4">
-                                            <i class="fas fa-user prefix grey-text"></i>
-                                            <input type="text" id="dni" name="dni" >
-                                            <label >DNI</label>
-                                        </div>
-                                        <div class="md-form mb-4">
-                                            <i class="fas fa-phone prefix grey-text"></i>
-                                            <input type="number" id="celular" name="celular" >
-                                            <label >Teléfono</label>
-                                        </div>
-                                        <div class="md-form mb-4">
-                                            <i class="fas fa-envelope prefix grey-text"></i>
-                                            <input type="text" id="correo" name="correo">
-                                            <label >Correo</label>
                                         </div>
                                         <div class="md-form mb-4">
                                             <i class="fas fa-photo prefix grey-text"></i>
                                             <input type="file" id="foto" name="foto" class="form-control validate"
                                                    accept=".jpg, .jpeg, .png" style="margin-left: 10px">
                                             <label>Foto</label>
-
                                         </div>
-
                                     </div>
-
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>

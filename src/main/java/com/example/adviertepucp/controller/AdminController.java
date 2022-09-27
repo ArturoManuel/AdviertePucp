@@ -1,5 +1,6 @@
 package com.example.adviertepucp.controller;
 
+import com.example.adviertepucp.dto.UsuariosDBDto;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Tipoincidencia;
 import com.example.adviertepucp.entity.Usuario;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -42,9 +44,9 @@ public class AdminController {
     public String listaUsuarios(Model model){
         model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
         model.addAttribute("listaUsuarios1", admiRepository.findAll());
+        model.addAttribute("usuariosDB", admiRepository.UsuariosDB());
         return "admin/listaUsuarios";
     }
-
     @GetMapping("/incidencias")
     String listaIncidencias( Model model){
 
@@ -84,9 +86,14 @@ public class AdminController {
     public String crearUsuario(Usuario usuario,
                                RedirectAttributes attr){
         admiRepository.save(usuario);
-        return "redirect:/admin/listaUsuarios";
-
+        return "redirect:/administrador";
     }
+
+
+
+
+
+
 
     @GetMapping("/suspenderUser")
     public String suspenderUser(@RequestParam("id") int id) {
@@ -109,6 +116,18 @@ public class AdminController {
             return "redirect:/administrador/";
 
     }
+
+
+
+
+    @GetMapping(value = {"/registrarUser"})
+    public String listaUserBD(Model model) {
+        model.addAttribute("listaUsersBD", admiRepository.findAll());
+        return "product/list";
+    }
+
+
+
 
     @PostMapping("/guardaCrear")
     public String Crear(@RequestParam("nombre") String nombre ,
