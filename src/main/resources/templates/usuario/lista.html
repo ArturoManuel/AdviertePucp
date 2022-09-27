@@ -14,6 +14,7 @@
 
 </header>
 <div class="container py-5" >
+    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
     <!-- Lista incidencias -->
     <div class="title-28" >
         Todas las Incidencias

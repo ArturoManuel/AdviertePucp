@@ -57,7 +57,6 @@ public class UsuarioController {
     String masInformacion(@RequestParam("id") int id,
                           Model model){
         IncidenciaListadto incidencia = null;
-
         List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
        for( IncidenciaListadto lista : listaIncidencias){
            if(id == lista.getIdI()){
@@ -150,7 +149,7 @@ public class UsuarioController {
         }
 
 
-        return "redirect:/usuario";
+        return "redirect:/usuario/lista";
     }
 
 

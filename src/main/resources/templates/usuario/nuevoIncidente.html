@@ -56,6 +56,7 @@
                 </nav>
             </div>
         </div>
+        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
         <form method="post" th:action="@{'/usuario/guardarincidente'}" enctype="multipart/form-data">
 
         <div class="row">
