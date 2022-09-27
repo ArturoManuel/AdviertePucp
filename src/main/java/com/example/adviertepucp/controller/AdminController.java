@@ -119,7 +119,8 @@ public class AdminController {
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
-        String nombrelogo=logo.getOriginalFilename();
+        String nombrelogo=logo.getContentType();
+        System.out.println(nombrelogo);
         if (nombrelogo.contains("..")) {
             model.addAttribute("msg", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
