@@ -13,4 +13,8 @@ public interface TipoincidenciaRepository
 
     @Query(value = "select count(tipoincidencia) from incidencia where  tipoincidencia=?1", nativeQuery=true)
     int incidenciaTipo(int id );
+
+
+    @Query( value = "select logo from tipoincidencia where idtipoincidencia=?1;",nativeQuery = true)
+    Integer logo(int id);
 }

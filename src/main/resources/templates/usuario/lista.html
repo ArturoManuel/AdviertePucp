@@ -75,32 +75,33 @@
     </form>
 
     <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
-        <div class="col">
+        <div th:each="incidencia,indice : ${listaIncidentes}">
+        <div  class="col" >
             <div class="card h-100 position-relative">
                 <div class="card-tele">
                     <div class="card-tele-img">
-                        <a href="/sedes/1" >
-                            <img src="https://s3.amazonaws.com/files.pucp.edu.pe/puntoedu/wp-content/uploads/2021/02/23071607/espacios-de-estudio-034-5000x3333.jpg" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </a>
+
+                        <img  th:src="@{|images/${incidencia.idI}|}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+
 
                     </div>
                     <div class="card-tele-body pb-2">
-                        <div class="card-tele-title" style="font-size: medium">Mucho ruido los cachimbos
-                            <span class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+                        <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]
+                            <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
                             Leve
                             </span>
                             <tr></tr>
-                            <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                            <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
                             Objetos perdidos
                             </span>
-                        </div>
+                        </p>
 
                         <div class="card-tele-subtitle">
-                            <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                            <i th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
                         </div>
                         <div class="card-tele-subtitle">
                             <span>Estado:</span>
-                            <span style="font-weight: bolder">En proceso</span>
+                            <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
                         </div>
                     </div>
                     <div class="card-tele-footer justify-content">
@@ -115,6 +116,9 @@
 
             </div>
         </div>
+        </div>
+
+        <!--
         <div class="col">
             <div class="card h-100 position-relative">
                 <div class="card-tele">
@@ -275,7 +279,7 @@
 
             </div>
         </div>
-
+        -->
     </div>
 </div>
 </div>

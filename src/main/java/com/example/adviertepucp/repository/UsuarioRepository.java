@@ -5,6 +5,8 @@
 
 package com.example.adviertepucp.repository;
 
+import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -56,5 +58,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
     @Query(value = "select * from usuario where pwd=SHA2(?1,256)",nativeQuery = true)
     Usuario contrasenaescorrecta(String id);
+
+
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, longitud as longitud ,  z.nombre as zonapucp from incidencia i inner join zonapucp z on (z.idzonapucp=i.zonapucp) inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)", nativeQuery = true)
+    List<IncidenciaListadto> listaIncidencia();
+
+    //Para extraer las fotos de cada incidencia
+    @Query(value="select fotoalmacenada from  incidencia i inner join incidenciatienefoto it on (i.idincidencia=it.idincidencia) inner join fotoalmacenada f on (it.idfotoalmacenada=f.idfotoalmacenada) where i.idincidencia=?1;",nativeQuery = true)
+    List<Fotoalmacenada> listaFotoIncidencia(int id);
 
 }

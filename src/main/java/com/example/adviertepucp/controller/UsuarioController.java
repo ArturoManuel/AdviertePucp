@@ -8,28 +8,27 @@ import com.example.adviertepucp.entity.Incidenciatienefoto;
 import com.example.adviertepucp.entity.Tipoincidencia;
 import com.example.adviertepucp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 @RequestMapping({"/usuario"})
 public class UsuarioController {
     @Autowired
     IncidenciaRepository incidenciaRepository;
-
+    @Autowired
+    UsuarioRepository usuarioRepository;
     @Autowired
     FotoalmacenadaRepository fotoalmacenadaRepository;
 
@@ -43,7 +42,10 @@ public class UsuarioController {
     IncidenciatienefotoRepository incidenciatienefotoRepository;
 
     @GetMapping("")
-    String listaUsuario(){
+    String listaUsuario(Model model){
+
+
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "usuario/lista";
     }
 
@@ -62,7 +64,8 @@ public class UsuarioController {
         return "loguin/suspendido";
     }
     @GetMapping({"/lista"})
-    public String listaIncidencias() {
+    public String listaIncidencias(Model model) {
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "usuario/lista";
     }
     @GetMapping({"/perfil"})
@@ -133,4 +136,30 @@ public class UsuarioController {
 
         return "usuario/lista";
     }
+
+
+    // fase de prueba
+    /*@GetMapping("/images/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
+        System.out.println("Esoy entrando");
+        Optional<Incidencia> opt = incidenciaRepository.findById(id);
+        if (opt.isPresent()) {
+            System.out.println("Si estoy entrando");
+            Incidencia p = opt.get();
+            byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(1).getFotoalmacenada();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(
+                    MediaType.parseMediaType("image/jpeg"));
+
+            return new ResponseEntity<>(
+                    imagenComoBytes,
+                    httpHeaders,
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }*/
+
+
 }

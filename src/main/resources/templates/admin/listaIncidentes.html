@@ -165,7 +165,7 @@
         </div>
         <br>
         <br>
-        <table class="table align-middle mb-0 bg-white">
+        <table id="tableUp" class="table align-middle mb-0 bg-white">
           <thead class="bg-light">
             <tr>
               <th>#</th>
@@ -285,28 +285,52 @@
 
           </tbody>
         </table>
-        <nav aria-label="...">
-          <ul class="pagination">
-            <li class="page-item disabled">
-              <span class="page-link">Previous</span>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active" aria-current="page">
-      <span class="page-link">
-        2
-        <span class="visually-hidden">(current)</span>
-      </span>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
       </div>
+    <!-- Script para paginado -->
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+    >
+    </script>
+    <!-- DATATABLES -->
+    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
+    </script>
+    <!-- BOOTSTRAP -->
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
+    </script>
 
 
+    <script>
+      $(document).ready(function () {
+        $('#tableUp').DataTable()({
+          language: {
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar de _MENU_ items",
+            info: "Mostrando del item _START_ al _END_ de un total de _TOTAL_ items",
+            infoEmpty: "No existen datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontraron datos con tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla.",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo"
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columna en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente"
+            }
+          },
+          scrollY: 400,
+          lengthMenu: [ [10, 25, -1], [10, 25, "All"] ],
+        });
+      });
+    </script>
 
+    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>
 
