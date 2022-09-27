@@ -54,8 +54,8 @@
             <li><a th:if="${user=='Administrador'}" href="index.html">Gestionar</a></li>
             <li><a th:if="${user=='Seguridad'}" href="index.html">Estadísticas</a></li>
             <li><a href="index.html">Inicio</a></li>
-            <li><a href="streams.html">Cerrar Sesión</a></li>
-            <li><a href="profile.html">
+            <li><a href="">Cerrar Sesión</a></li>
+            <li><a href="/usuario/perfil">
 
               <span th:text="'Perfil: '+${user}+ ' '+${user}">
               </span>

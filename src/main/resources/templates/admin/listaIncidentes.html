@@ -2,19 +2,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <head>
-    <!--
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js" integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.min.js" integrity="sha384-ODmDIVzN+pFdexxHEHFBQH3/9/vQ9uori45z4JjnFsRydbmQbmL5t1tQ0culUzyK" crossorigin="anonymous"></script>
-    -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta charset="UTF-8">
     <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Perfil')">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </div>
     <title>ListaUsuarios</title>
     <link rel="stylesheet" href="/css/main.css">
@@ -120,27 +112,54 @@
 
   </head>
   <body >
-  <!--
-   <div class="header px-4 py-5" >
-      <div class="bSalir">
-        <a style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" href="/administrador" type="button" class="btn btn-outline-dark">Inicio</a>
-        <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Mi perfil</button>
-        <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
-      </div>
-      <div class="advnav ">
-        <img  style="margin-top: -5px" class="quillanav" src="/images/quilla.png"> <p style="font-family: roboto;font-size:30px;margin-top:-5px" >&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Advierte <b>PUCP</b></p>
-      </div>
-    </div>
-    -->
   <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
 
   </header>
-
       <div class="container px-4 py-0">
         <div class="d-flex justify-content-around">
-          <div class="title-28 py-1" >
+          <div class="title-28 " style="margin-top: 70px">
             Tipo de Incidencias </div>
-          <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">Crear</button>
+          <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+          <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem"
+                  type="button" class="btn btn-outline-dark"
+                  data-bs-toggle="modal"
+                  data-bs-target='#crear'
+          >Crear</button>
+          <!-- Crear-->
+          <div class="modal fade"
+               id="crear"
+               tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <form method="post" th:action="@{'/administrador/guardaCrear'}"   enctype="multipart/form-data">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="crearNew">Nueva Incidencia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="d-flex flex-row">
+                      <label> Color : </label>
+                      <input  name="color" type="color"   style="margin-left: 10px" />
+                    </div>
+                    <div class="d-flex flex-row">
+                      <label> Icono : </label>
+                      <input type="file" name="archivo"
+                             accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                    </div>
+
+                    <div class="d-flex flex-row">
+                      <label> Nombre : </label>
+                      <input type="text" class="form-control "  name="nombre" placeholder="incidencia"/>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                    <button type="submit" class="btn btn-primary">Guardar </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
 
 
         </div>
@@ -171,7 +190,7 @@
 
               </td>
               <td>
-                <img class="icon_lis_admi" th:src="@{|image/${incidencia.idt}|}"/>
+                <img style="width: 60px ; height: 60px" class="icon_lis_admi" th:src="@{|image/${incidencia.idt}|}"/>
               </td>
               <td>
                 <div class="d-flex align-items-center">
@@ -183,17 +202,17 @@
 
               <td>
                 <!-- botton Modal elimnar -->
-                <button type="button" class="btn btn btn-danger"  data-bs-toggle="modal" data-bs-target="#modalEliminar">Eliminar</button>
+                <button type="button" class="btn btn btn-danger"
+                        data-bs-toggle="modal" th:attr="data-bs-target='#eliminar'+${incidencia.idt}">Eliminar</button>
                 <!-- Modal Eliminar -->
-                <div class="modal fade" id="modalEliminar" tabindex="-1" aria-hidden="true" aria-labelleby="modalTitle">
+                <div class="modal fade"
+                     th:attr="id='eliminar'+${incidencia.idt}"tabindex="-1"
+                     aria-hidden="true" aria-labelleby="modalTitle">
                   <div class="modal-dialog">
                     <div class="modal-content">
-
                       <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-
-
                       <div class="modal-body">
                         <p> ¿Esta seguro que quieres eliminar la incidencia :"D ?</p>
                       </div>
@@ -213,12 +232,16 @@
 
                 </div>
                 <!-- Button Modal editar -->
-                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal" data-bs-target="#ModalEditar">
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#editar'+${incidencia.idt}">
                   Editar
                 </button>
 
                 <!-- ModalEditar-->
-                <div class="modal fade" id="ModalEditar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal fade"
+                     th:attr="id='editar'+${incidencia.idt}"
+                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <form method="post" th:action="@{'/administrador/guardarEditar'}"   enctype="multipart/form-data">
                   <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -226,30 +249,33 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
+                        <input  name="id" type="hidden" th:value="${incidencia.idt}">
                         <div class="d-flex flex-row">
                           <label> Color : </label>
-                          <input name="MyColorPicker" type="color"  id="MyColorPicker" style="margin-left: 10px" />
+                          <input th:value="${incidencia.colort} " name="color" type="color"   style="margin-left: 10px" />
                         </div>
 
                         <div class="d-flex flex-row">
                           <label> Icono : </label>
-                          <input type="file" id="profile_pic" name="profile_pic"
-                                 accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                          <input type="file" id="profile_pic" name="archivo"
+                                 accept=".jpg, .jpeg, .png" style="margin-left: 10px"
+                                 th:src='@{|image/${incidencia.idt}|}'>
                         </div>
 
                         <div class="d-flex flex-row">
                           <label> Nombre : </label>
-                          <input type="text" class="form-control " placeholder="incidencia"/>
+                          <input type="text" class="form-control " th:value="${incidencia.nombret}" name="nombre" placeholder="incidencia"/>
                         </div>
 
 
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
-                        <button type="button" class="btn btn-primary">Guardar </button>
+                        <button type="submit" class="btn btn-primary">Guardar </button>
                       </div>
                     </div>
                   </div>
+                  </form>
                 </div>
               </td>
             </tr>
@@ -280,57 +306,6 @@
       </div>
 
 
-
-
-
-      <script>
-        function changeColor() {
-          document.getElementById(
-                  "Myelement").style.backgroundColor =
-                  document.getElementById(
-                          "MyColorPicker").value;
-        }
-      </script>
-      <script>
-        function changeColor2() {
-          document.getElementById(
-                  "Myelement2").style.backgroundColor =
-                  document.getElementById(
-                          "MyColorPicker2").value;
-        }
-      </script>
-    <script>
-      function changeColor3() {
-        document.getElementById(
-                "Myelement3").style.backgroundColor =
-                document.getElementById(
-                        "MyColorPicker3").value;
-      }
-    </script>
-    <script>
-      function changeColor4() {
-        document.getElementById(
-                "Myelement4").style.backgroundColor =
-                document.getElementById(
-                        "MyColorPicker4").value;
-      }
-    </script>
-    <script>
-      function changeColor5() {
-        document.getElementById(
-                "Myelement5").style.backgroundColor =
-                document.getElementById(
-                        "MyColorPicker5").value;
-      }
-    </script>
-    <script>
-      function changeColor6() {
-        document.getElementById(
-                "Myelement5").style.backgroundColor =
-                document.getElementById(
-                        "MyColorPicker5").value;
-      }
-    </script>
 
   </body>
 </html>
