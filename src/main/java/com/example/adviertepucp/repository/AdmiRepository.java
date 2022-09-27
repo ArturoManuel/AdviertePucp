@@ -3,9 +3,11 @@ package com.example.adviertepucp.repository;
 import com.example.adviertepucp.dto.AdminUsuariosDto;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -18,6 +20,15 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
             "            order by case when c.nombre = 'administrativo' then 1 else 2 end",
             nativeQuery = true)
     List<AdminUsuariosDto> listaUsuariosAdmin();
-
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE `adviertedb`.`usuario` SET `suspendido` = 3 WHERE (`codigo` = ?1);")
+    void suspenderUsuario(Integer id_codigo);
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE `adviertedb`.`usuario` SET `suspendido` = 0 WHERE (`codigo` = ?1);")
+    void activarUsuario(Integer id_codigo);
 
 }

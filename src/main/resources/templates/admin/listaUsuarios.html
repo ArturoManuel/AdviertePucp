@@ -261,28 +261,79 @@
                                     </div>
                                 </div>
                                 <div th:switch="${usuarios.getEstado()}">
-                                    <form method="post" th:action="@{'/administrador/activarReac'}" th:object="${usuarios}">
                                     <div th:case="0">
-                                        <imput type="submit"; class="btn btn-redtele accion_button"
-                                                th:value="3"
-                                                th:id="*{estado == '3'} "
-                                                th:name="suspendido"
-                                                style="background-color: #c50606">Suspender</imput>
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                                >Suspender</button>
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Suspender
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                     </div>
                                     <div th:case="3">
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
-                                        <input type="button"; class="btn btn-redtele accion_button"
-                                               th:value="0"
-                                               th:id="*{estado == '0'} "
-                                               th:name="suspendido"
+                                        <button type="submit"; class="btn btn-redtele accion_button"
                                                 style="background-color: limegreen"
-                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</input>
+                                               data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
-                                    </form>
                                 </div>
                             </div>
                             <div th:case="3">
@@ -345,18 +396,77 @@
                                 </div>
                                 <div th:switch="${usuarios.getEstado()}">
                                     <div th:case="0">
-                                        <button type="button"; class="btn btn-redtele accion_button"
-                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Suspender
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                     </div>
                                     <div th:case="3">
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
-                                        <button type="button"; class="btn btn-redtele accion_button"
+                                        <button type="submit"; class="btn btn-redtele accion_button"
                                                 style="background-color: limegreen"
-                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele" >
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -420,18 +530,77 @@
                                 </div>
                                 <div th:switch="${usuarios.getEstado()}">
                                     <div th:case="0">
-                                        <button type="button"; class="btn btn-redtele accion_button"
-                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Suspender
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                     </div>
                                     <div th:case="3">
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
-                                        <button type="button"; class="btn btn-redtele accion_button"
+                                        <button type="submit"; class="btn btn-redtele accion_button"
                                                 style="background-color: limegreen"
-                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -495,18 +664,77 @@
                                 </div>
                                 <div th:switch="${usuarios.getEstado()}">
                                     <div th:case="0">
-                                        <button type="button"; class="btn btn-redtele accion_button"
-                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Suspender
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                     </div>
                                     <div th:case="3">
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
-                                        <button type="button"; class="btn btn-redtele accion_button"
+                                        <button type="submit"; class="btn btn-redtele accion_button"
                                                 style="background-color: limegreen"
-                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}"type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -570,18 +798,77 @@
                                 </div>
                                 <div th:switch="${usuarios.getEstado()}">
                                     <div th:case="0">
-                                        <button type="button"; class="btn btn-redtele accion_button"
-                                                style="background-color: #c50606">Suspender</button>
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele" >
+                                                            Suspender
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
                                     </div>
                                     <div th:case="3">
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
-                                        <button type="button"; class="btn btn-redtele accion_button"
+                                        <button type="submit"; class="btn btn-redtele accion_button"
                                                 style="background-color: limegreen"
-                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>

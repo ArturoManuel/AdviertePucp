@@ -41,6 +41,7 @@ public class AdminController {
     @GetMapping("")
     public String listaUsuarios(Model model){
         model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
+        model.addAttribute("listaUsuarios1", admiRepository.findAll());
         return "admin/listaUsuarios";
     }
 
@@ -86,17 +87,26 @@ public class AdminController {
 
     }
 
-    @PostMapping("/activarReac")
-    public String activarReac(@RequestParam("suspendido") Integer suspendido){
-        Usuario usuario = new Usuario();
-        try{
-            usuario.setSuspendido(suspendido);
-            admiRepository.save(usuario);
-        } catch (Exception e){
-            e.printStackTrace();
-            return "redirect:/admin/listaUsuarios";
-        }
-        return null;
+    @GetMapping("/suspenderUser")
+    public String suspenderUser(@RequestParam("id") int id) {
+        System.out.println("ESTO ES ID: " + id);
+
+
+            admiRepository.suspenderUsuario(id);
+            System.out.println("Se ha suspendido correctamente");
+
+            return "redirect:/administrador/";
+
+    }
+    @GetMapping("/activarUser")
+    public String activarUser(@RequestParam("id") int id) {
+        System.out.println("ESTO ES ID: " + id);
+
+            admiRepository.activarUsuario(id);
+            System.out.println("Se ha reactivado correctamente");
+
+            return "redirect:/administrador/";
+
     }
 
     @PostMapping("/guardaCrear")
