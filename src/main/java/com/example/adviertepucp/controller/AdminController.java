@@ -2,6 +2,7 @@ package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Tipoincidencia;
+import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.AdmiRepository;
 import com.example.adviertepucp.repository.FotoalmacenadaRepository;
 import com.example.adviertepucp.repository.IncidenciaRepository;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -75,6 +77,15 @@ public class AdminController {
             return null;
         }
     }
+
+    @PostMapping("/crearUsuario")
+    public String crearUsuario(Usuario usuario,
+                               RedirectAttributes attr){
+        admiRepository.save(usuario);
+        return "redirect:/admin/listaUsuarios";
+
+    }
+
     @PostMapping("/guardaCrear")
     public String Crear(@RequestParam("nombre") String nombre ,
                            @RequestParam("archivo") MultipartFile logo ,
@@ -133,6 +144,7 @@ public class AdminController {
             fotoalmacenada.setFotoalmacenada(logo.getBytes());
             fotoalmacenada.setTipofoto(logo.getContentType());
             fotoalmacenadaRepository.save(fotoalmacenada);
+            System.out.println("HE GUARDADO UNA IMAGEN");
 
         } catch (IOException e) {
             e.printStackTrace();
