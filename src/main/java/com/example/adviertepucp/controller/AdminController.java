@@ -81,7 +81,7 @@ public class AdminController {
                            @RequestParam("color") String color ,RedirectAttributes attr) {
         if (logo.isEmpty()) {
             attr.addAttribute("msg", "Debe subir un archivo");
-            return "redirect:/administrador/incidencias";
+                return "redirect:/administrador/incidencias";
         }
         String nombrelogo=logo.getOriginalFilename();
         if (nombrelogo.contains("..")) {
@@ -93,7 +93,7 @@ public class AdminController {
             fotoalmacenada.setFotoalmacenada(logo.getBytes());
             fotoalmacenada.setTipofoto(logo.getContentType());
             fotoalmacenadaRepository.save(fotoalmacenada);
-
+            System.out.println("he guardado mi imagen");
         } catch (IOException e) {
             e.printStackTrace();
             attr.addAttribute("msg", "ocurrió un error al subir el archivo");
@@ -101,12 +101,18 @@ public class AdminController {
         }
 
         Tipoincidencia tipoincidencia = new Tipoincidencia();
+        try {
+            tipoincidencia.setNombre(nombre);
+            tipoincidencia.setColor(color);
+            tipoincidencia.setLogo(fotoalmacenada);
+            tipoincidenciaRepository.save(tipoincidencia);
+            return "redirect:/administrador/incidencias";
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("No se puede crear ");
+            return "redirect:/administrador/incidencias";
+        }
 
-        tipoincidencia.setNombre(nombre);
-        tipoincidencia.setColor(color);
-        tipoincidencia.setLogo(fotoalmacenada);
-        tipoincidenciaRepository.save(tipoincidencia);
-        return "redirect:/administrador/incidencias";
 
 
     }
@@ -117,7 +123,7 @@ public class AdminController {
                                     @RequestParam("nombre") String nombre ,
                                   @RequestParam("archivo") MultipartFile logo ,
                                   @RequestParam("color") String color , Model model ) {
-        if (logo!=null) {
+        if (logo==null) {
             System.out.println("No recibi la imagen");
             model.addAttribute("msg", "Debe subir un archivo");
 
@@ -133,7 +139,7 @@ public class AdminController {
             fotoalmacenada.setFotoalmacenada(logo.getBytes());
             fotoalmacenada.setTipofoto(logo.getContentType());
             fotoalmacenadaRepository.save(fotoalmacenada);
-
+            System.out.println("Si recibi imagen ");
         } catch (IOException e) {
             e.printStackTrace();
             model.addAttribute("msg", "ocurrió un error al subir el archivo");
@@ -145,12 +151,19 @@ public class AdminController {
         }else{
             tipoincidencia = new Tipoincidencia();
         }
-        tipoincidencia.setNombre(nombre);
-        tipoincidencia.setColor(color);
-        tipoincidencia.setLogo(fotoalmacenada);
-        tipoincidenciaRepository.save(tipoincidencia);
-        return "redirect:/administrador/incidencias";
+        try {
+            tipoincidencia.setNombre(nombre);
+            tipoincidencia.setColor(color);
+            tipoincidencia.setLogo(fotoalmacenada);
+            tipoincidenciaRepository.save(tipoincidencia);
+            System.out.println("se guardo el tipo la imagen");
+            return "redirect:/administrador/incidencias";
 
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("No se puede editar");
+            return "redirect:/administrador/incidencias";
+        }
 
         }
 
