@@ -85,7 +85,7 @@ public class AdminController {
         }
         String nombrelogo=logo.getOriginalFilename();
         if (nombrelogo.contains("..")) {
-            attr.addAttribute("msg", "No se permiten '..' en el archivo");
+            attr.addAttribute("msg", "No se permite ese tipo de archivo");
             return "redirect:/administrador/incidencias";
         }
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
@@ -110,6 +110,7 @@ public class AdminController {
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("No se puede crear ");
+            attr.addAttribute("msg", "No se pudo guardar el tipo de incidencia");
             return "redirect:/administrador/incidencias";
         }
 
@@ -122,16 +123,21 @@ public class AdminController {
     public String editar(  @RequestParam("id") int id,
                                     @RequestParam("nombre") String nombre ,
                                   @RequestParam("archivo") MultipartFile logo ,
-                                  @RequestParam("color") String color , Model model ) {
-        if (logo==null) {
+                                  @RequestParam("color") String color , RedirectAttributes redirectAttributes) {
+        if (logo.isEmpty()) {
             System.out.println("No recibi la imagen");
-            model.addAttribute("msg", "Debe subir un archivo");
+
+            redirectAttributes.addFlashAttribute("msg", "Debe subir una imagen");
 
             return "redirect:/administrador/incidencias";
         }
         String nombrelogo=logo.getOriginalFilename();
         if (nombrelogo.contains("..")) {
-            model.addAttribute("msg", "No se permiten '..' en el archivo");
+            redirectAttributes.addFlashAttribute("msg", "No se permiten '...' en el archivo");
+            return "redirect:/administrador/incidencias";
+        }
+        if(nombre.isEmpty()){
+            redirectAttributes.addFlashAttribute("msg","Debe escribir un nombre");
             return "redirect:/administrador/incidencias";
         }
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
@@ -142,7 +148,7 @@ public class AdminController {
             System.out.println("Si recibi imagen ");
         } catch (IOException e) {
             e.printStackTrace();
-            model.addAttribute("msg", "ocurrió un error al subir el archivo");
+            redirectAttributes.addFlashAttribute("msg", "Debe subir un archivo");
             return "redirect:/administrador/incidencias";
         }
         Tipoincidencia tipoincidencia;
@@ -166,6 +172,25 @@ public class AdminController {
         }
 
         }
+
+
+    @GetMapping("/delete")
+    public String borrarTransportista(@RequestParam("id") int id,
+                                      RedirectAttributes attr) {
+
+        int cantidadTipo = tipoincidenciaRepository.incidenciaTipo(id);
+
+        if (cantidadTipo==0) {
+            tipoincidenciaRepository.deleteById(id);
+            attr.addFlashAttribute("msg", "Tipo de incidencia Borrado");
+        }else {
+            attr.addFlashAttribute("msg","Existe una incidencia con dicho tipo");
+        }
+        return "redirect:/administrador/incidencias";
+
+    }
+
+
 
 
 
