@@ -116,15 +116,17 @@
 
   </header>
       <div class="container px-4 py-0">
-        <div class="d-flex justify-content-around">
-          <div class="title-28 " style="margin-top: 70px">
-            Tipo de Incidencias </div>
           <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-          <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem"
-                  type="button" class="btn btn-outline-dark"
-                  data-bs-toggle="modal"
-                  data-bs-target='#crear'
-          >Crear</button>
+          <div class="title-28 " style="margin-top: 70px">
+            Tipo de Incidencias
+
+            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem"
+                    type="button" class="btn btn-outline-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target='#crear'
+            >Crear</button>
+          </div>
+
           <!-- Crear-->
           <div class="modal fade"
                id="crear"
@@ -162,7 +164,7 @@
           </div>
 
 
-        </div>
+
         <br>
         <br>
         <table id="tableUp" class="table align-middle mb-0 bg-white">
