@@ -46,7 +46,8 @@ public class AdminController {
     }
 
     @GetMapping("/incidencias")
-    String listaIncidencias(Model model){
+    String listaIncidencias( Model model){
+
         model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
         return "admin/listaIncidentes";
     }
@@ -112,16 +113,25 @@ public class AdminController {
     @PostMapping("/guardaCrear")
     public String Crear(@RequestParam("nombre") String nombre ,
                            @RequestParam("archivo") MultipartFile logo ,
-                           @RequestParam("color") String color ,RedirectAttributes attr) {
+                           @RequestParam("color") String color ,RedirectAttributes attr, Model model) {
         if (logo.isEmpty()) {
-            attr.addAttribute("msg", "Debe subir un archivo");
-                return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
         String nombrelogo=logo.getOriginalFilename();
         if (nombrelogo.contains("..")) {
-            attr.addAttribute("msg", "No se permite ese tipo de archivo");
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
+
+        if(nombre.isEmpty()){
+            model.addAttribute("msg", "El nombre no debe ser vacio");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
+        }
+
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
             fotoalmacenada.setFotoalmacenada(logo.getBytes());
@@ -130,8 +140,9 @@ public class AdminController {
             System.out.println("he guardado mi imagen");
         } catch (IOException e) {
             e.printStackTrace();
-            attr.addAttribute("msg", "ocurrió un error al subir el archivo");
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
 
         Tipoincidencia tipoincidencia = new Tipoincidencia();
@@ -144,8 +155,9 @@ public class AdminController {
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("No se puede crear ");
-            attr.addAttribute("msg", "No se pudo guardar el tipo de incidencia");
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
 
 
@@ -157,33 +169,35 @@ public class AdminController {
     public String editar(  @RequestParam("id") int id,
                                     @RequestParam("nombre") String nombre ,
                                   @RequestParam("archivo") MultipartFile logo ,
-                                  @RequestParam("color") String color , RedirectAttributes redirectAttributes) {
+                                  @RequestParam("color") String color , RedirectAttributes redirectAttributes, Model model) {
         if (logo.isEmpty()) {
             System.out.println("No recibi la imagen");
-
-            redirectAttributes.addFlashAttribute("msg", "Debe subir una imagen");
-
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
         String nombrelogo=logo.getOriginalFilename();
         if (nombrelogo.contains("..")) {
-            redirectAttributes.addFlashAttribute("msg", "No se permiten '...' en el archivo");
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "El tipo de dato no es el correcto");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
         if(nombre.isEmpty()){
-            redirectAttributes.addFlashAttribute("msg","Debe escribir un nombre");
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "El nombre no debe ser vacio");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
             fotoalmacenada.setFotoalmacenada(logo.getBytes());
             fotoalmacenada.setTipofoto(logo.getContentType());
             fotoalmacenadaRepository.save(fotoalmacenada);
-            System.out.println("Si recibi imagen ");
+
         } catch (IOException e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("msg", "Debe subir un archivo");
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
         Tipoincidencia tipoincidencia;
         if(tipoincidenciaRepository.obtenerTipo(id)!=null){
@@ -196,13 +210,13 @@ public class AdminController {
             tipoincidencia.setColor(color);
             tipoincidencia.setLogo(fotoalmacenada);
             tipoincidenciaRepository.save(tipoincidencia);
-            System.out.println("se guardo el tipo la imagen");
             return "redirect:/administrador/incidencias";
 
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println("No se puede editar");
-            return "redirect:/administrador/incidencias";
+            model.addAttribute("msg", "Algun campo esta vacio para editar");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/listaIncidentes";
         }
 
         }

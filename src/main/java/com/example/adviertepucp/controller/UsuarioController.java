@@ -4,10 +4,7 @@ package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.dto.TipoIncidenciadto;
-import com.example.adviertepucp.entity.Fotoalmacenada;
-import com.example.adviertepucp.entity.Incidencia;
-import com.example.adviertepucp.entity.Incidenciatienefoto;
-import com.example.adviertepucp.entity.Tipoincidencia;
+import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -44,6 +41,8 @@ public class UsuarioController {
 
     @Autowired
     IncidenciatienefotoRepository incidenciatienefotoRepository;
+
+
 
     @GetMapping("")
     String listaUsuario(Model model){
@@ -153,28 +152,28 @@ public class UsuarioController {
     }
 
 
-    // fase de prueba
-    /*@GetMapping("/images/{id}")
-    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
+
+    @GetMapping("/images/{id}/{id2}")
+    public ResponseEntity<byte[]> mostrarImagen(@RequestParam("id")IncidenciatienefotoId id, @RequestParam("id2") int id2) {
         System.out.println("Esoy entrando");
-        Optional<Incidencia> opt = incidenciaRepository.findById(id);
-        if (opt.isPresent()) {
-            System.out.println("Si estoy entrando");
-            Incidencia p = opt.get();
-            byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(1).getFotoalmacenada();
+        List<Incidenciatienefoto> opt = incidenciatienefotoRepository.findAll();
+        for( Incidenciatienefoto incidenciatienefoto : opt){
+            if (incidenciatienefoto.getId()== id && incidenciatienefoto.getIdfotoalmacenada().getId()==id2 ) {
+                byte[] imagenComoBytes = incidenciatienefoto.getIdfotoalmacenada().getFotoalmacenada();
+                HttpHeaders httpHeaders = new HttpHeaders();
+                httpHeaders.setContentType(
+                        MediaType.parseMediaType("image/jpeg"));
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType("image/jpeg"));
-
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK);
-        } else {
-            return null;
+                return new ResponseEntity<>(
+                        imagenComoBytes,
+                        httpHeaders,
+                        HttpStatus.OK);
+            } else {
+                return null;
+            }
         }
-    }*/
+        return  null;
+    }
 
 
 }
