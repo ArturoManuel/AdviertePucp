@@ -25,7 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@RequestMapping("")
 public class LoguinController {
     private static final String PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,64}$";
     private static final Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
@@ -52,7 +51,7 @@ public class LoguinController {
 
     @GetMapping({""})
     public String index() {
-        return "/loguin/loguin";
+        return "loguin/loguin";
     }
 
     @PostMapping({"/ingreso"})
@@ -96,7 +95,7 @@ public class LoguinController {
             }
             else if (usuarioexiste.getCategoria().getId()==1){
                 attr.addFlashAttribute("textoadmin","Administrador");
-                return "redirect:/admin/";
+                return "redirect:/administrador/";
             }
             else if (usuarioexiste.getCategoria().getId()==2){
                 attr.addFlashAttribute("textoseguridad","Seguridad");
@@ -174,7 +173,7 @@ public class LoguinController {
             Usuario usuario=usuarioRepository.validarToken(token);
             if (usuario != null){
                 model.addAttribute("token", token);
-                return "/loguin/nuevacontrasena";
+                return "loguin/nuevacontrasena";
             }
         }
             attr.addFlashAttribute("invalidtoken", "Error:token inválido o vencido (El token de verificación vence cada media hora)");
@@ -186,7 +185,7 @@ public class LoguinController {
     @GetMapping({"/restablecercontrasena"})
     public String restablececontrasena()
     {
-        return "/loguin/restablececontrasena";
+        return "loguin/restablececontrasena";
     }
 
     @PostMapping({"/nuevopwd"})

@@ -1,6 +1,7 @@
 package com.example.adviertepucp.repository;
 
 import com.example.adviertepucp.dto.AdminUsuariosDto;
+import com.example.adviertepucp.dto.CategoriaDto;
 import com.example.adviertepucp.dto.UsuariosDBDto;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,7 +28,10 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
             nativeQuery = true)
     List<UsuariosDBDto> UsuariosDB();
 
-
+    @Query(value = "SELECT c.nombre as categoria, u.categoria as idCategoria FROM usuario u\n" +
+            "inner join categoria c on (c.idcategoria=u.categoria);",
+            nativeQuery = true)
+    List<CategoriaDto> CategoriaList();
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
