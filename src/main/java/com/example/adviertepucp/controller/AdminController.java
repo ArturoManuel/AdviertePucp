@@ -4,10 +4,7 @@ import com.example.adviertepucp.dto.UsuariosDBDto;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Tipoincidencia;
 import com.example.adviertepucp.entity.Usuario;
-import com.example.adviertepucp.repository.AdmiRepository;
-import com.example.adviertepucp.repository.FotoalmacenadaRepository;
-import com.example.adviertepucp.repository.IncidenciaRepository;
-import com.example.adviertepucp.repository.TipoincidenciaRepository;
+import com.example.adviertepucp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -39,12 +37,15 @@ public class AdminController {
 
     @Autowired
     FotoalmacenadaRepository fotoalmacenadaRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @GetMapping("")
     public String listaUsuarios(Model model){
         model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
         model.addAttribute("listaUsuarios1", admiRepository.findAll());
         model.addAttribute("usuariosDB", admiRepository.UsuariosDB());
+        model.addAttribute("listacategorias", admiRepository.CategoriaList());
         return "admin/listaUsuarios";
     }
     @GetMapping("/incidencias")
@@ -82,11 +83,21 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/crearUsuario")
-    public String crearUsuario(Usuario usuario,
-                               RedirectAttributes attr){
-        admiRepository.save(usuario);
-        return "redirect:/administrador";
+    @PostMapping("/editarUsuario")
+    public String editarUsuario(@ModelAttribute("usuario") Usuario usuario,
+                                      Model model, @RequestParam("id") int id) {
+
+        Optional<Usuario> optProduct = usuarioRepository.findById(String.valueOf(id));
+
+        if (optProduct.isPresent()) {
+            usuario = optProduct.get();
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
+
+            return "admin/listaUsuarios";
+        } else {
+            return "redirect:/administrador/";
+        }
     }
 
 
@@ -120,11 +131,23 @@ public class AdminController {
 
 
 
-    @GetMapping(value = {"/registrarUser"})
-    public String listaUserBD(Model model) {
-        model.addAttribute("listaUsersBD", admiRepository.findAll());
-        return "product/list";
+    @GetMapping("/editUser")
+    public String listaUserBD(@ModelAttribute("usuario") Usuario usuario,
+                              Model model, @RequestParam("id") int id) {
+        Optional<Usuario> optUsuario = usuarioRepository.findById(String.valueOf(id));
+        System.out.println("LLEGOOOO" + " " +optUsuario);
+        if (optUsuario.isPresent()){
+            usuario =optUsuario.get();
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", admiRepository.CategoriaList());
+            return "admin/editar_User";
+        }else {
+            return "redirect:/administrador/";
+        }
     }
+
+
 
 
 
