@@ -51,13 +51,23 @@
           <!-- ***** Search End ***** -->
           <!-- ***** Menu Start ***** -->
           <ul class="nav">
-            <li><a th:if="${user=='administrador'}" href="index.html">Gestionar</a></li>
+            <li><a th:if="${user=='administrador'}" href="/administrador/incidencias">Gestionar</a></li>
             <li><a th:if="${user=='Seguridad'}" href="index.html">Estadísticas</a></li>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="">Cerrar Sesión</a></li>
+            <li><a th:if="${user=='administrador'}" href="/administrador">Inicio</a></li>
+            <li><a th:if="${user=='Seguridad'}" href="/seguridad">Inicio</a></li>
+            <li><a th:if="${user=='Alumno'}" href="/usuario">Inicio</a></li>
+            <li><a th:if="${user=='Jefe de Practica'}" href="/usuario">Inicio</a></li>
+            <li><a th:if="${user=='Profesor'}" href="/usuario">Inicio</a></li>
+            <li><a th:if="${user=='Egresado'}" href="/usuario">Inicio</a></li>
+
+
+
+            <form th:action="@{/logout}" method="post">
+            <li><a  > <input type="submit" value="Cerrar Sesión"></input></a></li>
+            </form>
             <li><a href="/usuario/perfil">
 
-              <span th:text="'Perfil: '+${user}+ ' '+${user}">
+              <span th:text="'Perfil: '+${#authentication.name}+ ' '+${user}">
               </span>
 
               <span style="color: blue;" th:text="'(Rol)'">

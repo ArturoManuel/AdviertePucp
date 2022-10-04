@@ -8,6 +8,9 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +51,41 @@ public class LoguinController {
 
 
     /*Pagina principal:Loguin*/
+    /*Borrador*/
+
+    @GetMapping({"loginForm"})
+    public String loginForm(){
+        return "loguin/form";
+    }
+
+    @PostMapping({"logout"})
+    public String logout(){
+        return "redirect:/loginForm";
+    }
+
+    @GetMapping({"/redirectByRole"})
+    public String redirectByRole(Authentication auth){
+        String rol="";
+        for(GrantedAuthority role:auth.getAuthorities()){
+            rol=role.getAuthority();
+            break;
+
+        }
+        if(rol.equals("Administrativo")){
+            return "redirect:/administrador/";
+        }
+        if(rol.equals("Seguridad")){
+            return "redirect:/seguridad/";
+        }
+        else{
+            return "redirect:/usuario/";
+        }
+
+
+    }
+
+
+
 
     @GetMapping({""})
     public String index() {
@@ -72,8 +110,12 @@ public class LoguinController {
             }
         }
 
+        String passwd=new BCryptPasswordEncoder().encode(pswd);
+
+        System.out.println(passwd);
+
         Usuario usuarioexiste= usuarioRepository.usuarioExiste(id);
-        Usuario contrasenaescorrecta= usuarioRepository.contrasenaescorrecta(pswd);
+        Usuario contrasenaescorrecta= usuarioRepository.contrasenaescorrecta(passwd);
 
         if (usuarioexiste==null && !codigoinValido){
             attr.addFlashAttribute("noexiste", "El código ingresado no corresponde a una cuenta.");
@@ -214,13 +256,15 @@ public class LoguinController {
             return "redirect:"+ referer;
         }
 
+        String passwd=new BCryptPasswordEncoder().encode(pwd);
+
         if (usuario.getSuspendido()==4){
-            usuarioRepository.establecerContrasena(pwd, usuario.getId());
+            usuarioRepository.establecerContrasena(passwd, usuario.getId());
             usuarioRepository.deleteTokenbyId(usuario.getId());
             attr.addFlashAttribute("registrado", "Cuanta registrada correctamente, ahora puedes ingresar al sistema.");
         }
         else if (usuario.getSuspendido()<4){
-            usuarioRepository.reestablecerContrasena(pwd, usuario.getId());
+            usuarioRepository.reestablecerContrasena(passwd, usuario.getId());
             usuarioRepository.deleteTokenbyId(usuario.getId());
             attr.addFlashAttribute("registrado", "Contraseña cambiada correctamente.");
         }
