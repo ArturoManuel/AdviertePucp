@@ -40,6 +40,9 @@ public class AdminController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
+    @Autowired
+    CategoriaRepository categoriaRepository;
+
     @GetMapping("")
     public String listaUsuarios(Model model){
         model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
@@ -83,23 +86,6 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/editarUsuario")
-    public String editarUsuario(@ModelAttribute("usuario") Usuario usuario,
-                                      Model model, @RequestParam("id") int id) {
-
-        Optional<Usuario> optProduct = usuarioRepository.findById(String.valueOf(id));
-
-        if (optProduct.isPresent()) {
-            usuario = optProduct.get();
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
-
-            return "admin/listaUsuarios";
-        } else {
-            return "redirect:/administrador/";
-        }
-    }
-
 
 
 
@@ -129,6 +115,28 @@ public class AdminController {
     }
 
 
+    @PostMapping("/guardarUser")
+    public String editarUsuario(Model model, RedirectAttributes attr,
+                                @ModelAttribute("usuario") @Valid Usuario usuario,
+                                BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            System.out.println("LLEGOOOOOO JEJEJJEEJE");
+            return "admin/editar_User";
+        } else {
+
+            if (usuario.getId() == null) {
+                attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
+            } else {
+                attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
+            }
+            usuarioRepository.save(usuario);
+            return "redirect:/administrador/";
+        }
+    }
+
 
 
     @GetMapping("/editUser")
@@ -140,7 +148,7 @@ public class AdminController {
             usuario =optUsuario.get();
             model.addAttribute("usuario", usuario);
             model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", admiRepository.CategoriaList());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
             return "admin/editar_User";
         }else {
             return "redirect:/administrador/";
