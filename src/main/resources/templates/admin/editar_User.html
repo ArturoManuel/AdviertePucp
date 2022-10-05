@@ -97,29 +97,33 @@
                          style="width: 150px; height: 150px">
 
                   </div>
-                <form th:action="@{'/administrador/save'}" method="post" th:object="${usuario}">
+                <form th:action="@{'/administrador/guardarUser'}" method="post" th:object="${usuario}">
                   <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
                     <div class="modal-body mx-3">
 
 
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
-                        <input th:field="*{id}" class="form-control validate">
+                        <input th:field="*{id}" class="form-control validate"
+                               th:classappend="${#fields.hasErrors('id')?'is-invalid':'is-valid'}">
                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Código</label>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
-                        <input th:field="*{nombre}" class="form-control validate">
+                        <input th:field="*{nombre}" class="form-control validate"
+                               th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}">
                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre</label>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
-                        <input th:field="*{apellido}" class="form-control validate">
+                        <input th:field="*{apellido}" class="form-control validate"
+                               th:classappend="${#fields.hasErrors('apellido')?'is-invalid':'is-valid'}">
                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Apellido</label>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
-                        <input th:field="*{dni}" class="form-control validate">
+                        <input th:field="*{dni}" class="form-control validate"
+                               th:classappend="${#fields.hasErrors('dni')?'is-invalid':'is-valid'}">
                         <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
                       </div>
                       <div class="md-form mb-1">
@@ -134,9 +138,9 @@
                       </div>
                       <div class="md-form mb-1">
                         <select class="form-select" th:field="*{categoria}">
-                          <option th:each="categoria :${listacategorias}"
-                                  th:text="${categoria.getCategoria()}"
-                                  th:value="${categoria.getIdCategoria()}">
+                          <option th:each="categorias :${listacategorias}"
+                                  th:value="${categorias.id}"
+                                  th:text="${categorias.nombre}">
                           </option>
                         </select>
                         <label  >Categoría</label>
@@ -145,7 +149,7 @@
                     </div>
                   </div>
                   <div class="modal-footer">
-                    <button th:href="@{'/administrador'}" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <a th:href="@{'/administrador'}" class="btn btn-secondary">Cancelar</a>
                     <button type="submit" class="btn btn-redtele">Guardar</button>
                   </div>
                 </form>

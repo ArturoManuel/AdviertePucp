@@ -265,8 +265,8 @@
                             </div>
                             <div th:case="3">
                                 <a type="button"; class="btn btn-redtele accion_button"
-                                        th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
-                                        style="background-color: #3a7dec">Editar
+                                   th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                   style="background-color: #3a7dec">Editar
                                 </a>  <!--Editar1 es el ID de este Usuario-->
 
                                 <div th:switch="${usuarios.getEstado()}">
@@ -330,7 +330,7 @@
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele" >
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
                                                             Reactivar
                                                         </a>
 
