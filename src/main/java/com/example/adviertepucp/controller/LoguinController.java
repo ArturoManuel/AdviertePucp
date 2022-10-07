@@ -87,10 +87,13 @@ public class LoguinController {
 
 
 
+
+
     @GetMapping({""})
     public String index() {
         return "loguin/loguin";
     }
+
 
     @PostMapping({"/ingreso"})
     public String ingreso(@RequestParam("id")  String id,
