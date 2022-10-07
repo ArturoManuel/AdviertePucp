@@ -28,13 +28,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("pwd")
                 .defaultSuccessUrl("/redirectByRole",true);
 
+        http.oauth2Login().loginPage("/loginForm").defaultSuccessUrl("/oauth2/login",true);
+
         http.authorizeRequests()
                 .antMatchers("/usuario","/usuario/**").hasAnyAuthority("Alumno","Jefe de Practica","Profesor","Egresado")
                 .antMatchers("/seguridad","/seguridad/**").hasAnyAuthority("Seguridad")
                 .antMatchers("/administrador","/administrador/**").hasAnyAuthority("Administrativo")
+
                 .anyRequest().permitAll();
 
-        http.logout();
+        http.logout()
+                .logoutSuccessUrl("/").deleteCookies().invalidateHttpSession(true);
     }
 
 

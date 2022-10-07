@@ -8,10 +8,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario{
     @Id
     @Size(max = 8)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo", nullable = false, length = 8)
     private String id;
 
@@ -39,7 +38,7 @@ public class Usuario {
     private String correo;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria", nullable = false)
     private Categoria categoria;
 
@@ -52,18 +51,25 @@ public class Usuario {
     private String codigoverificacion;
 
     @Size(max = 256)
-    @NotNull
-    @Column(name = "pwd", nullable = false, length = 256)
+    @Column(name = "pwd", length = 256)
     private String pwd;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "foto")
     private Fotoalmacenada foto;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "icono", nullable = false)
     private Icono icono;
+
+    @NotNull
+    @Column(name = "habilitado", nullable = false)
+    private Byte habilitado;
+
+    @OneToMany(mappedBy = "usuario")
+    private Set<Favorito> favoritos = new LinkedHashSet<>();
+
     public String getId() {
         return id;
     }
@@ -158,6 +164,22 @@ public class Usuario {
 
     public void setIcono(Icono icono) {
         this.icono = icono;
+    }
+
+    public Byte getHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(Byte habilitado) {
+        this.habilitado = habilitado;
+    }
+
+    public Set<Favorito> getFavoritos() {
+        return favoritos;
+    }
+
+    public void setFavoritos(Set<Favorito> favoritos) {
+        this.favoritos = favoritos;
     }
 
 }

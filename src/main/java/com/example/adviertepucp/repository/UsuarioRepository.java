@@ -59,6 +59,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value = "select * from usuario where pwd=?1",nativeQuery = true)
     Usuario contrasenaescorrecta(String id);
 
+    @Query(value = "select * from usuario where correo=?1",nativeQuery = true)
+    Usuario oauth2User(String correo);
+
 
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, longitud as longitud ,  z.nombre as zonapucp from incidencia i inner join zonapucp z on (z.idzonapucp=i.zonapucp) inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)", nativeQuery = true)
     List<IncidenciaListadto> listaIncidencia();

@@ -11,6 +11,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +22,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,10 +57,10 @@ public class LoguinController {
     /*Pagina principal:Loguin*/
     /*Borrador*/
 
-    @GetMapping({"loginForm"})
-    public String loginForm(){
-        return "loguin/form";
-    }
+//    @GetMapping({"loginForm"})
+//    public String loginForm(){
+//        return "loguin/form";
+//    }
 
     @PostMapping({"logout"})
     public String logout(){
@@ -89,70 +93,71 @@ public class LoguinController {
 
 
 
-    @GetMapping({""})
+    @GetMapping({"loginForm",""})
     public String index() {
         return "loguin/loguin";
     }
 
 
-    @PostMapping({"/ingreso"})
-    public String ingreso(@RequestParam("id")  String id,
-                          @RequestParam("pwd")  String pswd,
-                          RedirectAttributes attr) {
-        boolean codigoinValido=id.length()!=8 || parsearInt(id)==0;
-        boolean pwdinValida=pswd.length()==0 || pswd.length()>64;
-
-
-        if (pwdinValida|| codigoinValido ){
-            if (pwdinValida){
-                attr.addFlashAttribute("validacionpwd","Ingrese una contraseña válida.");
-            }
-            if (codigoinValido){
-                attr.addFlashAttribute("validacionid","Ingrese un código válido.");
-                attr.addFlashAttribute("id",id);
-            }
-        }
-
-        String passwd=new BCryptPasswordEncoder().encode(pswd);
-
-        System.out.println(passwd);
-
-        Usuario usuarioexiste= usuarioRepository.usuarioExiste(id);
-        Usuario contrasenaescorrecta= usuarioRepository.contrasenaescorrecta(passwd);
-
-        if (usuarioexiste==null && !codigoinValido){
-            attr.addFlashAttribute("noexiste", "El código ingresado no corresponde a una cuenta.");
-            attr.addFlashAttribute("id",id);
-        }
-
-        else if (usuarioexiste!=null){
-            if (contrasenaescorrecta==null && usuarioexiste.getSuspendido()<4){
-                attr.addFlashAttribute("validacionpwd","La contraseña que ingresaste es incorrecta.");
-                attr.addFlashAttribute("id",id);
-            }
-            else if (usuarioexiste.getSuspendido()==4){
-                attr.addFlashAttribute("noregistrado","El código ingresado corresponde a una cuenta aún no registrada. Registrate siguiendo el link que está en la parte inferior.");
-                attr.addFlashAttribute("id",id);
-                return "redirect:/";
-            }
-            else if(usuarioexiste.getSuspendido()==3){
-                return "loguin/suspendido";
-            }
-            else if (usuarioexiste.getCategoria().getId()==1){
-                attr.addFlashAttribute("textoadmin","Administrador");
-                return "redirect:/administrador/";
-            }
-            else if (usuarioexiste.getCategoria().getId()==2){
-                attr.addFlashAttribute("textoseguridad","Seguridad");
-                return "redirect:/seguridad/";
-            }
-            else{
-                attr.addFlashAttribute("textouser","Usuario");
-                return "redirect:/usuario/";
-            }
-        }
-        return "redirect:/";
-    }
+//    @PostMapping({"/ingreso"})
+//    public String ingreso(@RequestParam("id")  String id,
+//                          @RequestParam("pwd")  String pswd,
+//                          RedirectAttributes attr) {
+//        boolean codigoinValido=id.length()!=8 || parsearInt(id)==0;
+//        boolean pwdinValida=pswd.length()==0 || pswd.length()>64;
+//
+//
+//        if (pwdinValida|| codigoinValido ){
+//            if (pwdinValida){
+//                attr.addFlashAttribute("validacionpwd","Ingrese una contraseña válida.");
+//            }
+//            if (codigoinValido){
+//                attr.addFlashAttribute("validacionid","Ingrese un código válido.");
+//                attr.addFlashAttribute("id",id);
+//            }
+//        }
+//
+//        String passwd=new BCryptPasswordEncoder().encode(pswd);
+//
+//        System.out.println(passwd);
+//
+//        Usuario usuarioexiste= usuarioRepository.usuarioExiste(id);
+//        Usuario contrasenaescorrecta= usuarioRepository.contrasenaescorrecta(passwd);
+//
+//
+//        if (usuarioexiste==null && !codigoinValido){
+//            attr.addFlashAttribute("noexiste", "El código ingresado no corresponde a una cuenta.");
+//            attr.addFlashAttribute("id",id);
+//        }
+//
+//        else if (usuarioexiste!=null){
+//            if (contrasenaescorrecta==null && usuarioexiste.getSuspendido()<4){
+//                attr.addFlashAttribute("validacionpwd","La contraseña que ingresaste es incorrecta.");
+//                attr.addFlashAttribute("id",id);
+//            }
+//            else if (usuarioexiste.getSuspendido()==4){
+//                attr.addFlashAttribute("noregistrado","El código ingresado corresponde a una cuenta aún no registrada. Registrate siguiendo el link que está en la parte inferior.");
+//                attr.addFlashAttribute("id",id);
+//                return "redirect:/";
+//            }
+//            else if(usuarioexiste.getSuspendido()==3){
+//                return "loguin/suspendido";
+//            }
+//            else if (usuarioexiste.getCategoria().getId()==1){
+//                attr.addFlashAttribute("textoadmin","Administrador");
+//                return "redirect:/administrador/";
+//            }
+//            else if (usuarioexiste.getCategoria().getId()==2){
+//                attr.addFlashAttribute("textoseguridad","Seguridad");
+//                return "redirect:/seguridad/";
+//            }
+//            else{
+//                attr.addFlashAttribute("textouser","Usuario");
+//                return "redirect:/usuario/";
+//            }
+//        }
+//        return "redirect:/";
+//    }
 
 
 
@@ -307,5 +312,29 @@ public class LoguinController {
         }
         return "redirect:/restablecercontrasena";
     }
+
+
+    @GetMapping({"oauth2/login"})
+    public String oauth2Login(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession session) {
+
+        Map<String,Object> currentUser = oAuth2AuthenticationToken.getPrincipal().getAttributes();
+
+        Optional<Usuario>oauth2User=Optional.ofNullable(usuarioRepository.oauth2User((String) currentUser.get("email")));
+
+
+        if(oauth2User.isPresent()){
+            Usuario usuario = oauth2User.get();
+
+        }
+
+
+
+
+
+
+        return "/loguin/loguin";
+
+    }
+
 
 }
