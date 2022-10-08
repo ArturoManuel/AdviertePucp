@@ -21,6 +21,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value = "select * from usuario where codigo=?1 and correo=?2 ",nativeQuery = true)
     List<Usuario> validarUsuario(String codigo, String correo);
 
+    public Usuario findByEmail(String correo);
+
     @Modifying
     @Transactional
     @Query(value="update usuario set codigoverificacion=?1 where codigo=?2",nativeQuery = true)

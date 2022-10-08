@@ -3,12 +3,13 @@ package com.example.adviertepucp.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario{
+public class Usuario implements Serializable {
     @Id
     @Size(max = 8)
     @Column(name = "codigo", nullable = false, length = 8)
@@ -35,7 +36,7 @@ public class Usuario{
     @Size(max = 80)
     @NotNull
     @Column(name = "correo", nullable = false, length = 80)
-    private String correo;
+    private String email;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -67,8 +68,7 @@ public class Usuario{
     @Column(name = "habilitado", nullable = false)
     private Byte habilitado;
 
-    @OneToMany(mappedBy = "usuario")
-    private Set<Favorito> favoritos = new LinkedHashSet<>();
+
 
     public String getId() {
         return id;
@@ -111,11 +111,11 @@ public class Usuario{
     }
 
     public String getCorreo() {
-        return correo;
+        return email;
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.email = correo;
     }
 
     public Categoria getCategoria() {
@@ -174,12 +174,6 @@ public class Usuario{
         this.habilitado = habilitado;
     }
 
-    public Set<Favorito> getFavoritos() {
-        return favoritos;
-    }
 
-    public void setFavoritos(Set<Favorito> favoritos) {
-        this.favoritos = favoritos;
-    }
 
 }

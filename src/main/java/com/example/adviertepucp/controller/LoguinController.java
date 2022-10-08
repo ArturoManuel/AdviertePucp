@@ -68,13 +68,23 @@ public class LoguinController {
     }
 
     @GetMapping({"/redirectByRole"})
-    public String redirectByRole(Authentication auth){
+    public String redirectByRole(Authentication auth,HttpSession session){
         String rol="";
         for(GrantedAuthority role:auth.getAuthorities()){
             rol=role.getAuthority();
             break;
 
         }
+
+        Optional<Usuario> optusuario=usuarioRepository.findById(auth.getName());
+        if (optusuario.isPresent()){
+            Usuario usuario= optusuario.get();
+            session.setAttribute("usuariolog",usuario);
+            session.setAttribute("rol",rol);
+
+            //System.out.println(usuario.getCelular());
+        }
+
         if(rol.equals("Administrativo")){
             return "redirect:/administrador/";
         }
@@ -97,67 +107,6 @@ public class LoguinController {
     public String index() {
         return "loguin/loguin";
     }
-
-
-//    @PostMapping({"/ingreso"})
-//    public String ingreso(@RequestParam("id")  String id,
-//                          @RequestParam("pwd")  String pswd,
-//                          RedirectAttributes attr) {
-//        boolean codigoinValido=id.length()!=8 || parsearInt(id)==0;
-//        boolean pwdinValida=pswd.length()==0 || pswd.length()>64;
-//
-//
-//        if (pwdinValida|| codigoinValido ){
-//            if (pwdinValida){
-//                attr.addFlashAttribute("validacionpwd","Ingrese una contraseña válida.");
-//            }
-//            if (codigoinValido){
-//                attr.addFlashAttribute("validacionid","Ingrese un código válido.");
-//                attr.addFlashAttribute("id",id);
-//            }
-//        }
-//
-//        String passwd=new BCryptPasswordEncoder().encode(pswd);
-//
-//        System.out.println(passwd);
-//
-//        Usuario usuarioexiste= usuarioRepository.usuarioExiste(id);
-//        Usuario contrasenaescorrecta= usuarioRepository.contrasenaescorrecta(passwd);
-//
-//
-//        if (usuarioexiste==null && !codigoinValido){
-//            attr.addFlashAttribute("noexiste", "El código ingresado no corresponde a una cuenta.");
-//            attr.addFlashAttribute("id",id);
-//        }
-//
-//        else if (usuarioexiste!=null){
-//            if (contrasenaescorrecta==null && usuarioexiste.getSuspendido()<4){
-//                attr.addFlashAttribute("validacionpwd","La contraseña que ingresaste es incorrecta.");
-//                attr.addFlashAttribute("id",id);
-//            }
-//            else if (usuarioexiste.getSuspendido()==4){
-//                attr.addFlashAttribute("noregistrado","El código ingresado corresponde a una cuenta aún no registrada. Registrate siguiendo el link que está en la parte inferior.");
-//                attr.addFlashAttribute("id",id);
-//                return "redirect:/";
-//            }
-//            else if(usuarioexiste.getSuspendido()==3){
-//                return "loguin/suspendido";
-//            }
-//            else if (usuarioexiste.getCategoria().getId()==1){
-//                attr.addFlashAttribute("textoadmin","Administrador");
-//                return "redirect:/administrador/";
-//            }
-//            else if (usuarioexiste.getCategoria().getId()==2){
-//                attr.addFlashAttribute("textoseguridad","Seguridad");
-//                return "redirect:/seguridad/";
-//            }
-//            else{
-//                attr.addFlashAttribute("textouser","Usuario");
-//                return "redirect:/usuario/";
-//            }
-//        }
-//        return "redirect:/";
-//    }
 
 
 
