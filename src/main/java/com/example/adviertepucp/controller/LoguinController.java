@@ -8,8 +8,10 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -94,30 +96,41 @@ public class LoguinController {
         else{
             return "redirect:/usuario/";
         }
-
-
     }
 
 
 
 
 
+    //localhost:8080
 
     @GetMapping({"loginForm",""})
     public String index() {
-        return "loguin/loguin";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/loguin";
+        }
+
+        return "redirect:/redirectByRole";
+
     }
+
+
+
 
 
 
     /*Autenticación de doble factor*/
 
-
-
     @GetMapping({"/autenticacion"})
     public String autenticacion()
     {
-        return "loguin/autenticacion";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/autenticacion";
+        }
+
+        return "redirect:/redirectByRole";
     }
 
 
@@ -126,8 +139,13 @@ public class LoguinController {
     @GetMapping({"registro"})
     public String registro()
     {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/registro";
+        }
 
-        return "loguin/registro";
+        return "redirect:/redirectByRole";
+
     }
     @PostMapping("enviaDatosRegistro")
     public String enviaRegistro(@RequestParam("id")  String id,
@@ -168,15 +186,19 @@ public class LoguinController {
     @GetMapping({"nuevacontrasena"})
     public String nuevacontrasena(@RequestParam("token") String token,Model model, RedirectAttributes attr)
     {
-        if (token.length() ==64){
-            Usuario usuario=usuarioRepository.validarToken(token);
-            if (usuario != null){
-                model.addAttribute("token", token);
-                return "loguin/nuevacontrasena";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            if (token.length() ==64){
+                Usuario usuario=usuarioRepository.validarToken(token);
+                if (usuario != null){
+                    model.addAttribute("token", token);
+                    return "loguin/nuevacontrasena";
+                }
             }
-        }
             attr.addFlashAttribute("invalidtoken", "Error:token inválido o vencido (El token de verificación vence cada media hora)");
             return "redirect:/registro";
+        }
+        return "redirect:/redirectByRole";
     }
 
     /*Restablecer Contraseña-Post mapping de registro*/
@@ -184,7 +206,12 @@ public class LoguinController {
     @GetMapping({"/restablecercontrasena"})
     public String restablececontrasena()
     {
-        return "loguin/restablececontrasena";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/restablececontrasena";
+        }
+
+        return "redirect:/redirectByRole";
     }
 
     @PostMapping({"/nuevopwd"})
