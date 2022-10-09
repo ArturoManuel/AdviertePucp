@@ -9,8 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -27,10 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,8 +72,12 @@ public class LoguinController {
     }
 
     @GetMapping({"suspendido"})
-    public String suspendido(){
+    public String suspendido(HttpSession session){
 
+        Usuario usuario =(Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()!=3){
+            return "redirect:/redirectByRole";
+        }
         return "loguin/suspendido";
     }
 
@@ -83,14 +88,19 @@ public class LoguinController {
         for(GrantedAuthority role:auth.getAuthorities()){
             rol=role.getAuthority();
             break;
-
         }
+
+
         Usuario usuario=null;
 
         Optional<Usuario> optusuario=usuarioRepository.findById(auth.getName());
         if (optusuario.isPresent()){
             usuario= optusuario.get();
-
+            session.setAttribute("usuariolog",usuario);
+            session.setAttribute("rol",rol);
+        }
+        else if  (usuario==null && rol!=null){
+            usuario= (Usuario) session.getAttribute("usuariolog");
             session.setAttribute("usuariolog",usuario);
             session.setAttribute("rol",rol);
         }
@@ -304,7 +314,7 @@ public class LoguinController {
 
 
     @GetMapping({"oauth2/login"})
-    public String oauth2Login(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession session) {
+    public String oauth2Login(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession session,RedirectAttributes attr,Authentication auth) {
 
         Map<String,Object> currentUser = oAuth2AuthenticationToken.getPrincipal().getAttributes();
 
@@ -313,8 +323,48 @@ public class LoguinController {
         Optional<Usuario>oauth2User=usuarioRepository.findById(correoUsuario.getId());
 
 
+
+
         if(oauth2User.isPresent()){
             Usuario usuario = oauth2User.get();
+
+            if ( (Objects.equals(usuario.getCategoria().getNombre(), "Administrativo")) || (Objects.equals(usuario.getCategoria().getNombre(), "Seguridad"))  ){
+                attr.addFlashAttribute("CancelLogin", "Error: El inicio de sesión con Google solo es válido para el Usuario PUCP, mas no para el Administrador o personal de Seguridad.");
+                session.invalidate();
+                SecurityContextHolder.clearContext();
+                return "redirect:/loginForm";
+            }
+            if (usuario.getHabilitado()==0){
+                String codigoVerificacion = RandomString.make(64);
+                usuarioRepository.enviarcodigo(codigoVerificacion, usuario.getId());
+                session.invalidate();
+                SecurityContextHolder.clearContext();
+                return "redirect:/nuevacontrasena?token="+codigoVerificacion;
+
+            }
+//            System.out.println(oAuth2AuthenticationToken.getPrincipal());
+//            System.out.println(oAuth2AuthenticationToken.getCredentials());
+//            System.out.println(oAuth2AuthenticationToken.getAuthorities());
+//            Collection<SimpleGrantedAuthority> oldAuthorities = (Collection<SimpleGrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//            SimpleGrantedAuthority authority=new SimpleGrantedAuthority("Alumno");
+//            List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+//            updatedAuthorities.add(authority);
+//            updatedAuthorities.addAll(oldAuthorities);
+//            SecurityContextHolder.getContext().setAuthentication(
+//                    new UsernamePasswordAuthenticationToken(
+//                            SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+//                            SecurityContextHolder.getContext().getAuthentication().getCredentials(),
+//                            updatedAuthorities)
+//            );
+//
+//            SecurityContext context = SecurityContextHolder.createEmptyContext();
+//            Authentication authentication =
+//                    new TestingAuthenticationToken(usuario.getId(), usuario.getPwd(), usuario.getCategoria().getNombre());
+//            context.setAuthentication(authentication);
+
+
+
+
             session.setAttribute("usuariolog",usuario);
             return "redirect:/usuario";
         }
@@ -323,9 +373,9 @@ public class LoguinController {
         }
 
 
-
-
     }
+
+
 
 
 }

@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2LoginReactiveAuthenticationManager;
 
 import javax.sql.DataSource;
 
@@ -52,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery("select codigo,pwd,habilitado from usuario where codigo=?")
                 .authoritiesByUsernameQuery("select u.codigo,c.nombre from usuario u inner join categoria c on (u.categoria=c.idcategoria) where habilitado=1 and codigo=?")
                 ;
+
     }
 
 

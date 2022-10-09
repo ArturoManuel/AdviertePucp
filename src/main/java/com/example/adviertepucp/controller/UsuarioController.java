@@ -18,6 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -44,8 +47,14 @@ public class UsuarioController {
 
 
 
+
+
     @GetMapping("")
-    String listaUsuario(Model model){
+    String listaUsuario(Model model, HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
 
 
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
@@ -54,7 +63,14 @@ public class UsuarioController {
 
     @GetMapping("/info")
     String masInformacion(@RequestParam("id") int id,
-                          Model model){
+                          Model model, HttpSession session){
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+
         IncidenciaListadto incidencia = null;
         List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
        for( IncidenciaListadto lista : listaIncidencias){
@@ -69,21 +85,44 @@ public class UsuarioController {
     }
 
     @GetMapping("/mapa")
-    String mapa(){
+    String mapa(HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+
         return "usuario/mapa";
     }
 
     @GetMapping({"/lista"})
-    public String listaIncidencias(Model model) {
+    public String listaIncidencias(Model model, HttpSession session) {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "usuario/lista";
     }
     @GetMapping({"/perfil"})
-    public String perfil() {
+    public String perfil(HttpSession session)
+    {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+
         return "usuario/perfil";
     }
     @GetMapping({"/nuevoIncidente"})
-    public String nuevo(Model model) {
+    public String nuevo(Model model,HttpSession session) {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
         model.addAttribute("listaZonas",zonapucpRepository.findAll());
         model.addAttribute("listaTiposIncidencia",tipoincidenciaRepository.findAll());
         return "usuario/nuevoIncidente";

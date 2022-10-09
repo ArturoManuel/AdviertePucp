@@ -115,10 +115,10 @@
                         </div>
 
                         <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;font-family: Roboto">Ingresa con tu cuenta</h3>
-                        <div th:if="${registrado != null}" th:text="${registrado}" class="alert alert-success" role="alert"></div>
-                        <div th:if="${noexiste != null}" th:text="${noexiste}" class="alert alert-danger" role="alert"></div>
-                        <div th:if="${noregistrado != null}" th:text="${noregistrado}" class="alert alert-warning" role="alert"></div>
-
+<!--                        <div th:if="${registrado != null}" th:text="${registrado}" class="alert alert-success" role="alert"></div>-->
+<!--                        <div th:if="${noexiste != null}" th:text="${noexiste}" class="alert alert-danger" role="alert"></div>-->
+<!--                        <div th:if="${noregistrado != null}" th:text="${noregistrado}" class="alert alert-warning" role="alert"></div>-->
+                        <div th:if="${CancelLogin != null}" th:text="${CancelLogin}" class="alert alert-danger" role="alert"></div>
 
                         <div class="form-outline mb-4">
                             <input type="text" id="form2Example18" class="form-control form-control-lg" th:value="${id}" name="id" autofocus
