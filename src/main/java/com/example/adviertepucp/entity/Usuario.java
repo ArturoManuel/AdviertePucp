@@ -1,18 +1,19 @@
 package com.example.adviertepucp.entity;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "usuario")
 public class Usuario implements Serializable {
     @Id
     @Size(max = 8)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo", nullable = false, length = 8)
     private String id;
 
@@ -37,10 +38,10 @@ public class Usuario implements Serializable {
     @Size(max = 80)
     @NotNull
     @Column(name = "correo", nullable = false, length = 80)
-    private String correo;
+    private String email;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria", nullable = false)
     private Categoria categoria;
 
@@ -53,18 +54,24 @@ public class Usuario implements Serializable {
     private String codigoverificacion;
 
     @Size(max = 256)
-    @NotNull
-    @Column(name = "pwd", nullable = false, length = 256)
+    @Column(name = "pwd", length = 256)
     private String pwd;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "foto")
     private Fotoalmacenada foto;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "icono", nullable = false)
     private Icono icono;
+
+    @NotNull
+    @Column(name = "habilitado", nullable = false)
+    private Byte habilitado;
+
+
+
     public String getId() {
         return id;
     }
@@ -106,11 +113,11 @@ public class Usuario implements Serializable {
     }
 
     public String getCorreo() {
-        return correo;
+        return email;
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.email = correo;
     }
 
     public Categoria getCategoria() {
@@ -160,5 +167,15 @@ public class Usuario implements Serializable {
     public void setIcono(Icono icono) {
         this.icono = icono;
     }
+
+    public Byte getHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(Byte habilitado) {
+        this.habilitado = habilitado;
+    }
+
+
 
 }

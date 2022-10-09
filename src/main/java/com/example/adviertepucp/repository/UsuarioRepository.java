@@ -23,6 +23,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value = "select * from usuario where codigo=?1 and correo=?2 ",nativeQuery = true)
     List<Usuario> validarUsuario(String codigo, String correo);
 
+    public Usuario findByEmail(String correo);
+
     @Modifying
     @Transactional
     @Query(value="update usuario set codigoverificacion=?1 where codigo=?2",nativeQuery = true)
@@ -60,6 +62,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
     @Query(value = "select * from usuario where pwd=?1",nativeQuery = true)
     Usuario contrasenaescorrecta(String id);
+
+    @Query(value = "select * from usuario where correo=?1",nativeQuery = true)
+    Usuario oauth2User(String correo);
 
 
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, longitud as longitud ,  z.nombre as zonapucp from incidencia i inner join zonapucp z on (z.idzonapucp=i.zonapucp) inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)", nativeQuery = true)

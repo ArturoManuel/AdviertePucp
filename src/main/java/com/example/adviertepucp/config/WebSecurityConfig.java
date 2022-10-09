@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2LoginReactiveAuthenticationManager;
 
 import javax.sql.DataSource;
 
@@ -28,13 +29,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter("pwd")
                 .defaultSuccessUrl("/redirectByRole",true);
 
+        http.oauth2Login().loginPage("/loginForm").defaultSuccessUrl("/oauth2/login",true);
+
         http.authorizeRequests()
-                .antMatchers("/usuario","/usuario/**").hasAnyAuthority("Alumno","Jefe de Practica","Profesor","Egresado")
+                .antMatchers("/usuario","/usuario/**").access("isAuthenticated() and not hasAnyAuthority('Administrativo','Seguridad')")
                 .antMatchers("/seguridad","/seguridad/**").hasAnyAuthority("Seguridad")
                 .antMatchers("/administrador","/administrador/**").hasAnyAuthority("Administrativo")
+                .antMatchers("/suspendido").access("isAuthenticated() and not hasAnyAuthority('Administrativo','Seguridad')")
                 .anyRequest().permitAll();
 
-        http.logout();
+        http.logout()
+                .logoutSuccessUrl("/").deleteCookies().invalidateHttpSession(true);
     }
 
 
@@ -48,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usersByUsernameQuery("select codigo,pwd,habilitado from usuario where codigo=?")
                 .authoritiesByUsernameQuery("select u.codigo,c.nombre from usuario u inner join categoria c on (u.categoria=c.idcategoria) where habilitado=1 and codigo=?")
                 ;
+
     }
 
 

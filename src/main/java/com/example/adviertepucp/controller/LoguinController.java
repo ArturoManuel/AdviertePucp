@@ -8,9 +8,16 @@ import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +28,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,24 +61,55 @@ public class LoguinController {
     /*Pagina principal:Loguin*/
     /*Borrador*/
 
-    @GetMapping({"loginForm"})
-    public String loginForm(){
-        return "loguin/form";
-    }
+//    @GetMapping({"loginForm"})
+//    public String loginForm(){
+//        return "loguin/form";
+//    }
 
     @PostMapping({"logout"})
     public String logout(){
         return "redirect:/loginForm";
     }
 
+    @GetMapping({"suspendido"})
+    public String suspendido(HttpSession session){
+
+        Usuario usuario =(Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()!=3){
+            return "redirect:/redirectByRole";
+        }
+        return "loguin/suspendido";
+    }
+
+
     @GetMapping({"/redirectByRole"})
-    public String redirectByRole(Authentication auth){
+    public String redirectByRole(Authentication auth,HttpSession session){
         String rol="";
         for(GrantedAuthority role:auth.getAuthorities()){
             rol=role.getAuthority();
             break;
-
         }
+
+
+        Usuario usuario=null;
+
+        Optional<Usuario> optusuario=usuarioRepository.findById(auth.getName());
+        if (optusuario.isPresent()){
+            usuario= optusuario.get();
+            session.setAttribute("usuariolog",usuario);
+            session.setAttribute("rol",rol);
+        }
+        else if  (usuario==null && rol!=null){
+            usuario= (Usuario) session.getAttribute("usuariolog");
+            session.setAttribute("usuariolog",usuario);
+            session.setAttribute("rol",rol);
+        }
+
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+
         if(rol.equals("Administrativo")){
             return "redirect:/administrador/";
         }
@@ -80,90 +119,41 @@ public class LoguinController {
         else{
             return "redirect:/usuario/";
         }
-
-
     }
 
 
 
 
 
+    //localhost:8080
 
-    @GetMapping({""})
+    @GetMapping({"loginForm",""})
     public String index() {
-        return "loguin/loguin";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/loguin";
+        }
+
+        return "redirect:/redirectByRole";
+
     }
 
 
-    @PostMapping({"/ingreso"})
-    public String ingreso(@RequestParam("id")  String id,
-                          @RequestParam("pwd")  String pswd,
-                          RedirectAttributes attr) {
-        boolean codigoinValido=id.length()!=8 || parsearInt(id)==0;
-        boolean pwdinValida=pswd.length()==0 || pswd.length()>64;
 
-
-        if (pwdinValida|| codigoinValido ){
-            if (pwdinValida){
-                attr.addFlashAttribute("validacionpwd","Ingrese una contraseña válida.");
-            }
-            if (codigoinValido){
-                attr.addFlashAttribute("validacionid","Ingrese un código válido.");
-                attr.addFlashAttribute("id",id);
-            }
-        }
-
-        String passwd=new BCryptPasswordEncoder().encode(pswd);
-
-        System.out.println(passwd);
-
-        Usuario usuarioexiste= usuarioRepository.usuarioExiste(id);
-        Usuario contrasenaescorrecta= usuarioRepository.contrasenaescorrecta(passwd);
-
-        if (usuarioexiste==null && !codigoinValido){
-            attr.addFlashAttribute("noexiste", "El código ingresado no corresponde a una cuenta.");
-            attr.addFlashAttribute("id",id);
-        }
-
-        else if (usuarioexiste!=null){
-            if (contrasenaescorrecta==null && usuarioexiste.getSuspendido()<4){
-                attr.addFlashAttribute("validacionpwd","La contraseña que ingresaste es incorrecta.");
-                attr.addFlashAttribute("id",id);
-            }
-            else if (usuarioexiste.getSuspendido()==4){
-                attr.addFlashAttribute("noregistrado","El código ingresado corresponde a una cuenta aún no registrada. Registrate siguiendo el link que está en la parte inferior.");
-                attr.addFlashAttribute("id",id);
-                return "redirect:/";
-            }
-            else if(usuarioexiste.getSuspendido()==3){
-                return "loguin/suspendido";
-            }
-            else if (usuarioexiste.getCategoria().getId()==1){
-                attr.addFlashAttribute("textoadmin","Administrador");
-                return "redirect:/administrador/";
-            }
-            else if (usuarioexiste.getCategoria().getId()==2){
-                attr.addFlashAttribute("textoseguridad","Seguridad");
-                return "redirect:/seguridad/";
-            }
-            else{
-                attr.addFlashAttribute("textouser","Usuario");
-                return "redirect:/usuario/";
-            }
-        }
-        return "redirect:/";
-    }
 
 
 
     /*Autenticación de doble factor*/
 
-
-
     @GetMapping({"/autenticacion"})
     public String autenticacion()
     {
-        return "loguin/autenticacion";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/autenticacion";
+        }
+
+        return "redirect:/redirectByRole";
     }
 
 
@@ -172,8 +162,13 @@ public class LoguinController {
     @GetMapping({"registro"})
     public String registro()
     {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/registro";
+        }
 
-        return "loguin/registro";
+        return "redirect:/redirectByRole";
+
     }
     @PostMapping("enviaDatosRegistro")
     public String enviaRegistro(@RequestParam("id")  String id,
@@ -214,15 +209,19 @@ public class LoguinController {
     @GetMapping({"nuevacontrasena"})
     public String nuevacontrasena(@RequestParam("token") String token,Model model, RedirectAttributes attr)
     {
-        if (token.length() ==64){
-            Usuario usuario=usuarioRepository.validarToken(token);
-            if (usuario != null){
-                model.addAttribute("token", token);
-                return "loguin/nuevacontrasena";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            if (token.length() ==64){
+                Usuario usuario=usuarioRepository.validarToken(token);
+                if (usuario != null){
+                    model.addAttribute("token", token);
+                    return "loguin/nuevacontrasena";
+                }
             }
-        }
             attr.addFlashAttribute("invalidtoken", "Error:token inválido o vencido (El token de verificación vence cada media hora)");
             return "redirect:/registro";
+        }
+        return "redirect:/redirectByRole";
     }
 
     /*Restablecer Contraseña-Post mapping de registro*/
@@ -230,7 +229,12 @@ public class LoguinController {
     @GetMapping({"/restablecercontrasena"})
     public String restablececontrasena()
     {
-        return "loguin/restablececontrasena";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            return "loguin/restablececontrasena";
+        }
+
+        return "redirect:/redirectByRole";
     }
 
     @PostMapping({"/nuevopwd"})
@@ -307,5 +311,71 @@ public class LoguinController {
         }
         return "redirect:/restablecercontrasena";
     }
+
+
+    @GetMapping({"oauth2/login"})
+    public String oauth2Login(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession session,RedirectAttributes attr,Authentication auth) {
+
+        Map<String,Object> currentUser = oAuth2AuthenticationToken.getPrincipal().getAttributes();
+
+        Usuario correoUsuario=usuarioRepository.oauth2User((String) currentUser.get("email"));
+
+        Optional<Usuario>oauth2User=usuarioRepository.findById(correoUsuario.getId());
+
+
+
+
+        if(oauth2User.isPresent()){
+            Usuario usuario = oauth2User.get();
+
+            if ( (Objects.equals(usuario.getCategoria().getNombre(), "Administrativo")) || (Objects.equals(usuario.getCategoria().getNombre(), "Seguridad"))  ){
+                attr.addFlashAttribute("CancelLogin", "Error: El inicio de sesión con Google solo es válido para el Usuario PUCP, mas no para el Administrador o personal de Seguridad.");
+                session.invalidate();
+                SecurityContextHolder.clearContext();
+                return "redirect:/loginForm";
+            }
+            if (usuario.getHabilitado()==0){
+                String codigoVerificacion = RandomString.make(64);
+                usuarioRepository.enviarcodigo(codigoVerificacion, usuario.getId());
+                session.invalidate();
+                SecurityContextHolder.clearContext();
+                return "redirect:/nuevacontrasena?token="+codigoVerificacion;
+
+            }
+//            System.out.println(oAuth2AuthenticationToken.getPrincipal());
+//            System.out.println(oAuth2AuthenticationToken.getCredentials());
+//            System.out.println(oAuth2AuthenticationToken.getAuthorities());
+//            Collection<SimpleGrantedAuthority> oldAuthorities = (Collection<SimpleGrantedAuthority>)SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+//            SimpleGrantedAuthority authority=new SimpleGrantedAuthority("Alumno");
+//            List<SimpleGrantedAuthority> updatedAuthorities = new ArrayList<SimpleGrantedAuthority>();
+//            updatedAuthorities.add(authority);
+//            updatedAuthorities.addAll(oldAuthorities);
+//            SecurityContextHolder.getContext().setAuthentication(
+//                    new UsernamePasswordAuthenticationToken(
+//                            SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+//                            SecurityContextHolder.getContext().getAuthentication().getCredentials(),
+//                            updatedAuthorities)
+//            );
+//
+//            SecurityContext context = SecurityContextHolder.createEmptyContext();
+//            Authentication authentication =
+//                    new TestingAuthenticationToken(usuario.getId(), usuario.getPwd(), usuario.getCategoria().getNombre());
+//            context.setAuthentication(authentication);
+
+
+
+
+            session.setAttribute("usuariolog",usuario);
+            return "redirect:/usuario";
+        }
+        else{
+            return "redirect:/loginForm?error";
+        }
+
+
+    }
+
+
+
 
 }
