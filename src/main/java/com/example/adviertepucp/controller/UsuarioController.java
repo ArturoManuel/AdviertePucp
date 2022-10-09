@@ -44,6 +44,8 @@ public class UsuarioController {
 
     @Autowired
     IncidenciatienefotoRepository incidenciatienefotoRepository;
+    @Autowired
+    FavoritoRepository favoritoRepository;
 
 
 
@@ -125,6 +127,7 @@ public class UsuarioController {
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
+                                   @RequestParam("codigopucp")  String codigopucp,
                                    Incidencia incidencia,
                                    Model model,
                                    HttpSession session){
@@ -172,9 +175,23 @@ public class UsuarioController {
                 incidencia.setFecha(datetime);
                 incidenciaRepository.save(incidencia);
 
+                Favorito favorito = new Favorito();
+                favorito.setEsfavorito(0);
+                favorito.setHacomentado(0);
+                favorito.setHasolucionado(0);
+                favorito.setPusoenproceso(0);
+                favorito.setReaperturacaso(0);
+                favorito.setFecha(datetime);
+                Optional<Usuario> user = usuarioRepository.findById(codigopucp);
+                favorito.setUsuarioCodigo(user.get());
+                favorito.setIncidenciaIdincidencia(incidencia);
+
+
                 for (Fotoalmacenada fotoDB: listaFotoAlmacenada) {
                     incidenciatienefotoRepository.insertarFotoEIncidencia(fotoDB.getId(),incidencia.getId());
                 }
+
+
 
             }catch (Exception e){
                 e.printStackTrace();

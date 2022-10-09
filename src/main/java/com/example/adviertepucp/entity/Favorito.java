@@ -23,23 +23,23 @@ public class Favorito {
 
     @NotNull
     @Column(name = "esfavorito", nullable = false)
-    private Byte esfavorito;
+    private Integer esfavorito;
 
     @NotNull
     @Column(name = "hacomentado", nullable = false)
-    private Byte hacomentado;
+    private Integer hacomentado;
 
     @NotNull
     @Column(name = "hasolucionado", nullable = false)
-    private Byte hasolucionado;
+    private Integer hasolucionado;
 
     @NotNull
     @Column(name = "pusoenproceso", nullable = false)
-    private Byte pusoenproceso;
+    private Integer pusoenproceso;
 
     @NotNull
     @Column(name = "reaperturacaso", nullable = false)
-    private Byte reaperturacaso;
+    private Integer reaperturacaso;
 
     @NotNull
     @Column(name = "fecha", nullable = false)
@@ -69,43 +69,43 @@ public class Favorito {
         this.incidenciaIdincidencia = incidenciaIdincidencia;
     }
 
-    public Byte getEsfavorito() {
+    public Integer getEsfavorito() {
         return esfavorito;
     }
 
-    public void setEsfavorito(Byte esfavorito) {
+    public void setEsfavorito(Integer esfavorito) {
         this.esfavorito = esfavorito;
     }
 
-    public Byte getHacomentado() {
+    public Integer getHacomentado() {
         return hacomentado;
     }
 
-    public void setHacomentado(Byte hacomentado) {
+    public void setHacomentado(Integer hacomentado) {
         this.hacomentado = hacomentado;
     }
 
-    public Byte getHasolucionado() {
+    public Integer getHasolucionado() {
         return hasolucionado;
     }
 
-    public void setHasolucionado(Byte hasolucionado) {
+    public void setHasolucionado(Integer hasolucionado) {
         this.hasolucionado = hasolucionado;
     }
 
-    public Byte getPusoenproceso() {
+    public Integer getPusoenproceso() {
         return pusoenproceso;
     }
 
-    public void setPusoenproceso(Byte pusoenproceso) {
+    public void setPusoenproceso(Integer pusoenproceso) {
         this.pusoenproceso = pusoenproceso;
     }
 
-    public Byte getReaperturacaso() {
+    public Integer getReaperturacaso() {
         return reaperturacaso;
     }
 
-    public void setReaperturacaso(Byte reaperturacaso) {
+    public void setReaperturacaso(Integer reaperturacaso) {
         this.reaperturacaso = reaperturacaso;
     }
 
