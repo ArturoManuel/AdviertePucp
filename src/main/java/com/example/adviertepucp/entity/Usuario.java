@@ -3,12 +3,13 @@ package com.example.adviertepucp.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements Serializable {
     @Id
     @Size(max = 8)
     @GeneratedValue(strategy = GenerationType.IDENTITY)

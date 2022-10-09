@@ -6,6 +6,8 @@
 package com.example.adviertepucp.repository;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
+import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -66,5 +68,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     //Para extraer las fotos de cada incidencia
     @Query(value="select fotoalmacenada from  incidencia i inner join incidenciatienefoto it on (i.idincidencia=it.idincidencia) inner join fotoalmacenada f on (it.idfotoalmacenada=f.idfotoalmacenada) where i.idincidencia=?1;",nativeQuery = true)
     List<Fotoalmacenada> listaFotoIncidencia(int id);
+
+    @Query(nativeQuery = true,
+    value = "select f.idinteraccion,f.usuario_codigo,i.idincidencia\n" +
+            "from favorito f left join incidencia i on (f.incidencia_idincidencia=i.idincidencia)\n" +
+            "where f.usuario_codigo=?1 and f.esfavorito=0 and i.publicado=0;")
+    UsuarioEstaCreandoDto obtenerCreandoUsuario(String codigo);
 
 }

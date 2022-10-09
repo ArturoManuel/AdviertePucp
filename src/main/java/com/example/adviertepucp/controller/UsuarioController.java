@@ -4,6 +4,7 @@ package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.dto.TipoIncidenciadto;
+import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
 import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -87,68 +90,107 @@ public class UsuarioController {
         return "usuario/perfil";
     }
     @GetMapping({"/nuevoIncidente"})
-    public String nuevo(Model model) {
-        model.addAttribute("listaZonas",zonapucpRepository.findAll());
-        model.addAttribute("listaTiposIncidencia",tipoincidenciaRepository.findAll());
-        return "usuario/nuevoIncidente";
+    public String nuevo(Model model, Authentication auth, HttpSession session) {
+
+        UsuarioEstaCreandoDto usuarioEstaCreandoDto = usuarioRepository.obtenerCreandoUsuario(auth.getName());
+        Optional<Incidencia> incidenciaOpt = incidenciaRepository.findById(usuarioEstaCreandoDto.getIdincidencia());
+
+        if (incidenciaOpt.isPresent()){
+
+            Incidencia incidencia = incidenciaOpt.get();
+
+            model.addAttribute("incidenciaPrevia",incidencia);
+            model.addAttribute("listaZonas",zonapucpRepository.findAll());
+            model.addAttribute("listaTiposIncidencia",tipoincidenciaRepository.findAll());
+            return "usuario//nuevoIncidente";
+
+
+        }
+
+        else {
+            Incidencia nuevaIncidencia = new Incidencia();
+            nuevaIncidencia.setPublicado(0);
+            incidenciaRepository.save(nuevaIncidencia);
+            //TODO: RELLENAR LA TABLA DE FAVORITO PERO EN EL SAVE
+
+
+            model.addAttribute("listaZonas",zonapucpRepository.findAll());
+            model.addAttribute("listaTiposIncidencia",tipoincidenciaRepository.findAll());
+            return "usuario/nuevoIncidente";
+
+
+        }
+
+
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
                                    Incidencia incidencia,
-                                   Model model){
-
-        ArrayList<Fotoalmacenada> listaFotoAlmacenada = new ArrayList<>();
-
-        for (MultipartFile foto : files ) {
-        if (foto.isEmpty()){
-            model.addAttribute("msg", "Debe subir un archivo");
-            return "usuario/nuevoIncidente";
-        }
-        String fileName = foto.getOriginalFilename();
-
-        if (fileName.contains("..")){
-            model.addAttribute("msg", "No se permiten '..' en el archivo");
-            return "usuario/nuevoIncidente";
-        }
-        try{
-            Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
-            fotoalmacenada.setFotoalmacenada(foto.getBytes());
-            fotoalmacenada.setTipofoto(foto.getContentType());
-            fotoalmacenadaRepository.save(fotoalmacenada);
-            listaFotoAlmacenada.add(fotoalmacenada);
+                                   Model model,
+                                   HttpSession session){
 
 
 
-        }catch (IOException e){
-            e.printStackTrace();
-            model.addAttribute("msg", "Ocurrió un error al subir los archivo");
-            return "usuario/nuevoIncidente";
-        }
-        }
 
-       try{
-            Double latitud = 1.5;
-            Double longitud = 2.6;
-            String estado = "registrado";
-            Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
-            incidencia.setEstado(estado);
-            incidencia.setLatitud(latitud);
-            incidencia.setLongitud(longitud);
-            incidencia.setFecha(datetime);
-            incidenciaRepository.save(incidencia);
+            ArrayList<Fotoalmacenada> listaFotoAlmacenada = new ArrayList<>();
 
-            for (Fotoalmacenada fotoDB: listaFotoAlmacenada) {
-                incidenciatienefotoRepository.insertarFotoEIncidencia(fotoDB.getId(),incidencia.getId());
+            for (MultipartFile foto : files ) {
+                if (foto.isEmpty()){
+                    model.addAttribute("msg", "Debe subir un archivo");
+                    return "usuario/nuevoIncidente";
+                }
+                String fileName = foto.getOriginalFilename();
+
+                if (fileName.contains("..")){
+                    model.addAttribute("msg", "No se permiten '..' en el archivo");
+                    return "usuario/nuevoIncidente";
+                }
+                try{
+                    Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
+                    fotoalmacenada.setFotoalmacenada(foto.getBytes());
+                    fotoalmacenada.setTipofoto(foto.getContentType());
+                    fotoalmacenadaRepository.save(fotoalmacenada);
+                    listaFotoAlmacenada.add(fotoalmacenada);
+
+
+
+                }catch (IOException e){
+                    e.printStackTrace();
+                    model.addAttribute("msg", "Ocurrió un error al subir los archivo");
+                    return "usuario/nuevoIncidente";
+                }
             }
 
-        }catch (Exception e){
-            e.printStackTrace();
-            model.addAttribute("msg", "Ocurrió un error al crear la incidencia");
-            return "usuario/nuevoIncidente";
-        }
+            try{
+                Double latitud = 1.5;
+                Double longitud = 2.6;
+                String estado = "registrado";
+                Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+                incidencia.setEstado(estado);
+                incidencia.setLatitud(latitud);
+                incidencia.setLongitud(longitud);
+                incidencia.setFecha(datetime);
+                incidenciaRepository.save(incidencia);
+
+                for (Fotoalmacenada fotoDB: listaFotoAlmacenada) {
+                    incidenciatienefotoRepository.insertarFotoEIncidencia(fotoDB.getId(),incidencia.getId());
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+                model.addAttribute("msg", "Ocurrió un error al crear la incidencia");
+                return "usuario/nuevoIncidente";
+            }
 
 
-        return "redirect:/usuario/lista";
+            return "redirect:/usuario/lista";
+
+
+
+
+
+
+
     }
 
 
