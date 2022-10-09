@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Map;
@@ -69,6 +70,13 @@ public class LoguinController {
         return "redirect:/loginForm";
     }
 
+    @GetMapping({"suspendido"})
+    public String suspendido(){
+
+        return "loguin/suspendido";
+    }
+
+
     @GetMapping({"/redirectByRole"})
     public String redirectByRole(Authentication auth,HttpSession session){
         String rol="";
@@ -77,15 +85,20 @@ public class LoguinController {
             break;
 
         }
+        Usuario usuario=null;
 
         Optional<Usuario> optusuario=usuarioRepository.findById(auth.getName());
         if (optusuario.isPresent()){
-            Usuario usuario= optusuario.get();
+            usuario= optusuario.get();
+
             session.setAttribute("usuariolog",usuario);
             session.setAttribute("rol",rol);
-
-            //System.out.println(usuario.getCelular());
         }
+
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
 
         if(rol.equals("Administrativo")){
             return "redirect:/administrador/";
@@ -295,20 +308,22 @@ public class LoguinController {
 
         Map<String,Object> currentUser = oAuth2AuthenticationToken.getPrincipal().getAttributes();
 
-        Optional<Usuario>oauth2User=Optional.ofNullable(usuarioRepository.oauth2User((String) currentUser.get("email")));
+        Usuario correoUsuario=usuarioRepository.oauth2User((String) currentUser.get("email"));
+
+        Optional<Usuario>oauth2User=usuarioRepository.findById(correoUsuario.getId());
 
 
         if(oauth2User.isPresent()){
             Usuario usuario = oauth2User.get();
-
+            session.setAttribute("usuariolog",usuario);
+            return "redirect:/usuario";
+        }
+        else{
+            return "redirect:/loginForm?error";
         }
 
 
 
-
-
-
-        return "/loguin/loguin";
 
     }
 

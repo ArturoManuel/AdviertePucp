@@ -77,7 +77,7 @@
               <span th:text="'Perfil: '+${session.usuariolog.nombre}">
               </span>
 
-              <span style="color: blue;" th:text="${'('}+${session.rol}+${')'}">
+              <span style="color: blue;" th:text="${'('}+${session.usuariolog.getCategoria().getNombre()}+${')'}">
               </span>
 
               <span th:if="${session.usuariolog.foto.getId() == 22}"><img  src="/images/defaultprofilepicture.png"  style="width: 25px;height: 25px" alt="perfil"></span>

@@ -31,10 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.oauth2Login().loginPage("/loginForm").defaultSuccessUrl("/oauth2/login",true);
 
         http.authorizeRequests()
-                .antMatchers("/usuario","/usuario/**").hasAnyAuthority("Alumno","Jefe de Practica","Profesor","Egresado")
+                .antMatchers("/usuario","/usuario/**").access("isAuthenticated() and not hasAnyAuthority('Administrativo','Seguridad')")
                 .antMatchers("/seguridad","/seguridad/**").hasAnyAuthority("Seguridad")
                 .antMatchers("/administrador","/administrador/**").hasAnyAuthority("Administrativo")
-
+                .antMatchers("/suspendido").access("isAuthenticated() and not hasAnyAuthority('Administrativo','Seguridad')")
                 .anyRequest().permitAll();
 
         http.logout()

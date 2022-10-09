@@ -73,10 +73,6 @@ public class UsuarioController {
         return "usuario/mapa";
     }
 
-    @GetMapping({"/suspendido"})
-    public String suspendido() {
-        return "loguin/suspendido";
-    }
     @GetMapping({"/lista"})
     public String listaIncidencias(Model model) {
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());

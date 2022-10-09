@@ -1,11 +1,13 @@
 package com.example.adviertepucp.entity;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "usuario")
