@@ -5,7 +5,10 @@ import com.example.adviertepucp.dto.IncidenciaPorZona;
 import com.example.adviertepucp.entity.Incidencia;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer> {
@@ -56,5 +59,10 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "group by estado;",
     nativeQuery = true)
     List<Usuario> estadoUsuarios();
+
+    @Modifying
+    @Transactional
+    @Query(value="update incidencia set estado= ?1 where idincidencia=?2",nativeQuery = true)
+    void atenderIncidencia(String estado, int id);
 
 }

@@ -1,10 +1,17 @@
 package com.example.adviertepucp.controller;
 
+import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.repository.IncidenciaRepository;
 import org.springframework.stereotype.Controller;
+import com.example.adviertepucp.entity.Incidencia;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping({"/seguridad"})
@@ -50,5 +57,15 @@ public class SeguridadController {
     }
 
 */
+    @PostMapping("/MasInfoSeguridad")
+    public String atenderIncidencia(Incidencia incidencia) {
+
+        Optional<Incidencia> opt = incidenciaRepository.findById(incidencia.getId());
+
+        if (opt.isPresent()) {
+            incidenciaRepository.atenderIncidencia(incidencia.getEstado(), incidencia.getId());
+        }
+        return "redirect:/seguridad/lista";
+    }
 
 }
