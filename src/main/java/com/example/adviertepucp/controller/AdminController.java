@@ -51,83 +51,22 @@ public class AdminController {
         model.addAttribute("listacategorias", admiRepository.CategoriaList());
         return "admin/listaUsuarios";
     }
-    @GetMapping("/incidencias")
-    String listaIncidencias( Model model){
 
-        model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
-        return "admin/listaIncidentes";
-    }
-    @GetMapping("/prueba")
-
-    String pruebas(){
-        return "admin/prueba";
-    }
-
-    //Para obtener imagenes de la base de datos
-    //Para ver al el llamado vayan al archivo listaIncidentes.html
-  @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
-        Optional<Tipoincidencia> opt = tipoincidenciaRepository.findById(id);
-        if (opt.isPresent()) {
-            Tipoincidencia p = opt.get();
-
-            byte[] imagenComoBytes = p.getLogo().getFotoalmacenada();
-
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType("image/png"));
-
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK);
-        } else {
-            return null;
-        }
-    }
-
-
-
-
-
-
-
-    @GetMapping("/suspenderUser")
-    public String suspenderUser(@RequestParam("id") int id) {
-        System.out.println("ESTO ES ID: " + id);
-
-
-            admiRepository.suspenderUsuario(id);
-            System.out.println("Se ha suspendido correctamente");
-
-            return "redirect:/administrador/";
-
-    }
-    @GetMapping("/activarUser")
-    public String activarUser(@RequestParam("id") int id) {
-        System.out.println("ESTO ES ID: " + id);
-
-            admiRepository.activarUsuario(id);
-            System.out.println("Se ha reactivado correctamente");
-
-            return "redirect:/administrador/";
-
-    }
 
 
     @PostMapping("/guardarUser")
-    public String editarUsuario(Model model, RedirectAttributes attr,
+    public String editarUsuario(Model model,
                                 @ModelAttribute("usuario") @Valid Usuario usuario,
-                                BindingResult bindingResult) {
-
+                                BindingResult bindingResult,
+                                RedirectAttributes attr) {
+        System.out.println("ERROREEEEES" + " " + bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("listaUsers", usuarioRepository.findAll());
             model.addAttribute("listacategorias", categoriaRepository.findAll());
             System.out.println("LLEGOOOOOO JEJEJJEEJE");
             return "admin/editar_User";
         } else {
-
-            if (usuario.getId() == null) {
+            if (usuario.getId().isEmpty()) {
                 attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
             } else {
                 attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
@@ -157,6 +96,85 @@ public class AdminController {
 
 
 
+
+    @GetMapping("/suspenderUser")
+    public String suspenderUser(@RequestParam("id") int id) {
+        System.out.println("ESTO ES ID: " + id);
+
+
+            admiRepository.suspenderUsuario(id);
+            System.out.println("Se ha suspendido correctamente");
+
+            return "redirect:/administrador/";
+
+    }
+    @GetMapping("/activarUser")
+    public String activarUser(@RequestParam("id") int id) {
+        System.out.println("ESTO ES ID: " + id);
+
+            admiRepository.activarUsuario(id);
+            System.out.println("Se ha reactivado correctamente");
+
+            return "redirect:/administrador/";
+
+    }
+
+
+    @GetMapping("fotoUser/{id2}")
+    public ResponseEntity<byte[]>mostrarImagenUser(@PathVariable("id2") int id2){
+        Optional<Fotoalmacenada> opt = fotoalmacenadaRepository.findById(id2);
+        if (opt.isPresent()){
+            Fotoalmacenada f = opt.get();
+            byte[] fotoComoByte = f.getFotoalmacenada();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(
+                    MediaType.parseMediaType("image/png"));
+            return new ResponseEntity<>(
+                    fotoComoByte,
+                    httpHeaders,
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
+
+
+
+
+    @GetMapping("/incidencias")
+    String listaIncidencias( Model model){
+
+        model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+        return "admin/listaIncidentes";
+    }
+    @GetMapping("/prueba")
+
+    String pruebas(){
+        return "admin/prueba";
+    }
+
+    //Para obtener imagenes de la base de datos
+    //Para ver al el llamado vayan al archivo listaIncidentes.html
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
+        Optional<Tipoincidencia> opt = tipoincidenciaRepository.findById(id);
+        if (opt.isPresent()) {
+            Tipoincidencia p = opt.get();
+
+            byte[] imagenComoBytes = p.getLogo().getFotoalmacenada();
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(
+                    MediaType.parseMediaType("image/png"));
+
+            return new ResponseEntity<>(
+                    imagenComoBytes,
+                    httpHeaders,
+                    HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
 
 
 

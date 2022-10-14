@@ -8,5 +8,5 @@ public interface AdminUsuariosDto {
     String getCorreo();
     String getEstado();
     String getRol();
-    byte[] getFoto();
+    int getFoto();
 }

@@ -86,18 +86,18 @@
 <br>
 
 
-          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" th:object="${usuario}">
               <div class="modal-content">
 
                   <div class="modal-header" style="padding: 0px">
                     <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Editar Usuario</h5>
-                    <img src=https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg
+                    <img th:src="@{|fotoUser/*{foto}|}"
 
                          alt="avatar" class="rounded-circle img-responsive"
                          style="width: 150px; height: 150px">
 
                   </div>
-                <form th:action="@{'/administrador/guardarUser'}" method="post" th:object="${usuario}">
+                <form th:action="@{'/administrador/guardarUser'}" method="post">
                   <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
                     <div class="modal-body mx-3">
 
@@ -133,11 +133,11 @@
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-envelope prefix grey-text"></i>
-                        <input th:field="*{correo}" class="form-control validate">
+              cd          <input th:field="*{correo}" class="form-control validate">
                         <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
                       </div>
                       <div class="md-form mb-1">
-                        <select class="form-select" th:field="*{categoria}">
+                        <select class="form-select" th:field="${usuario.categoria}">
                           <option th:each="categorias :${listacategorias}"
                                   th:value="${categorias.id}"
                                   th:text="${categorias.nombre}">
