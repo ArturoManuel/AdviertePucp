@@ -1,6 +1,7 @@
 package com.example.adviertepucp.repository;
 
 import com.example.adviertepucp.dto.TipoIncidenciadto;
+import com.example.adviertepucp.dto.IncidenciaDashboardDto;
 import com.example.adviertepucp.dto.IncidenciaPorZona;
 import com.example.adviertepucp.entity.Incidencia;
 import com.example.adviertepucp.entity.Usuario;
@@ -21,19 +22,19 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     //dashboard
     @Query(value = "select count(idincidencia) from incidencia WHERE fecha > NOW() - INTERVAL 1 MONTH",
             nativeQuery = true)
-    List<Incidencia> incidenciasPorMes();
+    Integer incidenciasPorMes();
 
     @Query(value = "select count(idincidencia) from incidencia WHERE fecha > NOW() - INTERVAL 12 MONTH",
             nativeQuery = true)
-    List<Incidencia> incidenciasPorAnio();
+    Integer incidenciasPorAnio();
 
     @Query(value = "select count(idincidencia) from incidencia WHERE estado = 'atendido'",
             nativeQuery = true)
-    List<Incidencia> incidenciasAtendidas();
+    Integer incidenciasAtendidas();
 
     //select zp.nombre from incidencia i
     //inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)
-    @Query(value = "select zp.nombre, count(i.zonapucp) from incidencia i\n" +
+    @Query(value = "select zp.nombre as'nombre', count(i.zonapucp) as 'zona' from incidencia i\n" +
             "inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)\n" +
             "group by zp.nombre;",
             nativeQuery = true)
@@ -41,11 +42,11 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
 
     //select count(codigo) from usuario WHERE suspendido = '1';
 
-    @Query(value = "SELECT  round((count(u.suspendido)*100)/t.total, 2) as 'porcentaje' from usuario u\n" +
+    @Query(value = "SELECT  concat(round((count(u.suspendido)*100)/t.total, 2), '%') as 'porcentaje' from usuario u\n" +
             "CROSS JOIN (SELECT count(codigo)  as total FROM usuario u) t\n" +
             "where u.suspendido=1",
             nativeQuery = true)
-    List<Usuario> usuariosReportados();
+    String usuariosReportados();
 
     @Query(value = "select count(codigo) from usuario",
             nativeQuery = true)
@@ -60,9 +61,20 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     nativeQuery = true)
     List<Usuario> estadoUsuarios();
 
-    @Modifying
-    @Transactional
-    @Query(value="update incidencia set estado= ?1 where idincidencia=?2",nativeQuery = true)
-    void atenderIncidencia(String estado, int id);
+    @Query(value = "SELECT  concat(u.nombre,' ' , u.apellido) as 'nombre', count(i.idincidencia) as 'cantidad' from usuario u\n" +
+            "left join favorito f on (f.usuario_codigo= u.codigo)\n" +
+            "left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)\n" +
+            "group by concat(u.nombre,' ' , u.apellido) \n" +
+            "order by count(i.idincidencia) desc LIMIT 10;",
+            nativeQuery = true)
+    List<IncidenciaDashboardDto> UsariosconMasIncidencias();
+
+    //@Modifying
+   // @Transactional
+    //@Query(value="update incidencia set estado= ?1 where idincidencia=?2",nativeQuery = true)
+    //void atenderIncidencia(String estado, int id);
+    //select round((count(f.esfavorito)*100)/( count(i.idincidencia)), 2) as 'porcentajedeFavPor',  count(i.idincidencia)  from favorito f
+    //left join incidencia i on (f.incidencia_idincidencia = i.idincidencia);
+
 
 }

@@ -1,7 +1,10 @@
 package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.IncidenciaRepository;
+import com.example.adviertepucp.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import com.example.adviertepucp.entity.Incidencia;
 import org.springframework.ui.Model;
@@ -10,60 +13,125 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping({"/seguridad"})
 public class SeguridadController {
+    @Autowired
     IncidenciaRepository  incidenciaRepository;
+    @Autowired
+    UsuarioRepository  usuarioRepository;
+    /*
     @GetMapping("")
     String listarSeguridad(){
         return "seguridad/listaMapa";
+    }*/
+    @GetMapping("")
+    String listarSeguridad(Model model, HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        return "seguridad/listaMapa";
     }
-
+/*
     @GetMapping("/info")
-    String masInformacion(){
+    String masInformacion(Model model,
+                          @RequestParam("id") int id){
+        Optional<Incidencia> opt = incidenciaRepository.findById(id);
+        return "seguridad/MasInfoSeguridad";
+    }*/
+    @GetMapping({"/lista"})
+    public String listaIncidencias(Model model, HttpSession session) {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        return "seguridad/listaMapa";
+    }
+    @GetMapping("/info")
+    String masInformacion(@RequestParam("id") int id,
+                          Model model, HttpSession session){
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+
+        IncidenciaListadto incidencia = null;
+        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
+        for( IncidenciaListadto lista : listaIncidencias){
+            if(id == lista.getIdI()){
+                incidencia=lista;
+                break;
+            }
+        }
+        model.addAttribute("incidencia",incidencia);
+
         return "seguridad/MasInfoSeguridad";
     }
-
     @GetMapping("/mapa")
-    String mapa(){
+    String mapa(HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
         return "seguridad/mapa";
     }
-
-
-     @GetMapping("/estadisticas")
-    String dashboard(){
-       return "seguridad/dashboard";
-    }
-
-
-    /*
+/*
     @GetMapping("/estadisticas")
-    public String dashboard(Model model) {
+    String dashboard(Model model, HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+       return "seguridad/dashboard";
+    }*/
+
+
+
+    @GetMapping("/estadisticas")
+    public String dashboard(Model model, HttpSession session) {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
 
         model.addAttribute("num_incidenciasPorMes", incidenciaRepository.incidenciasPorMes());
         model.addAttribute("num_incidenciasPorAnio", incidenciaRepository.incidenciasPorAnio());
         model.addAttribute("num_incidenciasAtendidas", incidenciaRepository.incidenciasAtendidas());
-        model.addAttribute("num_ubicacionesPUCP", incidenciaRepository.ubicacionesPUCP());
+
+        model.addAttribute("lista_UsariosconMasIncidencias", incidenciaRepository.UsariosconMasIncidencias());
+
+        model.addAttribute("lista_ubicacionesPUCP", incidenciaRepository.ubicacionesPUCP());
         model.addAttribute("num_usuariosReportados", incidenciaRepository.usuariosReportados());
-
-
-        //
+        /*
         model.addAttribute("num_totalUsuario", incidenciaRepository.totalUsuarios());
         model.addAttribute("lista_estadousuario", incidenciaRepository.estadoUsuarios());
+
+        */
         return "seguridad/dashboard";
     }
 
-*/
     @PostMapping("/MasInfoSeguridad")
-    public String atenderIncidencia(Incidencia incidencia) {
-
+    public String atenderIncidencia(Incidencia incidencia, HttpSession session) {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
         Optional<Incidencia> opt = incidenciaRepository.findById(incidencia.getId());
 
         if (opt.isPresent()) {
-            incidenciaRepository.atenderIncidencia(incidencia.getEstado(), incidencia.getId());
+            //incidenciaRepository.atenderIncidencia(incidencia.getEstado(), incidencia.getId());
         }
         return "redirect:/seguridad/lista";
     }

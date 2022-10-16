@@ -5,5 +5,6 @@ public interface IncidenciaPorZona {
     //select zp.nombre from incidencia
     // "inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)
 
-    String getNombrezona();
+    String getNombre();
+    int getZona();
 }
