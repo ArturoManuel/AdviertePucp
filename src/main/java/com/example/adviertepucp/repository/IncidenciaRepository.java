@@ -1,5 +1,6 @@
 package com.example.adviertepucp.repository;
 
+import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.dto.TipoIncidenciadto;
 import com.example.adviertepucp.dto.IncidenciaDashboardDto;
 import com.example.adviertepucp.dto.IncidenciaPorZona;
@@ -17,7 +18,16 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "t.idtipoincidencia as idt , t.nombre as nombret , t.color as colort from tipoincidencia t",nativeQuery = true)
     List<TipoIncidenciadto> listaTipo();
 
-
+    //filtro
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , \n" +
+            "estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, \n" +
+            "longitud as longitud ,  z.nombre as zonapucp \n" +
+            "from incidencia i \n" +
+            "inner join zonapucp z on (z.idzonapucp=i.zonapucp) \n" +
+            "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+            "WHERE (i.fecha >= concat(?1, ' ', '0:0:0') AND i.fecha <= concat(?2, ' ', '23:59:59')) and (i.estado = ?3) and (t.nombre = ?4);",
+            nativeQuery = true)
+    List<IncidenciaListadto> buscarlistaFiltroIncidencia(String fechainicio, String fechafin,String estado, String nombre);
 
     //dashboard
     @Query(value = "select count(idincidencia) from incidencia WHERE fecha > NOW() - INTERVAL 1 MONTH",

@@ -3,6 +3,7 @@ package com.example.adviertepucp.controller;
 import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.IncidenciaRepository;
+import com.example.adviertepucp.repository.TipoincidenciaRepository;
 import com.example.adviertepucp.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,6 +24,8 @@ import java.util.Optional;
 public class SeguridadController {
     @Autowired
     IncidenciaRepository  incidenciaRepository;
+    @Autowired
+    TipoincidenciaRepository  tipoincidenciaRepository;
     @Autowired
     UsuarioRepository  usuarioRepository;
     /*
@@ -35,7 +39,28 @@ public class SeguridadController {
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        return "seguridad/listaMapa";
+    }
+    //filtro
+    @PostMapping("/filtro")
+    public String busquedaIncidencia(@RequestParam("fechainicio") String fechainicio,
+                                      @RequestParam("fechafin") String fechafin,
+                                      @RequestParam("estado") String estado,
+                                      @RequestParam("nombre") String nombre,
+                                      Model model, HttpSession session,
+                                     RedirectAttributes attr) {
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
+        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio,fechafin,estado,nombre);
+        model.addAttribute("listaIncidentes", listaFiltroIncidencia);
+        model.addAttribute("msg", "Filtro aplicado exitosamente");
+
         return "seguridad/listaMapa";
     }
 /*
@@ -51,7 +76,7 @@ public class SeguridadController {
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
-
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "seguridad/listaMapa";
     }
