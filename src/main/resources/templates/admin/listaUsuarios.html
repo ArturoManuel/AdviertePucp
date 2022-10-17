@@ -88,6 +88,7 @@
     <main>
 
         <div class="container px-4 py-0">
+            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
             <div class="title-28 py-1 d-flex mb-3">
                 Lista de Usuarios
                 <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button" class="btn btn-outline-dark">
@@ -172,13 +173,13 @@
 
 
                     <td>
-                        <div th:switch="${usuarios.getEstado()}">
-                            <p  th:case="0" class="status" style="background-color: limegreen" > Activo</p>
-                            <p  th:case="3" class="status" style="background-color: #c50606" > Suspendido</p>
-                            <p th:case="4" class="status" style="background-color: rgba(140,130,130,0.83)"  >No registrado</p>
+                        <div>
+                            <p  th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}" class="status" style="background-color: limegreen" > Activo</p>
+                            <p  th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}" class="status" style="background-color: #c50606" > Suspendido</p>
+                            <p  th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 0}" class="status" style="background-color: rgba(140,130,130,0.83)"  >No registrado</p>
                         </div>
                     </td>
-                    <td th:text="${usuarios.getRol()}">Administrador</td>
+                    <td th:text="${usuarios.getRol()}">Seguridad</td>
                     <td>
                         <div th:switch="${usuarios.getId_ca()}">
                             <div th:case="2">
@@ -187,8 +188,8 @@
                                         style="background-color: #3a7dec">Editar
                                 </a>  <!--Editar1 es el ID de este Usuario-->
 
-                                <div th:switch="${usuarios.getEstado()}">
-                                    <div th:case="0">
+                                <div>
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
                                         <button type="button" class="btn btn-redtele accion_button"
                                                 style="background-color: #c50606"
                                                 data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
@@ -225,7 +226,7 @@
 
                                         </div>
                                     </div>
-                                    <div th:case="3">
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
                                         <button type="submit"; class="btn btn-redtele accion_button"
@@ -269,8 +270,8 @@
                                    style="background-color: #3a7dec">Editar
                                 </a>  <!--Editar1 es el ID de este Usuario-->
 
-                                <div th:switch="${usuarios.getEstado()}">
-                                    <div th:case="0">
+                                <div>
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
                                         <button type="button" class="btn btn-redtele accion_button"
                                                 style="background-color: #c50606"
                                                 data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
@@ -307,7 +308,7 @@
 
                                         </div>
                                     </div>
-                                    <div th:case="3">
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
                                         <button type="submit"; class="btn btn-redtele accion_button"
@@ -350,8 +351,8 @@
                                         th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
                                         style="background-color: #3a7dec">Editar
                                 </a>  <!--Editar1 es el ID de este Usuario-->
-                                <div th:switch="${usuarios.getEstado()}">
-                                    <div th:case="0">
+                                <div>
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
                                         <button type="button" class="btn btn-redtele accion_button"
                                                 style="background-color: #c50606"
                                                 data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
@@ -388,7 +389,7 @@
 
                                         </div>
                                     </div>
-                                    <div th:case="3">
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
                                         <button type="submit"; class="btn btn-redtele accion_button"
@@ -432,8 +433,8 @@
                                         style="background-color: #3a7dec">Editar
                                 </a>  <!--Editar1 es el ID de este Usuario-->
 
-                                <div th:switch="${usuarios.getEstado()}">
-                                    <div th:case="0">
+                                <div>
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
                                         <button type="button" class="btn btn-redtele accion_button"
                                                 style="background-color: #c50606"
                                                 data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
@@ -470,7 +471,7 @@
 
                                         </div>
                                     </div>
-                                    <div th:case="3">
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
                                         <button type="submit"; class="btn btn-redtele accion_button"
@@ -493,7 +494,7 @@
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}"type="button" class="btn btn-redtele">
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
                                                             Reactivar
                                                         </a>
 
@@ -513,8 +514,8 @@
                                         th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
                                         style="background-color: #3a7dec">Editar
                                 </a>  <!--Editar1 es el ID de este Usuario-->
-                                <div th:switch="${usuarios.getEstado()}">
-                                    <div th:case="0">
+                                <div>
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
                                         <button type="button" class="btn btn-redtele accion_button"
                                                 style="background-color: #c50606"
                                                 data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
@@ -539,7 +540,7 @@
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele" >
+                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
                                                             Suspender
                                                         </a>
 
@@ -551,7 +552,7 @@
 
                                         </div>
                                     </div>
-                                    <div th:case="3">
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
                                         <button type="button"; class="btn btn-redtele disabled"
                                                 style="background-color: #c50606">Suspender</button>
                                         <button type="submit"; class="btn btn-redtele accion_button"

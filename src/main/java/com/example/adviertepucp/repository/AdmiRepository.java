@@ -16,6 +16,7 @@ import java.util.List;
 public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
     @Query(value ="SELECT c.idcategoria as id_ca, u.codigo as codigo, concat(u.apellido,' ', u.nombre) as nombres, u.correo as correo,\n" +
             "                u.suspendido as estado,\n" +
+            "                u.habilitado as registrado,\n" +
             "               c.nombre as rol, f.idfotoalmacenada as foto  FROM usuario u \n" +
             "                      inner join categoria c on (u.categoria = c.idcategoria)\n" +
             "                     inner join fotoalmacenada f on (u.foto=f.idfotoalmacenada)\n" +
@@ -23,6 +24,9 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
             nativeQuery = true)
     List<AdminUsuariosDto> listaUsuariosAdmin();
 
+    @Query(value = "select codigo from usuario where codigo = ?1",
+            nativeQuery = true)
+    String selectionCodigo(String codigo);
 
     @Query(value ="SELECT codigo, nombre, apellido, dni, correo FROM usuariobd;",
             nativeQuery = true)
@@ -43,5 +47,16 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
             value = "UPDATE `adviertedb`.`usuario` SET `suspendido` = 0 WHERE (`codigo` = ?1);")
     void activarUsuario(Integer id_codigo);
 
-
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE usuario SET nombre = ?1, apellido = ?2, dni = ?3,\n" +
+                    " celular = ?4, correo = ?5, categoria = ?6 WHERE (`codigo` = ?7);\n")
+    void actualizarUsuario(String nombre, String apellido, String dni,
+                            String celular, String email, int categoria, String id);
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "update usuario set codigo = ?1 where codigo = '20175557'")
+    void actualizarCodigo(String id);
 }

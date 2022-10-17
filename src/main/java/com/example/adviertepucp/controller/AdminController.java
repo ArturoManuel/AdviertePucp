@@ -1,9 +1,7 @@
 package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.dto.UsuariosDBDto;
-import com.example.adviertepucp.entity.Fotoalmacenada;
-import com.example.adviertepucp.entity.Tipoincidencia;
-import com.example.adviertepucp.entity.Usuario;
+import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -26,7 +28,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/administrador")
-public class AdminController {
+public class AdminController extends Usuario {
     @Autowired
     AdmiRepository admiRepository;
     @Autowired
@@ -54,50 +56,7 @@ public class AdminController {
 
 
 
-    @PostMapping("/guardarUser")
-    public String editarUsuario(Model model,
-                                @ModelAttribute("usuario") @Valid Usuario usuario,
-                                BindingResult bindingResult,
-                                RedirectAttributes attr) {
-        System.out.println("ERROREEEEES" + " " + bindingResult);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", categoriaRepository.findAll());
-            System.out.println("LLEGOOOOOO JEJEJJEEJE");
-            return "admin/editar_User";
-        } else {
-            if (usuario.getId().isEmpty()) {
-                attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
-            } else {
-                attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
-            }
-            usuarioRepository.save(usuario);
-            return "redirect:/administrador/";
-        }
-    }
-
-
-
-    @GetMapping("/editUser")
-    public String listaUserBD(@ModelAttribute("usuario") Usuario usuario,
-                              Model model, @RequestParam("id") int id) {
-        Optional<Usuario> optUsuario = usuarioRepository.findById(String.valueOf(id));
-        System.out.println("LLEGOOOO" + " " +optUsuario);
-        if (optUsuario.isPresent()){
-            usuario =optUsuario.get();
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", categoriaRepository.findAll());
-            return "admin/editar_User";
-        }else {
-            return "redirect:/administrador/";
-        }
-    }
-
-
-
-
-    @GetMapping("/suspenderUser")
+        @GetMapping("/suspenderUser")
     public String suspenderUser(@RequestParam("id") int id) {
         System.out.println("ESTO ES ID: " + id);
 
@@ -177,7 +136,100 @@ public class AdminController {
     }
 
 
+    @GetMapping("/editUser")
+    public String listaUserBD(@ModelAttribute("usuario") Usuario usuario,
+                              Model model, @RequestParam("id") int id) {
+        Optional<Usuario> optUsuario = usuarioRepository.findById(String.valueOf(id));
+        System.out.println("LLEGOOOO" + " " +optUsuario);
+        if (optUsuario.isPresent()){
+            usuario =optUsuario.get();
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/editar_User";
+        }else {
+            return "redirect:/administrador/";
+        }
+    }
 
+    @PostMapping("/guardarUser")
+    public String editarUsuario(Model model, @RequestParam("id")
+                                String codigo,
+                                @RequestParam("nombre") @Size(max = 45) @NotNull(message = "Este campo no puede estar nulo")
+                                String nombre,
+                                @RequestParam("apellido")@Size(max = 45) @NotNull(message = "Este campo no puede estar nulo")
+                                String apellido,
+                                @RequestParam("dni") @Size(max = 8 , message = "El DNI tiene un máximo de 8 dígitos")
+                                String dni,
+                                @RequestParam("celular") @Size(max = 9 , message = "El celular tiene un máximo de 9 dígitos")
+                                String celular,
+                                @RequestParam("correo") @Size(max = 80) @NotNull(message = "Este campo no puede estar nulo")
+                                String correo,
+                                @RequestParam("categoria") @NotNull(message = "Este campo no puede estar nulo")
+                                int categoria,
+                                @ModelAttribute("usuario") Usuario usuario,
+                                RedirectAttributes attr) {
+            System.out.println("LLGOOOOOO A REGISTRAAAR WAA");
+        System.out.println("CODIGOOOOO" + "   " + codigo);
+
+
+        System.out.println("LISTA DE USUARIOS    " + usuarioRepository.findAll());
+        Usuario usuario1 = new Usuario();
+        System.out.println("CODIGO QUE LLEGA   " + codigo);
+        if (nombre.isEmpty() || nombre.length() > 45){
+            model.addAttribute("msg", "El nombre no debe ser nulo");
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/editar_User";
+        }
+        if (apellido.isEmpty() || apellido.length() > 45){
+            model.addAttribute("msg2", "El apellido no debe ser nulo");
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/editar_User";
+        }
+        if (dni.length() != 8) {
+            model.addAttribute("msg3", "El DNI debe ser de 8 dígitos");
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/editar_User";
+        }
+        if (celular.length() != 9) {
+            model.addAttribute("msg4", "El celular debe ser de 9 dígitos");
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/editar_User";
+        }
+        if (correo.length() > 80) {
+            model.addAttribute("msg5", "Correo no valido");
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/editar_User";
+        }
+        try {
+
+            if (codigo.isEmpty()) {
+                attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
+            } else {
+                attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
+            }
+            System.out.println("CATEGORIAAA LLEGAA" + "  "+ categoria);
+            admiRepository.actualizarUsuario(nombre,apellido,dni,celular,correo,categoria,codigo);
+            System.out.println("DETECTANDO ERROROOOOOOOOR");
+            System.out.println("asdklasjdlaskjdlaksjda");
+            return "redirect:/administrador/";
+
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("NO SE PUEDEEE ACTUALIZAAAAAR");
+            model.addAttribute("msg", "No se pudo realizar la acción");
+            model.addAttribute("listaUsers", usuarioRepository.findAll());
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/listaUsuarios";
+        }
+
+    }
     @PostMapping("/guardaCrear")
     public String Crear(@RequestParam("nombre") String nombre ,
                            @RequestParam("archivo") MultipartFile logo ,

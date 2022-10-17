@@ -86,7 +86,7 @@
 <br>
 
 
-          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" th:object="${usuario}">
+          <div class="modal-dialog modal-dialog-centered" th:object="${usuario}">
               <div class="modal-content">
 
                   <div class="modal-header" style="padding: 0px">
@@ -97,44 +97,41 @@
                          style="width: 150px; height: 150px">
 
                   </div>
-                <form th:action="@{'/administrador/guardarUser'}" method="post">
+                <form th:action="@{'/administrador/guardarUser?id=' + *{id}}" method="post">
                   <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
                     <div class="modal-body mx-3">
-
-
-                      <div class="md-form mb-1">
-                        <i class="fas fa-user prefix grey-text"></i>
-                        <input th:field="*{id}" class="form-control validate"
-                               th:classappend="${#fields.hasErrors('id')?'is-invalid':'is-valid'}">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Código</label>
-                      </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
                         <input th:field="*{nombre}" class="form-control validate"
                                th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Nombre</label>
+                        <label data-error="wrong" data-success="right" >Nombre</label>
+                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
                         <input th:field="*{apellido}" class="form-control validate"
                                th:classappend="${#fields.hasErrors('apellido')?'is-invalid':'is-valid'}">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Apellido</label>
+                        <label data-error="wrong" data-success="right" >Apellido</label>
+                        <div th:if="${msg2 != null}" th:text="${msg2}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
                         <input th:field="*{dni}" class="form-control validate"
                                th:classappend="${#fields.hasErrors('dni')?'is-invalid':'is-valid'}">
-                        <label class="" data-error="wrong" data-success="right" for="defaultForm-pass">DNI</label>
+                        <label class="" data-error="wrong" data-success="right" >DNI</label>
+                        <div th:if="${msg3 != null}" th:text="${msg3}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-phone prefix grey-text"></i>
                         <input th:field="*{celular}" class="form-control validate">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Teléfono</label>
+                        <label data-error="wrong" data-success="right">Teléfono</label>
+                        <div th:if="${msg4 != null}" th:text="${msg4}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-envelope prefix grey-text"></i>
-              cd          <input th:field="*{correo}" class="form-control validate">
-                        <label data-error="wrong" data-success="right" for="defaultForm-pass">Correo</label>
+            cd          <input th:field="*{correo}" class="form-control validate">
+                        <label data-error="wrong" data-success="right">Correo</label>
+                        <div th:if="${msg5 != null}" th:text="${msg5}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <select class="form-select" th:field="${usuario.categoria}">
