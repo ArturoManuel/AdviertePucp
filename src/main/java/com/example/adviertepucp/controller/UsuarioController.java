@@ -60,8 +60,9 @@ public class UsuarioController {
             return "redirect:/suspendido";
         }
 
-
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+
         return "usuario/lista";
     }
 
@@ -97,6 +98,46 @@ public class UsuarioController {
 
 
         return "usuario/mapa";
+    }
+    //filtro
+    @PostMapping("/filtro")
+    public String busquedaIncidencia(@RequestParam("fechainicio") String fechainicio,
+                                     @RequestParam("fechafin") String fechafin,
+                                     @RequestParam("estado") String estado,
+                                     @RequestParam("nombre") String nombre,
+                                     @RequestParam("titulo") String titulo,
+                                     Model model, HttpSession session,
+                                     RedirectAttributes attr) {
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
+        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio,fechafin,estado,nombre);
+        model.addAttribute("listaIncidentes", listaFiltroIncidencia);
+        model.addAttribute("msg", "Filtro aplicado exitosamente");
+        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
+        model.addAttribute("listaIncidentes", listaFiltroTitulo);
+
+        return "usuario/lista";
+    }
+
+    @PostMapping("/filtro2")
+    public String busquedaIncidencia(@RequestParam("titulo") String titulo,
+                                     Model model, HttpSession session,
+                                     RedirectAttributes attr) {
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
+        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
+        model.addAttribute("listaIncidentes", listaFiltroTitulo);
+        model.addAttribute("msg", "Filtro aplicado exitosamente");
+
+        return "usuario/lista";
     }
 
     @GetMapping({"/lista"})

@@ -38,6 +38,7 @@
                             </select>
                             <label style="font-size: medium" >Tipo de incidencia</label>
                             <select class="form-select" aria-label="Default select example" name="nombre">
+                                <option hidden>Seleccionar</option>
                                 <option th:each="tipoincidencia : ${listaTipoIncidencias}" th:value="${tipoincidencia.getNombre()} " th:text="${tipoincidencia.getNombre()}">Todo</option>
 
                             </select>
@@ -50,7 +51,7 @@
                             <label for="start" style="font-size: medium">Fecha de fin:</label>
 
                             <input style="font-size: medium" type="date" id="finish" name="fechafin"
-                                   value="2080-09-13"
+                                   value="2022-09-14"
                                    min="2022-09-13" max="2080-09-13">
                             </div>
                         <div class="modal-footer">
@@ -233,8 +234,8 @@
 
 
     </div>
-    <form method="post">
-        <input name="searchField" class="form-control mb-3" type="text" placeholder="Buscar"/>
+    <form method="post" th:action="@{/seguridad/filtro2}">
+        <input name="titulo" class="form-control mb-3" type="text" placeholder="Buscar por título incidencia"/>
     </form>
     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
 

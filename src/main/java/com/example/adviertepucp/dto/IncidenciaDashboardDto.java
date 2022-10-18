@@ -4,5 +4,6 @@ public interface IncidenciaDashboardDto {
 
 
     String getNombre();
+    String getCodigo();
     String getCantidad();
 }
