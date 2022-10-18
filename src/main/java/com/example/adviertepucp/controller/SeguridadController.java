@@ -1,6 +1,9 @@
 package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.entity.Favorito;
+import com.example.adviertepucp.entity.Fotoalmacenada;
+import com.example.adviertepucp.entity.Comentario;
 import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.IncidenciaRepository;
 import com.example.adviertepucp.repository.TipoincidenciaRepository;
@@ -16,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,6 +95,23 @@ public class SeguridadController {
 
         return "seguridad/listaMapa";
     }
+    @PostMapping("/agregarcomentario")
+    public String busquedaIncidencia(@RequestParam("idincidencia")  int idincidencia,
+                                     @RequestParam("codigopucp")  int codigopucp,
+                                     @RequestParam("comentario")  String comentario,
+                                     Model model, HttpSession session,
+                                     RedirectAttributes attr) {
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
+
+        //model.addAttribute("comentario", incidenciaRepository.agregarComentario(incidencia, comen, codigopucp));
+
+       return "redirect:/seguridad/MasInfoSeguridad";
+    }
 /*
     @GetMapping("/info")
     String masInformacion(Model model,
@@ -126,6 +148,7 @@ public class SeguridadController {
             }
         }
         model.addAttribute("incidencia",incidencia);
+        model.addAttribute("incidenciaId",incidencia.getIdI());
 
         return "seguridad/MasInfoSeguridad";
     }

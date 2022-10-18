@@ -18,6 +18,14 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "t.idtipoincidencia as idt , t.nombre as nombret , t.color as colort from tipoincidencia t",nativeQuery = true)
     List<TipoIncidenciadto> listaTipo();
 
+    //agregar comentario
+    @Modifying
+    @Transactional
+    @Query(value="INSERT INTO comentario (idincidencia, nombre, usuario_codigo, fecha) \n" +
+            "VALUES ( ?1,?2, ?3, now());",
+            nativeQuery = true)
+    void agregarComentario(int idincidencia, String nombre, int idCodigo);
+
     //filtro
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , \n" +
             "estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, \n" +
