@@ -316,27 +316,23 @@ public class UsuarioController {
 
 
 
-    @GetMapping("/images/{id}/{id2}")
-    public ResponseEntity<byte[]> mostrarImagen(@RequestParam("id")IncidenciatienefotoId id, @RequestParam("id2") int id2) {
-        System.out.println("Esoy entrando");
-        List<Incidenciatienefoto> opt = incidenciatienefotoRepository.findAll();
-        for( Incidenciatienefoto incidenciatienefoto : opt){
-            if (incidenciatienefoto.getId()== id && incidenciatienefoto.getIdfotoalmacenada().getId()==id2 ) {
-                byte[] imagenComoBytes = incidenciatienefoto.getIdfotoalmacenada().getFotoalmacenada();
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.setContentType(
-                        MediaType.parseMediaType("image/jpeg"));
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
+        System.out.println("Probando lulu ");
+        System.out.println(id);
+        byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(0);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(
+                MediaType.parseMediaType("image/png"));
 
-                return new ResponseEntity<>(
-                        imagenComoBytes,
-                        httpHeaders,
-                        HttpStatus.OK);
-            } else {
-                return null;
-            }
-        }
-        return  null;
+        return new ResponseEntity<>(
+                imagenComoBytes,
+                httpHeaders,
+                HttpStatus.OK);
     }
+
+
+
 
 
 }

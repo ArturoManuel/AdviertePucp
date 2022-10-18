@@ -84,8 +84,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     List<IncidenciaListadto> listaIncidencia();
 
     //Para extraer las fotos de cada incidencia
-    @Query(value="select fotoalmacenada from  incidencia i inner join incidenciatienefoto it on (i.idincidencia=it.idincidencia) inner join fotoalmacenada f on (it.idfotoalmacenada=f.idfotoalmacenada) where i.idincidencia=?1;",nativeQuery = true)
-    List<Fotoalmacenada> listaFotoIncidencia(int id);
+    @Query(value="select f.fotoalmacenada from \n" +
+            "            incidencia i inner join incidenciatienefoto it on (i.idincidencia=it.idincidencia) \n" +
+            "            inner join fotoalmacenada f on (it.idfotoalmacenada=f.idfotoalmacenada) where i.idincidencia=?;",nativeQuery = true)
+    List<byte[]> listaFotoIncidencia(Integer id);
+
 
     @Query(nativeQuery = true,
     value = "select f.idinteraccion,f.usuario_codigo,i.idincidencia\n" +
