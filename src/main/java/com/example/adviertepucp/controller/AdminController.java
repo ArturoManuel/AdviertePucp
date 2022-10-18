@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -52,6 +53,14 @@ public class AdminController extends Usuario {
         model.addAttribute("usuariosDB", admiRepository.UsuariosDB());
         model.addAttribute("listacategorias", admiRepository.CategoriaList());
         return "admin/listaUsuarios";
+    }
+
+    //Perfil
+    @GetMapping({"/perfil"})
+    public String perfil(HttpSession session)
+    {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        return "admin/perfil";
     }
 
 
