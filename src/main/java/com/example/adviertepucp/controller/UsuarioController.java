@@ -222,7 +222,7 @@ public class UsuarioController {
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
-                                   Incidencia incidencia,
+                                   @ModelAttribute("incidencia") Incidencia incidencia,
                                    Model model,
                                    HttpSession session,
                                    Authentication auth){

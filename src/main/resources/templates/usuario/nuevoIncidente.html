@@ -57,7 +57,7 @@
             </div>
         </div>
         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-        <form method="post" th:action="@{'/usuario/guardarincidente'}" enctype="multipart/form-data">
+        <form method="post" th:action="@{'/usuario/guardarincidente'}" enctype="multipart/form-data" th:object="${incidencia}">
 
         <div class="row">
             <div class="col-lg-4">
@@ -89,7 +89,7 @@
 
                             </div>
                             <div class="col-sm-9">
-                                <input name="titulo" type="text" id="form12" class="form-control" />
+                                <input th:field="*{titulo}" name="titulo" type="text" id="form12" class="form-control" />
                             </div>
                         </div>
                         <hr>
@@ -98,7 +98,7 @@
                                 <p class="mb-0">Describe lo sucedido a detalle</p>
                             </div>
                             <div class="col-sm-9">
-                                <textarea name="descripcion" class="form-control" id="textAreaExample" rows="4"></textarea>
+                                <textarea th:field="*{descripcion}" name="descripcion" class="form-control" id="textAreaExample" rows="4"></textarea>
                             </div>
                         </div>
                         <hr>
@@ -108,7 +108,7 @@
 
                             </div>
                             <div class="col-sm-9">
-                                <input list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
+                                <input th:field="*{zonapucp}" list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
                                 <datalist id="zonapucp">
                                     <option th:each="zona:${listaZonas}" th:value="${zona.getId()}" th:text="${zona.getNombre()}">
                                 </datalist>
@@ -120,7 +120,7 @@
                                 <p class="mb-0">Tipo de incidencia</p>
                             </div>
                             <div class="col-sm-9">
-                                <select name="tipoincidencia" class="form-select" style="font-size: small">
+                                <select th:field="*{tipoincidencia}" name="tipoincidencia" class="form-select" style="font-size: small">
                                     <option hidden>Seleccionar</option>
                                     <option
                                             th:each="tipo:${listaTiposIncidencia}"
@@ -135,7 +135,7 @@
                                 <p class="mb-0">Nivel de urgencia</p>
                             </div>
                             <div class="col-sm-9">
-                                <select name="urgencia" class="form-select" style="font-size: small">
+                                <select th:field="*{urgencia}" name="urgencia" class="form-select" style="font-size: small">
                                     <option hidden>Seleccionar</option>
                                     <option value="leve">Leve</option>
                                     <option value="moderado">Moderado</option>
