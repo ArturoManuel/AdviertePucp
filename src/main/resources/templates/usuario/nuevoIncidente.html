@@ -121,7 +121,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <select th:field="*{tipoincidencia}" name="tipoincidencia" class="form-select" style="font-size: small">
-                                    <option hidden>Seleccionar</option>
+                                    <option value="Seleccionar" hidden>Seleccionar</option>
                                     <option
                                             th:each="tipo:${listaTiposIncidencia}"
                                             th:value="${tipo.getId()}"
@@ -136,7 +136,7 @@
                             </div>
                             <div class="col-sm-9">
                                 <select th:field="*{urgencia}" name="urgencia" class="form-select" style="font-size: small">
-                                    <option hidden>Seleccionar</option>
+                                    <option value="Seleccionar" hidden>Seleccionar</option>
                                     <option value="leve">Leve</option>
                                     <option value="moderado">Moderado</option>
                                     <option value="critico">Crítico</option>
