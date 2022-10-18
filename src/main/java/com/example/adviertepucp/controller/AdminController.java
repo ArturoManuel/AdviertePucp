@@ -8,6 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -26,10 +29,14 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/administrador")
 public class AdminController extends Usuario {
+
+
     @Autowired
     AdmiRepository admiRepository;
     @Autowired
@@ -48,6 +55,9 @@ public class AdminController extends Usuario {
 
     @Autowired
     UsuarioBDRepository usuarioBDRepository;
+
+
+
     @GetMapping("")
     public String listaUsuarios(Model model){
         model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
@@ -205,7 +215,7 @@ public class AdminController extends Usuario {
 
         }
         if (correo.length() > 80) {
-            model.addAttribute("msg5", "Correo no valido");
+            model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
 
@@ -255,6 +265,24 @@ public class AdminController extends Usuario {
         }
     }
 
+    @GetMapping({"nuevacontrasena"})
+    public String nuevacontrasena(@RequestParam("token") String token,Model model, RedirectAttributes attr)
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            if (token.length() ==64){
+                Usuario usuario=usuarioRepository.validarToken(token);
+                if (usuario != null){
+                    model.addAttribute("token", token);
+                    return "loguin/nuevacontrasena";
+                }
+            }
+            attr.addFlashAttribute("invalidtoken", "Error: token inválido o vencido.");
+            return "redirect:/registro";
+        }
+        return "redirect:/redirectByRole";
+    }
+
     @PostMapping("/guardarUser")
     public String editarUsuario(Model model, @RequestParam("id")
                                 String codigo,
@@ -280,6 +308,8 @@ public class AdminController extends Usuario {
         Usuario usuario1 = new Usuario();
         System.out.println("CODIGO QUE LLEGA   " + codigo);
         int flag = 0;
+
+
         if (nombre.isEmpty() || nombre.length() > 45){
             model.addAttribute("msg1", "El nombre no debe ser nulo");
             flag ++;
@@ -300,7 +330,7 @@ public class AdminController extends Usuario {
 
         }
         if (correo.length() > 80) {
-            model.addAttribute("msg5", "Correo no valido");
+            model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
 
@@ -312,17 +342,13 @@ public class AdminController extends Usuario {
         }
         try {
 
-            if (codigo.isEmpty()) {
-                attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
-            } else {
-                attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
-            }
+            attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
             System.out.println("CATEGORIAAA LLEGAA" + "  "+ categoria);
             admiRepository.actualizarUsuario(nombre,apellido,dni,celular,correo,categoria,codigo);
             usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
             System.out.println("DETECTANDO ERROROOOOOOOOR");
             System.out.println("asdklasjdlaskjdlaksjda");
-            return "redirect:/administrador/";
+            return "redirect:redirect/administrador/";
 
 
         }catch (Exception e) {
