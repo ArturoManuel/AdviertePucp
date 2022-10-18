@@ -93,4 +93,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             "where f.usuario_codigo=?1 and f.esfavorito=0 and i.publicado=0;")
     UsuarioEstaCreandoDto obtenerCreandoUsuario(String codigo);
 
+    @Query(nativeQuery = true,
+            value = "select idinteraccion from favorito where usuario_codigo=?1\n" +
+                    "    and incidencia_idincidencia=?2 and esfavorito=0;")
+    Integer obtenerInteraccionId(Integer codigo, Integer idIncidencia);
+
+
 }
