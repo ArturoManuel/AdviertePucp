@@ -162,7 +162,8 @@ public class UsuarioController {
         return "usuario/perfil";
     }
     @GetMapping({"/nuevoIncidente"})
-    public String nuevo(Model model, Authentication auth, HttpSession session) {
+    public String nuevo(@ModelAttribute("incidencia") Incidencia incidencia,
+            Model model, Authentication auth, HttpSession session) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
@@ -178,7 +179,7 @@ public class UsuarioController {
         if (usuarioEstaCreandoDto!=null){
             Optional<Incidencia> incidenciaOpt = incidenciaRepository.findById(usuarioEstaCreandoDto.getIdincidencia());
 
-            Incidencia incidencia = incidenciaOpt.get();
+            incidencia = incidenciaOpt.get();
 
             model.addAttribute("incidenciaPrevia",incidencia);
             model.addAttribute("listaZonas",zonapucpRepository.findAll());
@@ -190,7 +191,11 @@ public class UsuarioController {
 
         else {
             Incidencia nuevaIncidencia = new Incidencia();
+            Double latitud = 1.5;
+            Double longitud = 2.6;
             nuevaIncidencia.setPublicado(0);
+            nuevaIncidencia.setLatitud(latitud);
+            nuevaIncidencia.setLongitud(longitud);
             incidenciaRepository.save(nuevaIncidencia);
             //TODO: RELLENAR LA TABLA DE FAVORITO PERO EN EL SAVE
             Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
@@ -204,8 +209,8 @@ public class UsuarioController {
             favorito.setUsuarioCodigo(usuarioLogueadoOpt.get());
             favorito.setIncidenciaIdincidencia(nuevaIncidencia);
             favoritoRepository.save(favorito);
-
-
+            System.out.println(nuevaIncidencia.getId());
+            model.addAttribute("nuevaIncidenciaId",nuevaIncidencia.getId());
             model.addAttribute("listaZonas",zonapucpRepository.findAll());
             model.addAttribute("listaTiposIncidencia",tipoincidenciaRepository.findAll());
             return "usuario/nuevoIncidente";
@@ -217,7 +222,6 @@ public class UsuarioController {
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
-                                   @RequestParam("codigopucp")  String codigopucp,
                                    Incidencia incidencia,
                                    Model model,
                                    HttpSession session,
@@ -256,25 +260,30 @@ public class UsuarioController {
             }
 
             try{
+                Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+                Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+
                 Double latitud = 1.5;
                 Double longitud = 2.6;
                 String estado = "registrado";
                 Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+                Integer idasdasd= incidencia.getId();
                 incidencia.setEstado(estado);
-                incidencia.setLatitud(latitud);
-                incidencia.setLongitud(longitud);
+
                 incidencia.setFecha(datetime);
+                incidencia.setPublicado(1);
                 incidenciaRepository.save(incidencia);
 
+
                 Favorito favorito = new Favorito();
+                favorito.setId(usuarioRepository.obtenerInteraccionId(Integer.parseInt(usuarioLogueado.getId()),incidencia.getId()));
+                favorito.setUsuarioCodigo(usuarioLogueado);
                 favorito.setEsfavorito(0);
                 favorito.setHacomentado(0);
                 favorito.setHasolucionado(0);
                 favorito.setPusoenproceso(0);
                 favorito.setReaperturacaso(0);
                 favorito.setFecha(datetime);
-                Optional<Usuario> user = usuarioRepository.findById(codigopucp);
-                favorito.setUsuarioCodigo(user.get());
                 favorito.setIncidenciaIdincidencia(incidencia);
                 favoritoRepository.save(favorito);
 

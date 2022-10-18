@@ -52,11 +52,6 @@ public class Incidencia {
     @Column(name = "publicado", nullable = false)
     private Integer publicado;
 
-    @OneToMany
-    private Set<Favorito> favoritos = new LinkedHashSet<>();
-
-    @OneToMany
-    private Set<Comentario> comentarios = new LinkedHashSet<>();
 
     @ManyToMany
     @JoinTable(name = "incidenciatienefoto",
@@ -150,22 +145,6 @@ public class Incidencia {
 
     public void setPublicado(Integer publicado) {
         this.publicado = publicado;
-    }
-
-    public Set<Favorito> getFavoritos() {
-        return favoritos;
-    }
-
-    public void setFavoritos(Set<Favorito> favoritos) {
-        this.favoritos = favoritos;
-    }
-
-    public Set<Comentario> getComentarios() {
-        return comentarios;
-    }
-
-    public void setComentarios(Set<Comentario> comentarios) {
-        this.comentarios = comentarios;
     }
 
     public Set<Fotoalmacenada> getFotoalmacenadas() {
