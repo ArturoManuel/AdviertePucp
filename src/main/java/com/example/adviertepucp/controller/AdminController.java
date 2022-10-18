@@ -8,6 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -26,10 +29,14 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/administrador")
 public class AdminController extends Usuario {
+
+
     @Autowired
     AdmiRepository admiRepository;
     @Autowired
@@ -45,6 +52,11 @@ public class AdminController extends Usuario {
 
     @Autowired
     CategoriaRepository categoriaRepository;
+
+    @Autowired
+    UsuarioBDRepository usuarioBDRepository;
+
+
 
     @GetMapping("")
     public String listaUsuarios(Model model){
@@ -145,6 +157,98 @@ public class AdminController extends Usuario {
     }
 
 
+    @GetMapping("/crearUser")
+    public String crearUser(@ModelAttribute("usuario") Usuario usuario,
+                            Model model){
+        model.addAttribute("listacategorias", categoriaRepository.findAll());
+        return "admin/newUser";
+    }
+
+    @PostMapping("/guardarCrearUser")
+    public String guardarCrearUsuario(Model model, @RequestParam("id")
+                                String codigo,
+                                @RequestParam("nombre") @Size(max = 45) @NotNull(message = "Este campo no puede estar nulo")
+                                String nombre,
+                                @RequestParam("apellido")@Size(max = 45) @NotNull(message = "Este campo no puede estar nulo")
+                                String apellido,
+                                @RequestParam("dni") @Size(max = 8 , message = "El DNI tiene un máximo de 8 dígitos")
+                                String dni,
+                                @RequestParam("celular") @Size(max = 9 , message = "El celular tiene un máximo de 9 dígitos")
+                                String celular,
+                                @RequestParam("correo") @Size(max = 80) @NotNull(message = "Este campo no puede estar nulo")
+                                String correo,
+                                @RequestParam("categoria") @NotNull(message = "Este campo no puede estar nulo")
+                                int categoria,
+                                @ModelAttribute("usuario") Usuario usuario,
+                                RedirectAttributes attr) {
+        System.out.println("LLGOOOOOO A REGISTRAAAR WAA");
+        System.out.println("CODIGOOOOO" + "   " + codigo);
+
+
+        System.out.println("LISTA DE USUARIOS    " + usuarioRepository.findAll());
+        Usuario usuario1 = new Usuario();
+        System.out.println("CODIGO QUE LLEGA   " + codigo);
+        int flag = 0;
+
+        if (codigo.length() != 8) {
+            model.addAttribute("msg", "El codigo debe ser de 8 dígitos");
+            flag ++;
+
+        }
+        if (nombre.isEmpty() || nombre.length() > 45){
+            model.addAttribute("msg1", "El nombre no debe ser nulo");
+            flag ++;
+
+        }
+        if (apellido.isEmpty() || apellido.length() > 45){
+            model.addAttribute("msg2", "El apellido no debe ser nulo");
+            flag ++;
+        }
+        if (dni.length() != 8) {
+            model.addAttribute("msg3", "El DNI debe ser de 8 dígitos");
+            flag ++;
+
+        }
+        if (celular.length() != 9) {
+            model.addAttribute("msg4", "El celular debe ser de 9 dígitos");
+            flag ++;
+
+        }
+        if (correo.length() > 80) {
+            model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
+            flag ++;
+        }
+
+        if (flag !=0){
+            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            return "admin/newUser";
+        }
+        try {
+            attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
+            System.out.println("CATEGORIAAA LLEGAA" + "  "+ categoria);
+            int suspendido = 0;
+            int habilitado = 0;
+            admiRepository.crearUsuario(codigo,nombre,apellido,dni,correo,categoria, suspendido, habilitado);
+            usuarioBDRepository.crearUsuarioBD(nombre,apellido,dni,correo,codigo);
+            System.out.println("DETECTANDO ERROROOOOOOOOR");
+            System.out.println("asdklasjdlaskjdlaksjda");
+            return "redirect:/administrador/";
+
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("NO SE PUEDEEE ACTUALIZAAAAAR");
+            model.addAttribute("msg", "No se pudo realizar la acción");
+            model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
+            model.addAttribute("listaUsuarios1", admiRepository.findAll());
+            model.addAttribute("usuariosDB", admiRepository.UsuariosDB());
+            model.addAttribute("listacategorias", admiRepository.CategoriaList());
+            return "admin/listaUsuarios";
+        }
+
+    }
+
+
     @GetMapping("/editUser")
     public String listaUserBD(@ModelAttribute("usuario") Usuario usuario,
                               Model model, @RequestParam("id") int id) {
@@ -159,6 +263,24 @@ public class AdminController extends Usuario {
         }else {
             return "redirect:/administrador/";
         }
+    }
+
+    @GetMapping({"nuevacontrasena"})
+    public String nuevacontrasena(@RequestParam("token") String token,Model model, RedirectAttributes attr)
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+            if (token.length() ==64){
+                Usuario usuario=usuarioRepository.validarToken(token);
+                if (usuario != null){
+                    model.addAttribute("token", token);
+                    return "loguin/nuevacontrasena";
+                }
+            }
+            attr.addFlashAttribute("invalidtoken", "Error: token inválido o vencido.");
+            return "redirect:/registro";
+        }
+        return "redirect:/redirectByRole";
     }
 
     @PostMapping("/guardarUser")
@@ -185,56 +307,58 @@ public class AdminController extends Usuario {
         System.out.println("LISTA DE USUARIOS    " + usuarioRepository.findAll());
         Usuario usuario1 = new Usuario();
         System.out.println("CODIGO QUE LLEGA   " + codigo);
+        int flag = 0;
+
+
         if (nombre.isEmpty() || nombre.length() > 45){
-            model.addAttribute("msg", "El nombre no debe ser nulo");
-            model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", categoriaRepository.findAll());
-            return "admin/editar_User";
+            model.addAttribute("msg1", "El nombre no debe ser nulo");
+            flag ++;
+
         }
         if (apellido.isEmpty() || apellido.length() > 45){
             model.addAttribute("msg2", "El apellido no debe ser nulo");
-            model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", categoriaRepository.findAll());
-            return "admin/editar_User";
+            flag ++;
         }
         if (dni.length() != 8) {
             model.addAttribute("msg3", "El DNI debe ser de 8 dígitos");
-            model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", categoriaRepository.findAll());
-            return "admin/editar_User";
+            flag ++;
+
         }
         if (celular.length() != 9) {
             model.addAttribute("msg4", "El celular debe ser de 9 dígitos");
-            model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", categoriaRepository.findAll());
-            return "admin/editar_User";
+            flag ++;
+
         }
         if (correo.length() > 80) {
-            model.addAttribute("msg5", "Correo no valido");
+            model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
+            flag ++;
+        }
+
+        if (flag !=0){
+
             model.addAttribute("listaUsers", usuarioRepository.findAll());
             model.addAttribute("listacategorias", categoriaRepository.findAll());
             return "admin/editar_User";
         }
         try {
 
-            if (codigo.isEmpty()) {
-                attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
-            } else {
-                attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
-            }
+            attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
             System.out.println("CATEGORIAAA LLEGAA" + "  "+ categoria);
             admiRepository.actualizarUsuario(nombre,apellido,dni,celular,correo,categoria,codigo);
+            usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
             System.out.println("DETECTANDO ERROROOOOOOOOR");
             System.out.println("asdklasjdlaskjdlaksjda");
-            return "redirect:/administrador/";
+            return "redirect:redirect/administrador/";
 
 
         }catch (Exception e) {
             e.printStackTrace();
             System.out.println("NO SE PUEDEEE ACTUALIZAAAAAR");
-            model.addAttribute("msg", "No se pudo realizar la acción");
-            model.addAttribute("listaUsers", usuarioRepository.findAll());
-            model.addAttribute("listacategorias", categoriaRepository.findAll());
+            model.addAttribute("msg", "No se pu do realizar la acción");
+            model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
+            model.addAttribute("listaUsuarios1", admiRepository.findAll());
+            model.addAttribute("usuariosDB", admiRepository.UsuariosDB());
+            model.addAttribute("listacategorias", admiRepository.CategoriaList());
             return "admin/listaUsuarios";
         }
 

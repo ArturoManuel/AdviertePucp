@@ -59,4 +59,12 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
     @Query(nativeQuery = true,
             value = "update usuario set codigo = ?1 where codigo = '20175557'")
     void actualizarCodigo(String id);
+
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+            value = "insert into usuario (codigo, nombre, apellido, dni, correo, categoria, suspendido, habilitado)" +
+                    " values (?1, ?2, ?3, ?4, ?5,?6, ?7, ?8);")
+    void crearUsuario(String codigo, String nombre, String apellido, String dni, String correo, int categoria,
+                        int suspendido, int habilitado);
 }

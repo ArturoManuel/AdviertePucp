@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +24,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -222,7 +224,8 @@ public class UsuarioController {
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
-                                   @ModelAttribute("incidencia") Incidencia incidencia,
+                                   @ModelAttribute("incidencia") @Valid Incidencia incidencia,
+                                   BindingResult bindingResult,
                                    Model model,
                                    HttpSession session,
                                    Authentication auth){
@@ -313,27 +316,23 @@ public class UsuarioController {
 
 
 
-    @GetMapping("/images/{id}/{id2}")
-    public ResponseEntity<byte[]> mostrarImagen(@RequestParam("id")IncidenciatienefotoId id, @RequestParam("id2") int id2) {
-        System.out.println("Esoy entrando");
-        List<Incidenciatienefoto> opt = incidenciatienefotoRepository.findAll();
-        for( Incidenciatienefoto incidenciatienefoto : opt){
-            if (incidenciatienefoto.getId()== id && incidenciatienefoto.getIdfotoalmacenada().getId()==id2 ) {
-                byte[] imagenComoBytes = incidenciatienefoto.getIdfotoalmacenada().getFotoalmacenada();
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.setContentType(
-                        MediaType.parseMediaType("image/jpeg"));
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
+        System.out.println("Probando lulu ");
+        System.out.println(id);
+        byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(0);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(
+                MediaType.parseMediaType("image/png"));
 
-                return new ResponseEntity<>(
-                        imagenComoBytes,
-                        httpHeaders,
-                        HttpStatus.OK);
-            } else {
-                return null;
-            }
-        }
-        return  null;
+        return new ResponseEntity<>(
+                imagenComoBytes,
+                httpHeaders,
+                HttpStatus.OK);
     }
+
+
+
 
 
 }
