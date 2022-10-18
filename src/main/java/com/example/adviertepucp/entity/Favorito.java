@@ -7,16 +7,17 @@ import java.time.Instant;
 @Entity
 @Table(name = "favorito")
 public class Favorito {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EmbeddedId
-    private FavoritoId id;
+    @Column(name = "idinteraccion", nullable = false)
+    private Integer id;
 
-    @MapsId("usuarioCodigo")
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "usuario_codigo", nullable = false)
     private Usuario usuarioCodigo;
 
-    @MapsId("incidenciaIdincidencia")
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "incidencia_idincidencia", nullable = false)
     private Incidencia incidenciaIdincidencia;
@@ -45,11 +46,11 @@ public class Favorito {
     @Column(name = "fecha", nullable = false)
     private Instant fecha;
 
-    public FavoritoId getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(FavoritoId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

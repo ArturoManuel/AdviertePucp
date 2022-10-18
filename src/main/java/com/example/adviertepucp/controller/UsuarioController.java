@@ -128,17 +128,21 @@ public class UsuarioController {
             return "redirect:/suspendido";
         }
 
-        UsuarioEstaCreandoDto usuarioEstaCreandoDto = usuarioRepository.obtenerCreandoUsuario(auth.getName());
-        Optional<Incidencia> incidenciaOpt = incidenciaRepository.findById(usuarioEstaCreandoDto.getIdincidencia());
 
-        if (incidenciaOpt.isPresent()){
+        UsuarioEstaCreandoDto usuarioEstaCreandoDto = usuarioRepository.obtenerCreandoUsuario(auth.getName());
+
+        Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+
+
+        if (usuarioEstaCreandoDto!=null){
+            Optional<Incidencia> incidenciaOpt = incidenciaRepository.findById(usuarioEstaCreandoDto.getIdincidencia());
 
             Incidencia incidencia = incidenciaOpt.get();
 
             model.addAttribute("incidenciaPrevia",incidencia);
             model.addAttribute("listaZonas",zonapucpRepository.findAll());
             model.addAttribute("listaTiposIncidencia",tipoincidenciaRepository.findAll());
-            return "usuario//nuevoIncidente";
+            return "usuario/nuevoIncidente";
 
 
         }
@@ -148,6 +152,17 @@ public class UsuarioController {
             nuevaIncidencia.setPublicado(0);
             incidenciaRepository.save(nuevaIncidencia);
             //TODO: RELLENAR LA TABLA DE FAVORITO PERO EN EL SAVE
+            Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+            Favorito favorito = new Favorito();
+            favorito.setEsfavorito(0);
+            favorito.setHacomentado(0);
+            favorito.setHasolucionado(0);
+            favorito.setPusoenproceso(0);
+            favorito.setReaperturacaso(0);
+            favorito.setFecha(datetime);
+            favorito.setUsuarioCodigo(usuarioLogueadoOpt.get());
+            favorito.setIncidenciaIdincidencia(nuevaIncidencia);
+            favoritoRepository.save(favorito);
 
 
             model.addAttribute("listaZonas",zonapucpRepository.findAll());
@@ -164,7 +179,8 @@ public class UsuarioController {
                                    @RequestParam("codigopucp")  String codigopucp,
                                    Incidencia incidencia,
                                    Model model,
-                                   HttpSession session){
+                                   HttpSession session,
+                                   Authentication auth){
 
 
 
@@ -219,6 +235,7 @@ public class UsuarioController {
                 Optional<Usuario> user = usuarioRepository.findById(codigopucp);
                 favorito.setUsuarioCodigo(user.get());
                 favorito.setIncidenciaIdincidencia(incidencia);
+                favoritoRepository.save(favorito);
 
 
                 for (Fotoalmacenada fotoDB: listaFotoAlmacenada) {
