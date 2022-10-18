@@ -43,6 +43,17 @@ public class SeguridadController {
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "seguridad/listaMapa";
     }
+    //Perfil
+    @GetMapping({"/perfil"})
+    public String perfil(HttpSession session)
+    {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        return "seguridad/perfil";
+    }
+
     //filtro
     @PostMapping("/filtro")
     public String busquedaIncidencia(@RequestParam("fechainicio") String fechainicio,
