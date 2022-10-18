@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,6 +24,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -222,7 +224,8 @@ public class UsuarioController {
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
-                                   @ModelAttribute("incidencia") Incidencia incidencia,
+                                   @ModelAttribute("incidencia") @Valid Incidencia incidencia,
+                                   BindingResult bindingResult,
                                    Model model,
                                    HttpSession session,
                                    Authentication auth){

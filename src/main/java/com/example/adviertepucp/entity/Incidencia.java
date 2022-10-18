@@ -15,11 +15,11 @@ public class Incidencia {
     @Column(name = "idincidencia", nullable = false)
     private Integer id;
 
-    @Size(max = 45)
+    @Size(max = 45, message = "El título no puede tener más de 40 caracteres")
     @Column(name = "titulo", length = 45)
     private String titulo;
 
-    @Size(max = 300)
+    @Size(max = 300,message = "La descripción no puede tener más de 300 caracteres")
     @Column(name = "descripcion", length = 300)
     private String descripcion;
 
