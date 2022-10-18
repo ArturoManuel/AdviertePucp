@@ -29,6 +29,17 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             nativeQuery = true)
     List<IncidenciaListadto> buscarlistaFiltroIncidencia(String fechainicio, String fechafin,String estado, String nombre);
 
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , \n" +
+            "estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
+            "longitud as longitud ,  z.nombre as zonapucp \n" +
+            "from incidencia i \n" +
+            "inner join zonapucp z on (z.idzonapucp=i.zonapucp) \n" +
+            "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+            "WHERE titulo like( concat('%',?1,'%'));",
+            nativeQuery = true)
+    List<IncidenciaListadto> buscarlistaPorTitulo(String titulo);
+
+
     //dashboard
     @Query(value = "select count(idincidencia) from incidencia WHERE fecha > NOW() - INTERVAL 1 MONTH",
             nativeQuery = true)
@@ -71,13 +82,21 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     nativeQuery = true)
     List<Usuario> estadoUsuarios();
 
-    @Query(value = "SELECT  concat(u.nombre,' ' , u.apellido) as 'nombre', count(i.idincidencia) as 'cantidad' from usuario u\n" +
+    @Query(value = "SELECT  concat(u.nombre,' ' , u.apellido) as 'nombre', u.codigo as 'codigo', count(i.idincidencia) as 'cantidad' from usuario u\n" +
             "left join favorito f on (f.usuario_codigo= u.codigo)\n" +
             "left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)\n" +
             "group by concat(u.nombre,' ' , u.apellido) \n" +
             "order by count(i.idincidencia) desc LIMIT 10;",
             nativeQuery = true)
     List<IncidenciaDashboardDto> UsariosconMasIncidencias();
+    //SELECT  concat(u.nombre,' ' , u.apellido) as 'nombre', u.codigo as 'codigo', count(i.idincidencia) as 'cantidad' from usuario u
+    //left join favorito f on (f.usuario_codigo= u.codigo)
+    //left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)
+    //where (u.categoria=3 or u.categoria=4 or u.categoria=5 or u.categoria=6) and
+    //f.esfavorito=0
+    //group by concat(u.nombre,' ' , u.apellido)
+    //order by count(i.idincidencia) desc LIMIT 10;
+
 
     //@Modifying
    // @Transactional

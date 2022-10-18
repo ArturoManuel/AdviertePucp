@@ -63,6 +63,22 @@ public class SeguridadController {
 
         return "seguridad/listaMapa";
     }
+    @PostMapping("/filtro2")
+    public String busquedaIncidencia(@RequestParam("titulo") String titulo,
+                                     Model model, HttpSession session,
+                                     RedirectAttributes attr) {
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
+        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
+        model.addAttribute("listaIncidentes", listaFiltroTitulo);
+        model.addAttribute("msg", "Filtro aplicado exitosamente");
+
+        return "seguridad/listaMapa";
+    }
 /*
     @GetMapping("/info")
     String masInformacion(Model model,

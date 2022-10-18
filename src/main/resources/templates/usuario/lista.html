@@ -13,7 +13,6 @@
 
 </header>
 <div class="container py-5 px-0" >
-    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
     <!-- Lista incidencias -->
     <div class="title-28" >
         Todas las Incidencias
@@ -23,44 +22,42 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel1">Filtrar</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label style="font-size: medium" >Estado</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="1">Todo</option>
-                            <option value="2">Registrado</option>
-                            <option value="3">En proceso</option>
-                            <option value="4">Atendido</option>
-                        </select>
-                        <label style="font-size: medium" >Tipo de incidencia</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="7">Todo</option>
-                            <option value="1">Reporte de robo</option>
-                            <option value="2">Objetos perdidos</option>
-                            <option value="3">Infraestructura en mal estado</option>
-                            <option value="4">Ambulancia PUCP</option>
-                            <option value="5">Accidente</option>
-                            <option value="6">Otros</option>
-                        </select>
-                        <label for="start" style="font-size: medium">Fecha de inicio:</label>
+                    <form method="post" th:action="@{/usuario/filtro}">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1" style="color:black;">Filtrar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label style="font-size: medium" >Estado</label>
+                            <select class="form-select" aria-label="Default select example" name="estado" >
+                                <option hidden>Seleccionar</option>
+                                <option value="Registrado">Registrado</option>
+                                <option value="En proceso">En proceso</option>
+                                <option value="Atendido">Atendido</option>
+                            </select>
+                            <label style="font-size: medium" >Tipo de incidencia</label>
+                            <select class="form-select" aria-label="Default select example" name="nombre">
+                                <option hidden>Seleccionar</option>
+                                <option th:each="tipoincidencia : ${listaTipoIncidencias}" th:value="${tipoincidencia.getNombre()} " th:text="${tipoincidencia.getNombre()}">Todo</option>
 
-                        <input style="font-size: medium" type="date" id="start" name="trip-start"
-                               value="2022-09-13"
-                               min="2018-01-01" max="2080-09-13">
-                        <br>
-                        <label for="start" style="font-size: medium">Fecha de fin:</label>
+                            </select>
+                            <label for="start" style="font-size: medium">Fecha de inicio:</label>
 
-                        <input style="font-size: medium" type="date" id="finish" name="trip-start"
-                               value="2080-09-13"
-                               min="2022-09-13" max="2080-09-13">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary">Aplicar filtro</button>
-                    </div>
+                            <input style="font-size: medium" type="date" id="start" name="fechainicio"
+                                   value="2022-09-13"
+                                   min="2018-01-01" max="2080-09-13">
+                            <br>
+                            <label for="start" style="font-size: medium">Fecha de fin:</label>
+
+                            <input style="font-size: medium" type="date" id="finish" name="fechafin"
+                                   value="2022-09-14"
+                                   min="2022-09-13" max="2080-09-13">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Aplicar filtro</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -70,10 +67,11 @@
             Nuevo Incidente
         </a>
     </div>
-    <form method="post">
-        <input name="searchField" class="form-control mb-3" type="text" placeholder="Buscar"/>
+    <form method="post" th:action="@{/usuario/filtro2}">
+        <input name="titulo" class="form-control mb-3" type="text" placeholder="Buscar por título incidencia"/>
     </form>
-    <br>
+    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+
     <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
         <div th:each="incidencia,indice : ${listaIncidentes}">
         <div  class="col" >

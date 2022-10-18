@@ -141,7 +141,7 @@
                                             <div class="row no-gutters align-items-center">
                                                 <div class="col mr-2">
                                                     <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                        % Usuarios reportados</div>
+                                                        Porcentaje de usuarios reportados</div>
                                                     <div class="h5 mb-0 font-weight-bold text-gray-800"  th:text="${num_usuariosReportados}">18</div>
                                                 </div>
                                                 <div class="col-auto">
@@ -173,10 +173,12 @@
                                                 <table class="table table-sm">
                                                     <tr>
                                                         <th>Usuario</th>
+                                                        <th>Código</th>
                                                         <th># Incidencias</th>
                                                     </tr>
                                                     <tr th:each="userMas : ${lista_UsariosconMasIncidencias}">
                                                         <td th:text="${userMas.getNombre()}">
+                                                        <td th:text="${userMas.getCodigo()}">
                                                         <td th:text="${userMas.getCantidad()}"></td>
                                                     </tr>
                                                 </table>
