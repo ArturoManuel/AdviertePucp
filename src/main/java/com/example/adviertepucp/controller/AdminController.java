@@ -348,7 +348,7 @@ public class AdminController extends Usuario {
             usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
             System.out.println("DETECTANDO ERROROOOOOOOOR");
             System.out.println("asdklasjdlaskjdlaksjda");
-            return "redirect:redirect/administrador/";
+            return "redirect:/administrador/";
 
 
         }catch (Exception e) {
