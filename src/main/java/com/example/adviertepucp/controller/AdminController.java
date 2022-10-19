@@ -192,6 +192,14 @@ public class AdminController extends Usuario {
         Usuario usuario1 = new Usuario();
         int flag = 0;
         attr.addFlashAttribute("flashcode",codigo);
+        attr.addFlashAttribute("flashname",nombre);
+        attr.addFlashAttribute("flashlastname",apellido);
+        attr.addFlashAttribute("flashdni",dni);
+        attr.addFlashAttribute("flashcelular",celular);
+        attr.addFlashAttribute("flashcorreo",correo);
+        attr.addFlashAttribute("flashcelular",celular);
+        attr.addFlashAttribute("fcategoria",celular);
+
 
 
         if (codigo.length() != 8) {
@@ -268,11 +276,17 @@ public class AdminController extends Usuario {
 
     @GetMapping("/editUser")
     public String listaUserBD(@ModelAttribute("usuario") Usuario usuario,
-                              Model model, @RequestParam("id") int id) {
+                              Model model, @RequestParam("id") int id,
+                              RedirectAttributes attr) {
         Optional<Usuario> optUsuario = usuarioRepository.findById(String.valueOf(id));
         System.out.println("LLEGOOOO" + " " +optUsuario);
         if (optUsuario.isPresent()){
             usuario =optUsuario.get();
+            Usuario user = optUsuario.get();
+            if(user.getCategoria().getId() == 1){
+                attr.addFlashAttribute("msg", "No se puede editar a un administrador");
+                return "redirect:/administrador/";
+            }
             model.addAttribute("usuario", usuario);
             model.addAttribute("listaUsers", usuarioRepository.findAll());
             model.addAttribute("listacategorias", categoriaRepository.findAll());
@@ -383,6 +397,9 @@ public class AdminController extends Usuario {
             attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
 
             admiRepository.actualizarUsuario(nombre,apellido,dni,celular,correo,categoria,codigo);
+            usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
+            System.out.println("DETECTANDO ERROROOOOOOOOR");
+            System.out.println("asdklasjdlaskjdlaksjda");
             usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
 
             return "redirect:/administrador/";
