@@ -247,6 +247,13 @@ public class AdminController extends Usuario {
                 otp=new BCryptPasswordEncoder().encode(otp);
                 admiRepository.crearSeguridad(codigo,nombre,apellido,dni,correo,categoria, suspendido,otp);
                 usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
+
+                /*TODO: A pesar de que sale mensaje de error al momento de crear un usuario, se genera un DataIntegrityViolationException en la consola de Java
+                  TODO: y si se crea varias veces a un mismo seguridad, se le envia el correo con la contrseña cambiada.Sin embargo, ya que se envió mensaje de error,
+                   TODO: la contraseña sigue siendo la misma generada por primera vez...*/
+
+                //TODO: Cuando se crea un nuevo usuario, cellphone=null
+
                 attr.addFlashAttribute("msg", "Personal de Seguridad registrado exitosamente");
             }
             else{

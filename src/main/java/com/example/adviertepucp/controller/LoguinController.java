@@ -149,6 +149,9 @@ public class LoguinController {
        if (rolTransitorio.getHabilitado()==1 && ( (Objects.equals(rolTransitorio.getSecret(), "2")) ||  (Objects.equals(rolTransitorio.getSecret(), "3")) ) ){
            return "redirect:/qrnuevoseguridad";
        }
+       else if (rolTransitorio.getOtp()!=null){
+           return "redirect:/redirectbyotp";
+       }
        //else
         return "loguin/autenticacion";
     }
@@ -221,6 +224,31 @@ public class LoguinController {
 
 
         return "loguin/qrnuevoseguridad";
+    }
+
+    @GetMapping({"redirectbyotp"})
+    public String redirectbyotp(HttpSession session, RedirectAttributes attr){
+        //Solo se puede ingresar a este metodo si otp==1:
+        Usuario rolTransitorio=(Usuario) session.getAttribute("usuariolog");
+        if (rolTransitorio.getOtp()==null){
+            return "redirect:/error";
+        }
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String codigoVerificacion;
+
+        if (usuario.getCodigoverificacion()==null){
+            codigoVerificacion = RandomString.make(64);
+            usuarioRepository.enviarcodigo(codigoVerificacion,0,usuario.getId());
+        }
+        else{
+            codigoVerificacion=usuario.getCodigoverificacion();
+        }
+
+        session.invalidate();
+        SecurityContextHolder.clearContext();
+        attr.addFlashAttribute("noregistrado","Tu contraseña de un solo uso ha vencido, por favor registra una nueva contraseña.");
+        return "redirect:/nuevacontrasena?token="+codigoVerificacion;
     }
 
 
@@ -409,11 +437,21 @@ public class LoguinController {
             attr.addFlashAttribute("registrado", "Cuanta registrada correctamente, ahora puedes ingresar al sistema.");
         }
         else if (usuario.getHabilitado()==1){
+            //Si se cambia la OTP, se vuelve a los valores originales para el Seguridad.
+            if (usuario.getOtp()!=null){
+
+                usuarioRepository.restablecerotp(passwd, usuario.getId());
+                usuarioRepository.deleteTokenbyId(usuario.getId());
+
+                attr.addFlashAttribute("registrado", "Contraseña cambiada correctamente.");
+                return "redirect:/";
+            }
             usuarioRepository.reestablecerContrasena(passwd, usuario.getId());
             usuarioRepository.deleteTokenbyId(usuario.getId());
             usuarioRepository.registroResetearContador(usuario.getId());
             attr.addFlashAttribute("registrado", "Contraseña cambiada correctamente.");
         }
+
         return "redirect:/";
     }
 
@@ -454,7 +492,6 @@ public class LoguinController {
                 SecurityContextHolder.clearContext();
                 attr.addFlashAttribute("noregistrado","Aún no te has registrado, por favor ingresa tu contraseña para continuar");
                 return "redirect:/nuevacontrasena?token="+codigoVerificacion;
-
             }
             session.setAttribute("usuariolog",usuario);
             return "redirect:/usuario";

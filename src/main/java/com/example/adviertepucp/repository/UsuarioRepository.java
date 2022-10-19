@@ -37,6 +37,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value="update usuario set codigoverificacion=?1,contadortoken=?2 where codigo=?3",nativeQuery = true)
     void enviarcodigo(String codigoverificacion,int contadortoken ,String codigo);
 
+    @Modifying
+    @Transactional
+    @Query(value="update usuario set otp=NULL,pwd=?1 where codigo=?2",nativeQuery = true)
+    void restablecerotp(String pwd,String codigo);
+
+
     /*Verifica token para el registro del usuario==Establecer contraseña*/
 
     @Query(value = "select * from usuario where codigoverificacion=?1",nativeQuery = true)

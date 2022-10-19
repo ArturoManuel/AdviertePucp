@@ -78,6 +78,17 @@ public class Usuario implements Serializable {
     @Column(name = "secret", length = 64)
     private String secret;
 
+    @Column(name = "otp")
+    private Byte otp;
+
+    public Byte getOtp() {
+        return otp;
+    }
+
+    public void setOtp(Byte otp) {
+        this.otp = otp;
+    }
+
     public String getSecret() {
         return secret;
     }
