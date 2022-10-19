@@ -107,7 +107,6 @@ public class UsuarioController {
                                      @RequestParam("fechafin") String fechafin,
                                      @RequestParam("estado") String estado,
                                      @RequestParam("nombre") String nombre,
-                                     @RequestParam("titulo") String titulo,
                                      Model model, HttpSession session,
                                      RedirectAttributes attr) {
 
@@ -119,9 +118,6 @@ public class UsuarioController {
         List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio,fechafin,estado,nombre);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
         model.addAttribute("msg", "Filtro aplicado exitosamente");
-        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
-        model.addAttribute("listaIncidentes", listaFiltroTitulo);
-
         return "usuario/lista";
     }
 

@@ -1,21 +1,24 @@
 package com.example.adviertepucp.controller;
 
+import com.example.adviertepucp.dto.IncidenciaComentarioDto;
 import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Comentario;
 import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.IncidenciaRepository;
+import com.example.adviertepucp.repository.ComentarioRepository;
 import com.example.adviertepucp.repository.TipoincidenciaRepository;
 import com.example.adviertepucp.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import com.example.adviertepucp.entity.Incidencia;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -33,6 +36,9 @@ public class SeguridadController {
     TipoincidenciaRepository  tipoincidenciaRepository;
     @Autowired
     UsuarioRepository  usuarioRepository;
+    @Autowired
+    ComentarioRepository comentarioRepository;
+
     /*
     @GetMapping("")
     String listarSeguridad(){
@@ -109,8 +115,8 @@ public class SeguridadController {
         incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
 
         //model.addAttribute("comentario", incidenciaRepository.agregarComentario(incidencia, comen, codigopucp));
-
-       return "redirect:/seguridad/MasInfoSeguridad";
+        String direccion= "redirect:/seguridad/info?id=" + idincidencia ;
+       return direccion;
     }
 /*
     @GetMapping("/info")
@@ -140,20 +146,34 @@ public class SeguridadController {
 
 
         IncidenciaListadto incidencia = null;
+        IncidenciaComentarioDto comentario = null;
         List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
         for( IncidenciaListadto lista : listaIncidencias){
             if(id == lista.getIdI()){
                 incidencia=lista;
+
                 break;
             }
         }
+
+        /*
+        List<IncidenciaComentarioDto> listaIncidenciasComentario = comentarioRepository.listaComentario();
+        for( IncidenciaComentarioDto lista1 : listaIncidenciasComentario){
+            if(id == lista1.getIdincidencia()){
+                comentario=lista1;
+                break;
+            }
+        }*/
         model.addAttribute("incidencia",incidencia);
         model.addAttribute("incidenciaId",incidencia.getIdI());
+        List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
+        model.addAttribute("listaComentarios", listaComentarios);
+        //model.addAttribute("listaComentarios",comentarioRepository.listaComentario(idincidencia));
 
         return "seguridad/MasInfoSeguridad";
     }
     @GetMapping("/mapa")
-    String mapa(HttpSession session){
+    String mapa(Model model,HttpSession session){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
@@ -196,7 +216,7 @@ public class SeguridadController {
         */
         return "seguridad/dashboard";
     }
-
+    /*
     @PostMapping("/MasInfoSeguridad")
     public String atenderIncidencia(Incidencia incidencia, HttpSession session) {
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
@@ -209,6 +229,19 @@ public class SeguridadController {
             //incidenciaRepository.atenderIncidencia(incidencia.getEstado(), incidencia.getId());
         }
         return "redirect:/seguridad/lista";
+    }*/
+    @GetMapping("/image/{id}")
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
+
+        byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(0);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(
+                MediaType.parseMediaType("image/png"));
+
+        return new ResponseEntity<>(
+                imagenComoBytes,
+                httpHeaders,
+                HttpStatus.OK);
     }
 
 }

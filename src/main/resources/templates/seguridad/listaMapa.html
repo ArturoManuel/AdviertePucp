@@ -245,7 +245,7 @@
                 <div class="card h-100 position-relative">
                     <div class="card-tele">
                         <div class="card-tele-img">
-                            <img  th:src="@{|images/12/${incidencia.idI}|}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                            <img  th:src="@{|image/${incidencia.getIdI()}|}" alt="Sede" class="img-fluid rounded-start img-cover"/>
                         </div>
                         <div class="card-tele-body pb-2">
                             <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]
@@ -266,6 +266,7 @@
                                 <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
                             </div>
                         </div>
+
                         <div class="card-tele-footer justify-content">
                             <div class="d-flex align-items-start">
                                 <a href="#" title="Love it" class="btn btn-counter" data-count="0"><span>&#x2764;</span></a>

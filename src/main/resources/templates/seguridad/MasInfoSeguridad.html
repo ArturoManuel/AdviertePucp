@@ -32,7 +32,7 @@
 </header>
 
 <div class="container py-5" >
-    <div >
+    <div style="font-size: xx-large">
         <span th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium">(Incidencia #001454)</span>
         <h2>Mucho ruido los cachimbos</h2>
         <div class="card-tele-title" style="font-size: medium">
@@ -55,8 +55,16 @@
     </div>
     <br>
     <div class="row">
+        <div class="col-xs-6 col-md-10">
+            <button type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                Comentar
+            </button>
+        </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-lg-6">
-            <div id="carouselExampleIndicators" class="carousel slide col-md-10 offset-md-1" data-bs-ride="carousel">
+            <div id="carouselExampleIndicators" class="carousel slide  offset-md-1" data-bs-ride="carousel">
                 <div class="carousel-indicators">
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -103,50 +111,31 @@
                         <div class="card-body p-4">
                             <h4 class="mb-0">Comentarios</h4>
                             <p class="fw-light mb-4 pb-2">(Solo el autor y miembros de seguridad pueden comentar)</p>
-
-                            <div class="d-flex flex-start">
+                            <div >
+                                <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
+                                <span hidden th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
+                            </div>
+                            <div class="d-flex flex-start" th:each="comentario: ${listaComentarios}">
                                 <img class="rounded-circle shadow-1-strong me-3"
                                      src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
                                      height="60" />
                                 <div>
-                                    <h6 class="fw-bold mb-1">Lupita Lopez</h6>
+                                    <h6 class="fw-bold mb-1" th:text=" ${comentario.getNombreusuario}+ '('+${comentario.getUsuario_codigo} + ')'">Lupita Lopez</h6>
                                     <div class="d-flex align-items-center mb-3">
                                         <p class="mb-0">
-                                            Marzo 07, 2021
-                                            <span class="badge bg-primary">Seguridad</span>
+                                            <span class=" mb-1" th:text="${comentario.getFecha}">Marzo 07, 2021</span>
+                                            <span class="badge bg-primary" th:text="${comentario.getRol}">Seguridad</span>
                                         </p>
                                     </div>
                                     <p class="mb-0">
-                                        xd
+                                        <span class=" mb-1" th:text="${comentario.getNombre}">comentario aqui</span>
                                     </p>
+                                    <hr class="my-0" />
                                 </div>
+                                <hr class="my-0" />
                             </div>
+
                         </div>
-
-                        <hr class="my-0" />
-
-                        <div class="card-body p-4">
-                            <div class="d-flex flex-start">
-                                <img class="rounded-circle shadow-1-strong me-3"
-                                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(26).webp" alt="avatar" width="60"
-                                     height="60" />
-                                <div>
-                                    <h6 class="fw-bold mb-1">Cristiano Ronaldo</h6>
-                                    <div class="d-flex align-items-center mb-3">
-                                        <p class="mb-0">
-                                            Marzo 15, 2021
-                                            <span class="badge bg-success">Autor</span>
-                                        </p>
-                                    </div>
-                                    <p class="mb-0">
-                                        Confirmo, todo bien
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-
-
-
 
                     </div>
                 </div>
@@ -154,10 +143,6 @@
         </div>
 
         <br>
-
-        <button type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
-            Comentar
-        </button>
         <br>
 
         <!-- Modal -->
@@ -219,11 +204,11 @@
                             <div class="form-floating">
                                 <div >
                                     <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
-                                    <span th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
+                                    <span hidden th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
                                 </div>
                                 <div>
                                     <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
-                                    <span class="text-muted mb-0" th:value="${session.usuariolog.getId()}" th:text="'Codigo: '+ ${session.usuariolog.getId()}" > codigo </span>
+                                    <span hidden class="text-muted mb-0" th:value="${session.usuariolog.getId()}" th:text="'Codigo: '+ ${session.usuariolog.getId()}" > codigo </span>
                                 </div>
                                 <div>
                                     <textarea class="form-control" placeholder="Escribe tu comentario aquí" id="floatingTextarea3" style="height: 100px" name="comentario"></textarea>
@@ -233,7 +218,7 @@
                         </div>
                         <div class="modal-footer">
                             <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
-                            <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir">Guardar</button>
+                            <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">Guardar</button>
                         </div>
                     </form>
                 </div>
