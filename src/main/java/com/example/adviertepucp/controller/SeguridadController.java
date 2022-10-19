@@ -102,7 +102,7 @@ public class SeguridadController {
         return "seguridad/listaMapa";
     }
     @PostMapping("/agregarcomentario")
-    public String busquedaIncidencia(@RequestParam("idincidencia")  int idincidencia,
+    public String masInformacion(@RequestParam("idincidencia")  int idincidencia,
                                      @RequestParam("codigopucp")  int codigopucp,
                                      @RequestParam("comentario")  String comentario,
                                      Model model, HttpSession session,

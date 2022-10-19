@@ -2,6 +2,8 @@
 
 package com.example.adviertepucp.controller;
 
+import com.example.adviertepucp.dto.IncidenciaComentarioDto;
+
 import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.dto.TipoIncidenciadto;
 import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
@@ -47,7 +49,11 @@ public class UsuarioController {
     TipoincidenciaRepository tipoincidenciaRepository;
 
     @Autowired
+    ComentarioRepository comentarioRepository;
+
+    @Autowired
     IncidenciatienefotoRepository incidenciatienefotoRepository;
+
     @Autowired
     FavoritoRepository favoritoRepository;
 
@@ -87,8 +93,29 @@ public class UsuarioController {
            }
         }
         model.addAttribute("incidencia",incidencia);
+        model.addAttribute("incidenciaId",incidencia.getIdI());
+        List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
+        model.addAttribute("listaComentarios", listaComentarios);
 
         return "usuario/MasInfoUsuario";
+    }
+    //comentario
+    @PostMapping("/agregarcomentario")
+    public String masInformacion(@RequestParam("idincidencia")  int idincidencia,
+                                     @RequestParam("codigopucp")  int codigopucp,
+                                     @RequestParam("comentario")  String comentario,
+                                     Model model, HttpSession session,
+                                     RedirectAttributes attr) {
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
+
+        //model.addAttribute("comentario", incidenciaRepository.agregarComentario(incidencia, comen, codigopucp));
+        String direccion= "redirect:/usuario/info?id=" + idincidencia ;
+        return direccion;
     }
 
     @GetMapping("/mapa")
