@@ -377,6 +377,16 @@ public class AdminController extends Usuario {
                 return "redirect:/administrador/";
             }
 
+            //El usuario antes era Seguridad y ahora será usuarioPUCP::
+            if ( (anteriorcat==2) ){
+                String otp="";
+
+                usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
+                admiRepository.seguridadUsuario(codigo,nombre,apellido,dni,celular,correo,categoria);
+                attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
+                return "redirect:/administrador/";
+            }
+
 
 
 
