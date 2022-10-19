@@ -38,7 +38,8 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/administrador")
 public class AdminController extends Usuario {
-
+    private static final String EMAIL_PATTERN = "^[\\w-\\.]+@(pucp+\\.)(\\.edu)(\\.pe)$";
+    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
 
     @Autowired
     AdmiRepository admiRepository;
@@ -191,6 +192,7 @@ public class AdminController extends Usuario {
         Usuario usuario1 = new Usuario();
         int flag = 0;
 
+
         if (codigo.length() != 8) {
             model.addAttribute("msg", "El codigo debe ser de 8 dígitos");
             flag ++;
@@ -234,14 +236,14 @@ public class AdminController extends Usuario {
                 mailService.otpSeguridad(correo,nombre,codigo,otp);
                 otp=new BCryptPasswordEncoder().encode(otp);
                 admiRepository.crearSeguridad(codigo,nombre,apellido,dni,correo,categoria, suspendido,otp);
-                usuarioBDRepository.crearUsuarioBD(nombre,apellido,dni,correo,codigo);
+                usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
                 attr.addFlashAttribute("msg", "Personal de Seguridad registrado exitosamente");
             }
             else{
                 attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
 
                 admiRepository.crearUsuario(codigo,nombre,apellido,dni,correo,categoria, suspendido, habilitado);
-                usuarioBDRepository.crearUsuarioBD(nombre,apellido,dni,correo,codigo);
+                usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
 
             }
 
@@ -322,7 +324,11 @@ public class AdminController extends Usuario {
         System.out.println("CODIGO QUE LLEGA   " + codigo);
         int flag = 0;
 
-
+        System.out.println("correo: " + correo);
+        Matcher matcher2 =pattern.matcher(correo);
+        System.out.println("VIENDO TIPO DE ARCHIVO:  " + matcher2);
+        boolean correoValido2=matcher2.matches();
+        System.out.println("correo valido??:  " + correoValido2);
         if (nombre.isEmpty() || nombre.length() > 45){
             model.addAttribute("msg1", "El nombre no debe ser nulo");
             flag ++;
@@ -342,7 +348,7 @@ public class AdminController extends Usuario {
             flag ++;
 
         }
-        if (correo.length() > 80) {
+        if (correo.length() > 80 || !correoValido2) {
             model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
@@ -358,7 +364,7 @@ public class AdminController extends Usuario {
             attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
             System.out.println("CATEGORIAAA LLEGAA" + "  "+ categoria);
             admiRepository.actualizarUsuario(nombre,apellido,dni,celular,correo,categoria,codigo);
-            usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
+            usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
             System.out.println("DETECTANDO ERROROOOOOOOOR");
             System.out.println("asdklasjdlaskjdlaksjda");
             return "redirect:/administrador/";
