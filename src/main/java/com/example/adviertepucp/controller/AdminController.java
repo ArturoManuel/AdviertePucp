@@ -3,6 +3,8 @@ package com.example.adviertepucp.controller;
 import com.example.adviertepucp.dto.UsuariosDBDto;
 import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
+import com.example.adviertepucp.service.MailService;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
@@ -55,6 +58,9 @@ public class AdminController extends Usuario {
 
     @Autowired
     UsuarioBDRepository usuarioBDRepository;
+
+    @Autowired
+    MailService mailService;
 
 
 
@@ -181,13 +187,8 @@ public class AdminController extends Usuario {
                                 int categoria,
                                 @ModelAttribute("usuario") Usuario usuario,
                                 RedirectAttributes attr) {
-        System.out.println("LLGOOOOOO A REGISTRAAAR WAA");
-        System.out.println("CODIGOOOOO" + "   " + codigo);
 
-
-        System.out.println("LISTA DE USUARIOS    " + usuarioRepository.findAll());
         Usuario usuario1 = new Usuario();
-        System.out.println("CODIGO QUE LLEGA   " + codigo);
         int flag = 0;
 
         if (codigo.length() != 8) {
@@ -224,14 +225,26 @@ public class AdminController extends Usuario {
             return "admin/newUser";
         }
         try {
-            attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
-            System.out.println("CATEGORIAAA LLEGAA" + "  "+ categoria);
             int suspendido = 0;
             int habilitado = 0;
-            admiRepository.crearUsuario(codigo,nombre,apellido,dni,correo,categoria, suspendido, habilitado);
-            usuarioBDRepository.crearUsuarioBD(nombre,apellido,dni,correo,codigo);
-            System.out.println("DETECTANDO ERROROOOOOOOOR");
-            System.out.println("asdklasjdlaskjdlaksjda");
+            String otp="";
+
+            if (categoria==2){
+                otp=RandomString.make(16);
+                mailService.otpSeguridad(correo,nombre,codigo,otp);
+                otp=new BCryptPasswordEncoder().encode(otp);
+                admiRepository.crearSeguridad(codigo,nombre,apellido,dni,correo,categoria, suspendido,otp);
+                usuarioBDRepository.crearUsuarioBD(nombre,apellido,dni,correo,codigo);
+                attr.addFlashAttribute("msg", "Personal de Seguridad registrado exitosamente");
+            }
+            else{
+                attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
+
+                admiRepository.crearUsuario(codigo,nombre,apellido,dni,correo,categoria, suspendido, habilitado);
+                usuarioBDRepository.crearUsuarioBD(nombre,apellido,dni,correo,codigo);
+
+            }
+
             return "redirect:/administrador/";
 
 

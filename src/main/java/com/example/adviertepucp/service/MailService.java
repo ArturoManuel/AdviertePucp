@@ -123,8 +123,33 @@ public class MailService {
         mailSender.send(message);
 
 
-        //System.out.println("**/*/*/*/*");
-        //System.out.println(dataUri);
+    }
+
+    @Async
+    public void otpSeguridad(String correo,String nombre,String codigo,String contrasenha)  throws MessagingException, UnsupportedEncodingException {
+        String subject =null;
+        String content=null;
+        subject = "Bienvenido a AdviertePUCP-Personal de Seguridad";
+        content = "Estimado [[name]],<br>"
+                + "A continuación se muestra tu código, necesario para ingresar al sistema. Adicionalmente, se adjunta una contraseña por defecto la cual deberás cambiar luego de tener tu código para la Autenticación de doble factor:<br>"
+                + "<p>Código: [[codigo]]</p><p>Contraseña: [[password]]</p>"
+                + "<br>Muchas gracias,<br>"
+                + "El equipo de AdviertePUCP.";
+
+        String toAddress = correo;
+        String fromAddress = "noreply.adviertepucp@gmail.com";
+        String senderName = "Equipo de AdviertePUCP";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+        content = content.replace("[[name]]", nombre);
+        content = content.replace("[[codigo]]", codigo);
+        content = content.replace("[[password]]", contrasenha);
+        helper.setText(content, true);
+        mailSender.send(message);
     }
 
 
