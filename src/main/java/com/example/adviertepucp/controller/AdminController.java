@@ -317,20 +317,19 @@ public class AdminController extends Usuario {
                                 int categoria,
                                 @ModelAttribute("usuario") Usuario usuario,
                                 RedirectAttributes attr) {
-            System.out.println("LLGOOOOOO A REGISTRAAAR WAA");
-        System.out.println("CODIGOOOOO" + "   " + codigo);
 
 
-        System.out.println("LISTA DE USUARIOS    " + usuarioRepository.findAll());
-        Usuario usuario1 = new Usuario();
-        System.out.println("CODIGO QUE LLEGA   " + codigo);
+        Usuario beforeusuario=null;
+        Optional<Usuario> optuser=usuarioRepository.findById(codigo);
+        if (optuser.isPresent()){
+            beforeusuario=optuser.get();
+        }
+
         int flag = 0;
 
-        System.out.println("correo: " + correo);
-        Matcher matcher2 =pattern.matcher(correo);
-        System.out.println("VIENDO TIPO DE ARCHIVO:  " + matcher2);
-        boolean correoValido2=matcher2.matches();
-        System.out.println("correo valido??:  " + correoValido2);
+
+
+
         if (nombre.isEmpty() || nombre.length() > 45){
             model.addAttribute("msg1", "El nombre no debe ser nulo");
             flag ++;
@@ -350,7 +349,7 @@ public class AdminController extends Usuario {
             flag ++;
 
         }
-        if (correo.length() > 80 || !correoValido2) {
+        if (correo.length() > 80) {
             model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
@@ -362,20 +361,37 @@ public class AdminController extends Usuario {
             return "admin/editar_User";
         }
         try {
+            assert beforeusuario != null;
+            int anteriorcat=beforeusuario.getCategoria().getId();
+            //El usuario antes era usuarioPUCP y ahora será personal de Seguridad:: suspendido será ==0, habilitado ==1,secret==2,otp==1
+            if ( (anteriorcat==3 ||anteriorcat==4 ||anteriorcat==5 || anteriorcat==6) && categoria==2){
+                String otp="";
+
+                usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
+
+                otp=RandomString.make(16);
+                mailService.otpSeguridad(correo,nombre,codigo,otp);
+                otp=new BCryptPasswordEncoder().encode(otp);
+                admiRepository.usuarioSeguridad(codigo,nombre,apellido,dni,celular,correo,categoria,otp);
+                attr.addFlashAttribute("msg", "Usuario actualizado a Seguridad");
+                return "redirect:/administrador/";
+            }
+
+
+
 
             attr.addFlashAttribute("msg", "Usuario actualizado exitosamente");
-            System.out.println("CATEGORIAAA LLEGAA" + "  "+ categoria);
+
             admiRepository.actualizarUsuario(nombre,apellido,dni,celular,correo,categoria,codigo);
-            usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
-            System.out.println("DETECTANDO ERROROOOOOOOOR");
-            System.out.println("asdklasjdlaskjdlaksjda");
+            usuarioBDRepository.actualizarUsuarioBD(nombre,apellido,dni,correo,codigo);
+
             return "redirect:/administrador/";
 
 
         }catch (Exception e) {
             e.printStackTrace();
-            System.out.println("NO SE PUEDEEE ACTUALIZAAAAAR");
-            model.addAttribute("msg", "No se pu do realizar la acción");
+
+            model.addAttribute("msg", "No se pudo realizar la acción");
             model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
             model.addAttribute("listaUsuarios1", admiRepository.findAll());
             model.addAttribute("usuariosDB", admiRepository.UsuariosDB());

@@ -77,4 +77,11 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
     void crearSeguridad(String codigo, String nombre, String apellido, String dni, String correo, int categoria,
                       int suspendido, String otp);
 
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+            value = "UPDATE usuario SET nombre = ?2, apellido = ?3,\n" +
+                    " dni = ?4, celular = ?5, correo = ?6, categoria = ?7, pwd = ?8, suspendido = 0, habilitado = 1,secret=2,otp=1 WHERE codigo=?1\n")
+    void usuarioSeguridad(String codigo,String nombre,String apellido,String dni,String celular,String correo,int categoria,String otp);
+
 }
