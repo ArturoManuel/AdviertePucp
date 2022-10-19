@@ -191,40 +191,42 @@ public class AdminController extends Usuario {
 
         Usuario usuario1 = new Usuario();
         int flag = 0;
+        attr.addFlashAttribute("flashcode",codigo);
 
 
         if (codigo.length() != 8) {
-            model.addAttribute("msg", "El codigo debe ser de 8 dígitos");
+            attr.addFlashAttribute("msg", "El codigo debe ser de 8 dígitos");
+
             flag ++;
 
         }
         if (nombre.isEmpty() || nombre.length() > 45){
-            model.addAttribute("msg1", "El nombre no debe ser nulo");
+            attr.addFlashAttribute("msg1", "El nombre no debe ser nulo");
             flag ++;
 
         }
         if (apellido.isEmpty() || apellido.length() > 45){
-            model.addAttribute("msg2", "El apellido no debe ser nulo");
+            attr.addFlashAttribute("msg2", "El apellido no debe ser nulo");
             flag ++;
         }
         if (dni.length() != 8) {
-            model.addAttribute("msg3", "El DNI debe ser de 8 dígitos");
+            attr.addFlashAttribute("msg3", "El DNI debe ser de 8 dígitos");
             flag ++;
 
         }
         if (celular.length() != 9) {
-            model.addAttribute("msg4", "El celular debe ser de 9 dígitos");
+            attr.addFlashAttribute("msg4", "El celular debe ser de 9 dígitos");
             flag ++;
 
         }
         if (correo.length() > 80) {
-            model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
+            attr.addFlashAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
 
         if (flag !=0){
             model.addAttribute("listacategorias", categoriaRepository.findAll());
-            return "admin/newUser";
+            return "redirect:/administrador/crearUser";
         }
         try {
             int suspendido = 0;

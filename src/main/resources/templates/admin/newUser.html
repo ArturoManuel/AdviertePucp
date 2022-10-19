@@ -98,7 +98,7 @@
           <div class="md-form mb-1">
             <i class="fas fa-user prefix grey-text"></i>
             <input name="id" class="form-control validate"
-                   th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}">
+                   th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}" th:value="${flashcode}">
             <label data-error="wrong" data-success="right" >Código</label>
             <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
           </div>
