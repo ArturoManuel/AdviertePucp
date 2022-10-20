@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Lista de incidentes')">
 
     </div>
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+    <script src="html2pdf.bundle.min.js"></script>
 
 </head>
 
@@ -88,144 +90,36 @@
                     <div class="modal-body">
 
 
-                        <div class="card h-100 position-relative">
-                            <div class="card-tele">
+                        <div class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentes}">
+                            <div class="card-tele" >
 
                                 <div class="card-tele-body pb-2">
-                                    <div class="card-tele-title" style="font-size: medium">Mucho ruido los cachimbos
-                                        <span class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+                                    <div class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
+                                        <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
                             Leve
                             </span>
                                         <tr></tr>
-                                        <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                                        <span th:text="${incidencia.tincidencia}" class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
                             Objetos perdidos
                             </span>
                                     </div>
 
                                     <div class="card-tele-subtitle">
-                                        <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                                        <i  th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
                                     </div>
                                     <div class="card-tele-subtitle">
                                         <span>Estado:</span>
-                                        <span style="font-weight: bolder">En proceso</span>
+                                        <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
                                     </div>
                                 </div>
 
                             </div>
 
                         </div>
-                        <br>
-                        <div class="card h-100 position-relative">
-                            <div class="card-tele">
-
-                                <div class="card-tele-body pb-2">
-                                    <div class="card-tele-title" style="font-size: medium">Mochila estraviada en sociales
-                                        <span class="alert alert-warning" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Moderado
-                            </span>
-                                        <tr></tr>
-                                        <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Objetos perdidos
-                            </span>
-                                    </div>
-
-                                    <div class="card-tele-subtitle">
-                                        <i class="bi bi-geo-alt">Av.Universitaria 1802, San Miguel</i>
-                                    </div>
-                                    <div class="card-tele-subtitle">
-                                        <span>Estado:</span>
-                                        <span style="font-weight: bolder">En proceso</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <br>
-
-                        <div class="card h-100 position-relative">
-                            <div class="card-tele">
-                                <div class="card-tele-body pb-2">
-                                    <div class="card-tele-title" style="font-size: medium">Libros tirados
-                                        <span class="alert alert-danger" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Crítico
-                            </span>
-                                        <tr></tr>
-                                        <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Infraestructura
-                            </span>
-                                    </div>
-
-                                    <div class="card-tele-subtitle">
-                                        <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                                    </div>
-                                    <div class="card-tele-subtitle">
-                                        <span>Estado:</span>
-                                        <span style="font-weight: bolder">En proceso</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <br>
-                        <div class="card h-100 position-relative">
-                            <div class="card-tele">
-                                <div class="card-tele-body pb-2">
-                                    <div class="card-tele-title" style="font-size: medium">Venados agresivos
-                                        <span class="alert alert-danger" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Crítico
-                            </span>
-                                        <tr></tr>
-                                        <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Infraestructura
-                            </span>
-                                    </div>
-
-                                    <div class="card-tele-subtitle">
-                                        <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                                    </div>
-                                    <div class="card-tele-subtitle">
-                                        <span>Estado:</span>
-                                        <span style="font-weight: bolder">En proceso</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <br>
-                        <div class="card h-100 position-relative">
-                            <div class="card-tele">
-                                <div class="card-tele-body pb-2">
-                                    <div class="card-tele-title" style="font-size: medium">Ventana rota en arqui
-                                        <span class="alert alert-warning" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Moderado
-                            </span>
-                                        <tr></tr>
-                                        <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Infraestructura
-                            </span>
-                                    </div>
-
-                                    <div class="card-tele-subtitle">
-                                        <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                                    </div>
-                                    <div class="card-tele-subtitle">
-                                        <span>Estado:</span>
-                                        <span style="font-weight: bolder">Resuelto</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-redtele">Exportar</button>
+                        <button id="btnCrearPdf" type="submit" class="btn btn-redtele">Exportar</button>
                     </div>
                 </div>
             </div>
@@ -296,5 +190,34 @@
         </div>
     </footer>
     <!-- End of Footer -->
+<script>document.addEventListener("DOMContentLoaded", () => {
+    // Escuchamos el click del botón
+    const $boton = document.querySelector("#btnCrearPdf");
+    $boton.addEventListener("click", () => {
+        const $elementoParaConvertir = document.body; // <-- Aquí puedes elegir cualquier elemento del DOM
+        html2pdf()
+            .set({
+                margin: 1,
+                filename: 'documento.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    scale: 3, // A mayor escala, mejores gráficos, pero más peso
+                    letterRendering: true,
+                },
+                jsPDF: {
+                    unit: "in",
+                    format: "a4",
+                    orientation: 'portrait' // landscape o portrait
+                }
+            })
+            .from($elementoParaConvertir)
+            .save()
+            .catch(err => console.log(err));
+    });
+});</script>
+
 </body>
 </html>
