@@ -60,7 +60,13 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     Usuario contrasenaescorrecta(String id);
 
 
-    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, longitud as longitud ,  z.nombre as zonapucp from incidencia i inner join zonapucp z on (z.idzonapucp=i.zonapucp) inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)", nativeQuery = true)
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion \n" +
+            "as descripcion , fecha as fecha , estado as estado , urgencia \n" +
+            "as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
+            " longitud as longitud ,  z.nombre as zonapucp from incidencia i inner join \n" +
+            "zonapucp z on (z.idzonapucp=i.zonapucp)\n" +
+            "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+            "where publicado=1 and estado!=\"resuelto\" order by fecha desc", nativeQuery = true)
     List<IncidenciaListadto> listaIncidencia();
 
     //Para extraer las fotos de cada incidencia
