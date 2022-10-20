@@ -130,7 +130,7 @@ public class SeguridadController {
         incidenciaRepository.resolverIncidencia(idincidencia);
         incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
 
-        String direccion= "redirect:/seguridad/info?id=" + idincidencia ;
+        String direccion= "redirect:/seguridad";
         return direccion;
     }
 
