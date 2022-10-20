@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,47 +15,43 @@ public class Incidencia {
     @Column(name = "idincidencia", nullable = false)
     private Integer id;
 
-    @Size(max = 45)
-    @NotNull
-    @Column(name = "titulo", nullable = false, length = 45)
+    @Size(max = 45, message = "El título no puede tener más de 40 caracteres")
+    @Column(name = "titulo", length = 45)
     private String titulo;
 
-    @Size(max = 300)
-    @NotNull
-    @Column(name = "descripcion", nullable = false, length = 300)
+    @Size(max = 300,message = "La descripción no puede tener más de 300 caracteres")
+    @Column(name = "descripcion", length = 300)
     private String descripcion;
 
-    @NotNull
-    @Column(name = "fecha", nullable = false)
+    @Column(name = "fecha")
     private Instant fecha;
 
     @Size(max = 10)
-    @NotNull
-    @Column(name = "estado", nullable = false, length = 10)
+    @Column(name = "estado", length = 10)
     private String estado;
 
     @Size(max = 8)
-    @NotNull
-    @Column(name = "urgencia", nullable = false)
+    @Column(name = "urgencia", length = 8)
     private String urgencia;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "tipoincidencia", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "tipoincidencia")
     private Tipoincidencia tipoincidencia;
 
-    @NotNull
-    @Column(name = "latitud", nullable = false)
+    @Column(name = "latitud")
     private Double latitud;
 
-    @NotNull
-    @Column(name = "longitud", nullable = false)
+    @Column(name = "longitud")
     private Double longitud;
 
-    @NotNull
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "zonapucp", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "zonapucp")
     private Zonapucp zonapucp;
+
+    @NotNull
+    @Column(name = "publicado", nullable = false)
+    private Integer publicado;
+
 
     @ManyToMany
     @JoinTable(name = "incidenciatienefoto",
@@ -142,6 +137,14 @@ public class Incidencia {
 
     public void setZonapucp(Zonapucp zonapucp) {
         this.zonapucp = zonapucp;
+    }
+
+    public Integer getPublicado() {
+        return publicado;
+    }
+
+    public void setPublicado(Integer publicado) {
+        this.publicado = publicado;
     }
 
     public Set<Fotoalmacenada> getFotoalmacenadas() {

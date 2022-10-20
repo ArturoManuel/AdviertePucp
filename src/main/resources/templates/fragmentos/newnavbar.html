@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:fragment="cabecera (title)">
 
@@ -8,7 +9,8 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <title>Fragment Title</title>
+  <title th:text="${title}"></title>
+  <link rel="icon" type="image/x-icon" href="/images/webICON.png">
 
   <!-- Bootstrap core CSS -->
   <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -25,7 +27,7 @@
 <body>
 
 <!-- ***** Header Area Start ***** -->
-<header class="header-area header-sticky" th:fragment="navbar (user)">
+<header class="header-area header-sticky" th:fragment="navbar">
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -43,29 +45,49 @@
       <div class="col-12">
         <nav class="main-nav">
           <!-- ***** Logo Start ***** -->
-          <a href="index.html" class="logo">
+          <a  sec:authorize="hasAnyAuthority('Administrativo')"  class="logo" th:href="@{/administrador}" >
             <img class="img-fluid" style="width: 285px;height: 45px;" src="/images/logoNavbar.png" alt="">
           </a>
-          <!-- ***** Logo End ***** -->
-          <!-- ***** Search End ***** -->
-          <!-- ***** Search End ***** -->
-          <!-- ***** Menu Start ***** -->
+
+          <a sec:authorize="hasAnyAuthority('Seguridad')" th:href="@{/seguridad}" class="logo">
+            <img class="img-fluid" style="width: 285px;height: 45px;" src="/images/logoNavbar.png" alt="">
+          </a>
+
+          <a sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" th:href="@{/usuario}" class="logo">
+            <img class="img-fluid" style="width: 285px;height: 45px;" src="/images/logoNavbar.png" alt="">
+          </a>
+
           <ul class="nav">
-            <li><a th:if="${user=='administrador'}" href="index.html">Gestionar</a></li>
-            <li><a th:if="${user=='Seguridad'}" href="index.html">Estadísticas</a></li>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="">Cerrar Sesión</a></li>
-            <li><a href="/usuario/perfil">
+            <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad/estadisticas}">Estadísticas</a></li>
+            <li sec:authorize="hasAnyAuthority('Administrativo')"><a  th:href="@{/administrador/incidencias}">Gestionar</a></li>
 
-              <span th:text="'Perfil: '+${user}+ ' '+${user}">
-              </span>
+            <li sec:authorize="hasAnyAuthority('Administrativo')" ><a th:href="@{/administrador}">Inicio</a></li>
+            <li sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" ><a th:href="@{/usuario}">Inicio</a></li>
+            <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad}">Inicio</a></li>
 
-              <span style="color: blue;" th:text="'(Rol)'">
-              </span>
+            <form th:action="@{/logout}" method="post">
+              <li><button type="submit" style="margin-top: 5px"  class="btn btn-outline-danger" >Cerrar Sesión</button></li>
+            </form>
 
-              <img src="/images/profile-header.jpg" alt="">
 
+            <li sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" ><a th:href="@{/usuario/perfil}">
+              <span th:text="'Perfil: '+${session.usuariolog.nombre}"> </span>
+              <span style="color: blue;" th:text="${'('}+${session.usuariolog.getCategoria().getNombre()}+${')'}"></span>
+              <span th:if="${session.usuariolog.foto.getId() == 22}"><img  src="/images/defaultprofilepicture.png"  style="width: 25px;height: 25px" alt="perfil"></span>
             </a></li>
+
+            <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad/perfil}">
+            <span th:text="'Perfil: '+${session.usuariolog.nombre}"> </span>
+            <span style="color: blue;" th:text="${'('}+${session.usuariolog.getCategoria().getNombre()}+${')'}"></span>
+            <span th:if="${session.usuariolog.foto.getId() == 22}"><img  src="/images/defaultprofilepicture.png"  style="width: 25px;height: 25px" alt="perfil"></span>
+          </a></li>
+
+            <li sec:authorize="hasAnyAuthority('Administrativo')" ><a th:href="@{/administrador/perfil}">
+              <span th:text="'Perfil: '+${session.usuariolog.nombre}"> </span>
+              <span style="color: blue;" th:text="${'('}+${session.usuariolog.getCategoria().getNombre()}+${')'}"></span>
+              <span th:if="${session.usuariolog.foto.getId() == 22}"><img  src="/images/defaultprofilepicture.png"  style="width: 25px;height: 25px" alt="perfil"></span>
+            </a></li>
+
           </ul>
           <a class='menu-trigger'>
             <span>Menu</span>

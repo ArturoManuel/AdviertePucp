@@ -6,11 +6,14 @@
 package com.example.adviertepucp.repository;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
+import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -21,10 +24,24 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value = "select * from usuario where codigo=?1 and correo=?2 ",nativeQuery = true)
     List<Usuario> validarUsuario(String codigo, String correo);
 
+    public Usuario findByEmail(String correo);
+
     @Modifying
     @Transactional
-    @Query(value="update usuario set codigoverificacion=?1 where codigo=?2",nativeQuery = true)
-    void enviarcodigo(String codigoverificacion, String codigo);
+    @Query(value = "update usuario set secret=?1,habilitado=1 where codigo=?2",nativeQuery = true)
+    void asignarSecret(String secret,String codigo);
+
+
+    @Modifying
+    @Transactional
+    @Query(value="update usuario set codigoverificacion=?1,contadortoken=?2 where codigo=?3",nativeQuery = true)
+    void enviarcodigo(String codigoverificacion,int contadortoken ,String codigo);
+
+    @Modifying
+    @Transactional
+    @Query(value="update usuario set otp=NULL,pwd=?1 where codigo=?2",nativeQuery = true)
+    void restablecerotp(String pwd,String codigo);
+
 
     /*Verifica token para el registro del usuario==Establecer contraseña*/
 
@@ -33,7 +50,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
     @Modifying
     @Transactional
-    @Query(value="update usuario set codigoverificacion=null ",nativeQuery = true)
+    @Query(value="update usuario set codigoverificacion=null,contadortoken=0 ",nativeQuery = true)
     void deleteToken();
 
 
@@ -44,20 +61,29 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
     @Modifying
     @Transactional
-    @Query(value="update usuario set pwd=SHA2(?1,256), suspendido=0 where codigo=?2",nativeQuery = true)
+    @Query(value="update usuario set contadortoken=0 where codigo=?1 ",nativeQuery = true)
+    void registroResetearContador(String id);
+
+
+    @Modifying
+    @Transactional
+    @Query(value="update usuario set pwd=?1, habilitado=1 where codigo=?2",nativeQuery = true)
     void establecerContrasena(String pwd, String id);
 
     @Modifying
     @Transactional
-    @Query(value="update usuario set pwd=SHA2(?1,256) where codigo=?2",nativeQuery = true)
+    @Query(value="update usuario set pwd=?1 where codigo=?2",nativeQuery = true)
     void reestablecerContrasena(String pwd, String id);
 
 
     @Query(value = "select * from usuario where codigo=?1",nativeQuery = true)
     Usuario usuarioExiste(String id);
 
-    @Query(value = "select * from usuario where pwd=SHA2(?1,256)",nativeQuery = true)
+    @Query(value = "select * from usuario where pwd=?1",nativeQuery = true)
     Usuario contrasenaescorrecta(String id);
+
+    @Query(value = "select * from usuario where correo=?1",nativeQuery = true)
+    Usuario oauth2User(String correo);
 
 
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion \n" +
@@ -70,7 +96,22 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     List<IncidenciaListadto> listaIncidencia();
 
     //Para extraer las fotos de cada incidencia
-    @Query(value="select fotoalmacenada from  incidencia i inner join incidenciatienefoto it on (i.idincidencia=it.idincidencia) inner join fotoalmacenada f on (it.idfotoalmacenada=f.idfotoalmacenada) where i.idincidencia=?1;",nativeQuery = true)
-    List<Fotoalmacenada> listaFotoIncidencia(int id);
+    @Query(value="select f.fotoalmacenada from \n" +
+            "            incidencia i inner join incidenciatienefoto it on (i.idincidencia=it.idincidencia) \n" +
+            "            inner join fotoalmacenada f on (it.idfotoalmacenada=f.idfotoalmacenada) where i.idincidencia=?;",nativeQuery = true)
+    List<byte[]> listaFotoIncidencia(Integer id);
+
+
+    @Query(nativeQuery = true,
+    value = "select f.idinteraccion,f.usuario_codigo,i.idincidencia\n" +
+            "from favorito f left join incidencia i on (f.incidencia_idincidencia=i.idincidencia)\n" +
+            "where f.usuario_codigo=?1 and f.esfavorito=0 and i.publicado=0;")
+    UsuarioEstaCreandoDto obtenerCreandoUsuario(String codigo);
+
+    @Query(nativeQuery = true,
+            value = "select idinteraccion from favorito where usuario_codigo=?1\n" +
+                    "    and incidencia_idincidencia=?2 and esfavorito=0;")
+    Integer obtenerInteraccionId(Integer codigo, Integer idIncidencia);
+
 
 }

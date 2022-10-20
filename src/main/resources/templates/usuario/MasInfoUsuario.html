@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head >
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -53,6 +54,50 @@
                   style="font-weight: bolder">En proceso</span>
         </div>
     </div>
+    <br>
+    <div class="row">
+        <div class="col-xs-6 col-md-10">
+            <button type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                Comentar
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="post" th:action="@{/usuario/agregarcomentario}">
+                            <div class="modal-header">
+
+                                <h5 class="modal-title" id="exampleModalLabel3">Agregar comentario</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="form-floating">
+                                    <div >
+                                        <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
+                                        <span hidden th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
+                                    </div>
+                                    <div>
+                                        <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
+                                        <span hidden class="text-muted mb-0" th:value="${session.usuariolog.getId()}" th:text="'Codigo: '+ ${session.usuariolog.getId()}" > codigo </span>
+                                    </div>
+                                    <div>
+                                        <textarea class="form-control" placeholder="Escribe tu comentario aquí" id="floatingTextarea3" style="height: 100px" name="comentario"></textarea>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
+                                <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
     <div class="row">
         <div class="col-lg-6">
         <div id="carouselExampleIndicators" class="carousel slide col-md-10 offset-md-1" data-bs-ride="carousel">
@@ -60,11 +105,11 @@
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
             </div>
-            <div class="carousel-inner ">
-                <div class="carousel-item active" >
+            <div class="carousel-inner " style="height: 250px;width: border-box;">
+                <div class="carousel-item active"  >
                     <img src="https://cdn02.pucp.education/administracion/2019/06/07222954/sistema-bibliotecas-772x432.jpg" alt="Sede"   class="d-block w-100" height="100%" width="100%"/>
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item" >
                     <img src="https://assets.website-files.com/60a6dd60c32dad3ddc38016c/60d9eebe4d2c9cb20f53b218_IMG_9308.jpeg" alt="Sede"  class="d-block w-100" height="100%" width="100%"/>
 
                 </div>
@@ -79,6 +124,9 @@
             </button>
         </div>
         </div>
+        <br>
+        <br>
+        <br>
         <div class="col-lg-6">
         <div class="card-tele" style="padding: 14px">
 
@@ -92,7 +140,54 @@
 
     <br>
     <br>
+    <section >
+        <div class="container my-5 py-5">
 
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10">
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <div class="card text-dark">
+                        <div class="card-body p-4">
+                            <h4 class="mb-0">Comentarios</h4>
+                            <p class="fw-light mb-4 pb-2">(Solo el autor y miembros de seguridad pueden comentar)</p>
+                            <div >
+                                <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
+                                <span hidden th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
+                            </div>
+                            <div class="d-flex flex-start" th:each="comentario: ${listaComentarios}">
+                                <img class="rounded-circle shadow-1-strong me-3"
+                                     src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(23).webp" alt="avatar" width="60"
+                                     height="60" />
+                                <div>
+                                    <h6 class="fw-bold mb-1" th:text=" ${comentario.getNombreusuario}+ '('+${comentario.getUsuario_codigo} + ')'">Lupita Lopez</h6>
+                                    <div class="d-flex align-items-center mb-3">
+                                        <p class="mb-0">
+                                            <span class=" mb-1" th:text="${comentario.getFecha}">Marzo 07, 2021</span>
+                                            <span class="badge bg-primary" th:text="${comentario.getRol}">Seguridad</span>
+                                        </p>
+                                    </div>
+                                    <p class="mb-0">
+                                        <span class=" mb-1" th:text="${comentario.getNombre}">comentario aqui</span>
+                                    </p>
+                                    <hr class="my-0" />
+                                </div>
+                                <hr class="my-0" />
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+    </section>
 
 
 

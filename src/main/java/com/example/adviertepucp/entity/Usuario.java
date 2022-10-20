@@ -1,17 +1,19 @@
 package com.example.adviertepucp.entity;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "usuario")
-public class Usuario {
+public class Usuario implements Serializable {
     @Id
     @Size(max = 8)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "codigo", nullable = false, length = 8)
     private String id;
 
@@ -36,10 +38,10 @@ public class Usuario {
     @Size(max = 80)
     @NotNull
     @Column(name = "correo", nullable = false, length = 80)
-    private String correo;
+    private String email;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria", nullable = false)
     private Categoria categoria;
 
@@ -52,18 +54,58 @@ public class Usuario {
     private String codigoverificacion;
 
     @Size(max = 256)
-    @NotNull
-    @Column(name = "pwd", nullable = false, length = 256)
+    @Column(name = "pwd", length = 256)
     private String pwd;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "foto")
     private Fotoalmacenada foto;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "icono", nullable = false)
     private Icono icono;
+
+    @NotNull
+    @Column(name = "habilitado", nullable = false)
+    private Byte habilitado;
+
+    @NotNull
+    @Column(name = "contadortoken", nullable = false)
+    private Byte contadortoken;
+
+    @Size(max = 64)
+    @Column(name = "secret", length = 64)
+    private String secret;
+
+    @Column(name = "otp")
+    private Byte otp;
+
+    public Byte getOtp() {
+        return otp;
+    }
+
+    public void setOtp(Byte otp) {
+        this.otp = otp;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public Byte getContadortoken() {
+        return contadortoken;
+    }
+
+    public void setContadortoken(Byte contadortoken) {
+        this.contadortoken = contadortoken;
+    }
+
+
     public String getId() {
         return id;
     }
@@ -105,11 +147,11 @@ public class Usuario {
     }
 
     public String getCorreo() {
-        return correo;
+        return email;
     }
 
     public void setCorreo(String correo) {
-        this.correo = correo;
+        this.email = correo;
     }
 
     public Categoria getCategoria() {
@@ -159,5 +201,15 @@ public class Usuario {
     public void setIcono(Icono icono) {
         this.icono = icono;
     }
+
+    public Byte getHabilitado() {
+        return habilitado;
+    }
+
+    public void setHabilitado(Byte habilitado) {
+        this.habilitado = habilitado;
+    }
+
+
 
 }

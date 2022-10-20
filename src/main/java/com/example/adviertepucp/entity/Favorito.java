@@ -2,33 +2,55 @@ package com.example.adviertepucp.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.Instant;
 
 @Entity
 @Table(name = "favorito")
 public class Favorito {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EmbeddedId
-    private FavoritoId id;
+    @Column(name = "idinteraccion", nullable = false)
+    private Integer id;
 
-    @MapsId("usuarioCodigo")
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "usuario_codigo", nullable = false)
     private Usuario usuarioCodigo;
 
-    @MapsId("incidenciaIdincidencia")
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "incidencia_idincidencia", nullable = false)
     private Incidencia incidenciaIdincidencia;
 
     @NotNull
     @Column(name = "esfavorito", nullable = false)
-    private Byte esfavorito;
+    private Integer esfavorito;
 
-    public FavoritoId getId() {
+    @NotNull
+    @Column(name = "hacomentado", nullable = false)
+    private Integer hacomentado;
+
+    @NotNull
+    @Column(name = "hasolucionado", nullable = false)
+    private Integer hasolucionado;
+
+    @NotNull
+    @Column(name = "pusoenproceso", nullable = false)
+    private Integer pusoenproceso;
+
+    @NotNull
+    @Column(name = "reaperturacaso", nullable = false)
+    private Integer reaperturacaso;
+
+    @NotNull
+    @Column(name = "fecha", nullable = false)
+    private Instant fecha;
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(FavoritoId id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -48,12 +70,52 @@ public class Favorito {
         this.incidenciaIdincidencia = incidenciaIdincidencia;
     }
 
-    public Byte getEsfavorito() {
+    public Integer getEsfavorito() {
         return esfavorito;
     }
 
-    public void setEsfavorito(Byte esfavorito) {
+    public void setEsfavorito(Integer esfavorito) {
         this.esfavorito = esfavorito;
+    }
+
+    public Integer getHacomentado() {
+        return hacomentado;
+    }
+
+    public void setHacomentado(Integer hacomentado) {
+        this.hacomentado = hacomentado;
+    }
+
+    public Integer getHasolucionado() {
+        return hasolucionado;
+    }
+
+    public void setHasolucionado(Integer hasolucionado) {
+        this.hasolucionado = hasolucionado;
+    }
+
+    public Integer getPusoenproceso() {
+        return pusoenproceso;
+    }
+
+    public void setPusoenproceso(Integer pusoenproceso) {
+        this.pusoenproceso = pusoenproceso;
+    }
+
+    public Integer getReaperturacaso() {
+        return reaperturacaso;
+    }
+
+    public void setReaperturacaso(Integer reaperturacaso) {
+        this.reaperturacaso = reaperturacaso;
+    }
+
+    public Instant getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Instant fecha) {
+        this.fecha = fecha;
     }
 
 }

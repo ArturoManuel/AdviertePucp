@@ -5,22 +5,20 @@ import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.time.ZoneId;
-import java.util.Timer;
 
 import static java.lang.Math.abs;
 
@@ -96,21 +94,72 @@ public class MailService {
         mailSender.send(message);
     }
 
+    @Async
+    public void enviaQRSecreto(Usuario user,String dataUri) throws MessagingException, UnsupportedEncodingException {
+        String subject =null;
+        String content=null;
+        subject = "AdviertePUCP-Verificacion de dos pasos";
+        content = "Estimado [[name]],<br>"
+                + "A continuación, se muestra tu código QR único para poder ingresar al sistema. <br>Recuerda que,este código es necesario para ingresar al sistema y, por ello, no debes compartirlo con nadie<br>"
+                + "<img src='[[uri]]' >"
+                + "<br>Muchas gracias,<br>"
+                + "El equipo de AdviertePUCP.";
+
+        String toAddress = user.getCorreo();
+        String fromAddress = "noreply.adviertepucp@gmail.com";
+        String senderName = "Equipo de AdviertePUCP";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+        content = content.replace("[[name]]", user.getNombre());
+        dataUri=URLEncoder.encode(dataUri, StandardCharsets.UTF_8).replaceAll("&+", "%26");
+
+        dataUri="https://quickchart.io/qr?text="+dataUri+"&size=200";
+        content = content.replace("[[uri]]", dataUri);
+        helper.setText(content, true);
+        mailSender.send(message);
+
+
+    }
+
+    @Async
+    public void otpSeguridad(String correo,String nombre,String codigo,String contrasenha)  throws MessagingException, UnsupportedEncodingException {
+        String subject =null;
+        String content=null;
+        subject = "Bienvenido a AdviertePUCP-Personal de Seguridad";
+        content = "Estimado [[name]],<br>"
+                + "A continuación se muestra tu código, necesario para ingresar al sistema. Adicionalmente, se adjunta una contraseña por defecto la cual deberás cambiar luego de tener tu código para la Autenticación de doble factor:<br>"
+                + "<p>Código: [[codigo]]</p><p>Contraseña: [[password]]</p>"
+                + "<br>Muchas gracias,<br>"
+                + "El equipo de AdviertePUCP.";
+
+        String toAddress = correo;
+        String fromAddress = "noreply.adviertepucp@gmail.com";
+        String senderName = "Equipo de AdviertePUCP";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+        content = content.replace("[[name]]", nombre);
+        content = content.replace("[[codigo]]", codigo);
+        content = content.replace("[[password]]", contrasenha);
+        helper.setText(content, true);
+        mailSender.send(message);
+    }
+
+
+
 
 
     public void eliminaToken() {
         usuarioRepository.deleteToken();}
 
-    public int contadorDiezMin(){
 
-        LocalTime localTime = LocalTime.now(ZoneId.of("GMT-5"));
-
-        String timex= String.valueOf(localTime);
-
-        String[] time = timex.split(":", -2);
-
-        return abs(30-Integer.parseInt(time[1])%30);
-    }
 
 
 }

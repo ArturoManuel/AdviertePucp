@@ -6,7 +6,9 @@ public interface AdminUsuariosDto {
     String getCodigo();
     String getNombres();
     String getCorreo();
-    String getEstado();
+    int getEstado();
+    int getRegistrado();
     String getRol();
-    byte[] getFoto();
+    int getFoto();
+
 }

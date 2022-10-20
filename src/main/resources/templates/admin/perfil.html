@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Perfil')">
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='AdviertePUCP-Perfil')">
 
     </div>
 
@@ -29,47 +29,37 @@
     </style>
 </head>
 <body>
-<header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
 
-</header>
-<section style="background-color: #eee;">
+    <div  th:replace="fragmentos/newnavbar.html :: navbar"></div>
+
+<section style="background-color: #eee;margin-top: 82px; padding-bottom: 150px">
 
     <div class="container py-5">
-        <div class="row">
-            <div class="col">
-                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-                    <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item" style="font-size: large"><a href="#">Inicio</a></li>
-                        <li class="breadcrumb-item active" style="font-size: large" aria-current="page">Mi perfil</li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
+
 
         <div class="row">
             <div class="col-lg-4">
-                <div class="card mb-4">
+                    <div class="card mb-4"  style="padding-top: 75px">
                     <div class="card-body text-center">
 
                         <img th:if="${session.usuariolog.getFoto().getId() ==22 }" src="/images/defaultprofilepicture.png" alt="avatar"
                              class="rounded-circle img-fluid" style="width: 150px;height: 150px">
                         <h5 class="my-3" style="color: black" th:text="${session.usuariolog.getNombre()}"></h5>
                         <p class="text-muted mb-1" th:text="${session.usuariolog.getCategoria().getNombre()}"></p>
-                        <p class="text-muted mb-4">Estado: Activo</p>
+                        <p class="text-muted mb-4" style="padding-bottom: 45px">Estado: Activo</p>
                         <div class="d-flex justify-content-center mb-2">
                             <button type="button" class="btn btn-primary">CAMBIAR FOTO</button>
-                            <button type="button" class="btn btn-outline-primary ms-1">CAMBIAR ICONO</button>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class="col-lg-8">
-                <div class="card mb-4">
+                <div class="card mb-4" style="padding-bottom: 101px" >
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row" style="padding-top:75px ">
                             <div class="col-sm-3">
-                                <p class="mb-0">Nombre completo</p>
+                                <p class="mb-0" >Nombre completo</p>
                             </div>
                             <div class="col-sm-9">
                                 <p class="text-muted mb-0"  th:text="${session.usuariolog.getNombre()}+${' '}+${session.usuariolog.getApellido()}"></p>
@@ -113,33 +103,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
 
-                    <div class="col-md-12">
-                        <div class="card mb-4 mb-md-0">
-                            <div class="card-body">
-                                <p class="mb-4"><span class="text-primary font-italic me-1">te presentamos</span> Tus estadisticas
-                                </p>
-                                <p class="mb-1" style="font-size: .77rem;">Incidencias publicadas</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80"
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Incidencias destacadas</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72"
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                                <p class="mt-4 mb-1" style="font-size: .77rem;">Reportes recibidos</p>
-                                <div class="progress rounded" style="height: 5px;">
-                                    <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89"
-                                         aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

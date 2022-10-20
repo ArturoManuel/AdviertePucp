@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+  <title>ListaUsuarios</title>
+  <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Nuevo Incidente')">
+
+  </div>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+  <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
+  <!--JQUery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    *{font-family: Roboto}
+  </style>
+
+
+  <!--<link rel="stylesheet" th:href="@{/css/mdb.min.css}" />-->
+  <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+  <link rel="stylesheet" href="/css/suspendido.css">
+  <style>
+
+    .status{
+      letter-spacing: 0; line-height: 16px;
+      white-space: nowrap; width: fit-content;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      color: var(--bs-white);
+      font-family: var(--bs-body-font-family);
+      font-size: var(--bs-body-font-size);
+      font-weight: 700;
+      font-style: normal;
+      border: 1px none;
+      border-radius: 2px;
+      display: flex;
+      gap: 4px;
+      height: 24px;
+      justify-content: center;
+      margin-top: 37.84px;
+      left: 132px;
+      padding: 8px;
+      margin-top: -8px;
+      top: 0;
+      width: fit-content;
+    }
+    .accion_button{
+      padding: 8px 12px;
+    }
+    .disabled{
+      opacity: 0.4;
+      cursor: not-allowed;
+      padding: 8px 12px;
+    }
+    .title-28{
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--mdb-black);
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important
+    }
+  </style>
+
+</head>
+<body>
+
+<header th:replace="fragmentos/newnavbar.html :: navbar (user='administrador')">
+
+</header>
+<br>
+<br>
+<br>
+
+
+<div class="modal-dialog modal-dialog-centered" th:object="${usuario}">
+  <div class="modal-content">
+
+    <div class="modal-header" style="padding: 0px">
+      <h5 class="text-center h2 fw-bold mb-5 mx-1 mx-md-4 mt-4">Crear Nuevo Usuario</h5>
+    </div>
+    <form th:action="@{'/administrador/guardarCrearUser'}" method="post">
+      <div class="modal-body" style="overflow-https://upload.wikimedia.org/wikipedia/commons/2/21/Bra-Cos_%28Marcelo%29_%28cropped%29.jpg: auto">
+        <div class="modal-body mx-3">
+          <div class="md-form mb-1">
+            <i class="fas fa-user prefix grey-text"></i>
+            <input name="id" class="form-control validate"
+                   th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}" th:value="${flashcode}">
+            <label data-error="wrong" data-success="right" >Código</label>
+            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+          </div>
+          <div class="md-form mb-1">
+            <i class="fas fa-user prefix grey-text"></i>
+            <input name="nombre" class="form-control validate"
+                   th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}" th:value="${flashname}">
+            <label data-error="wrong" data-success="right" >Nombre</label>
+            <div th:if="${msg1 != null}" th:text="${msg1}" class="alert alert-success" role="alert"></div>
+          </div>
+          <div class="md-form mb-1">
+            <i class="fas fa-user prefix grey-text"></i>
+            <input name="apellido" class="form-control validate"
+                   th:classappend="${#fields.hasErrors('apellido')?'is-invalid':'is-valid'}" th:value="${flashlastname}">
+            <label data-error="wrong" data-success="right" >Apellido</label>
+            <div th:if="${msg2 != null}" th:text="${msg2}" class="alert alert-success" role="alert"></div>
+          </div>
+          <div class="md-form mb-1">
+            <i class="fas fa-user prefix grey-text"></i>
+            <input name="dni" class="form-control validate"
+                   th:classappend="${#fields.hasErrors('dni')?'is-invalid':'is-valid'}" th:value="${flashdni}">
+            <label class="" data-error="wrong" data-success="right" >DNI</label>
+            <div th:if="${msg3 != null}" th:text="${msg3}" class="alert alert-success" role="alert"></div>
+          </div>
+          <div class="md-form mb-1">
+            <i class="fas fa-phone prefix grey-text"></i>
+            <input name="celular" class="form-control validate" th:value="${flashcelular}">
+            <label data-error="wrong" data-success="right">Teléfono</label>
+            <div th:if="${msg4 != null}" th:text="${msg4}" class="alert alert-success" role="alert"></div>
+          </div>
+          <div class="md-form mb-1">
+            <i class="fas fa-envelope prefix grey-text"></i>
+            <input name="correo" class="form-control validate" th:value="${flashcorreo}">
+            <label data-error="wrong" data-success="right">Correo</label>
+            <div th:if="${msg5 != null}" th:text="${msg5}" class="alert alert-success" role="alert"></div>
+          </div>
+          <div class="md-form mb-1">
+            <select class="form-select" name="categoria" th:value="${fcategoria}">
+              <option th:each="categorias :${listacategorias}"
+                      th:value="${categorias.id}"
+                      th:text="${categorias.nombre}">
+              </option>
+            </select>
+            <label  >Categoría</label>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <a th:href="@{'/administrador'}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-redtele">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+</div>
+
+
+
+<!-- JQUERY -->
+<script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous">
+</script>
+<!-- DATATABLES -->
+<script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">
+</script>
+<!-- BOOTSTRAP -->
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js">
+</script>
+</body>
+</html>

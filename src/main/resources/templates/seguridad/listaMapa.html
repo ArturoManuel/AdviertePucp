@@ -1,95 +1,64 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head >
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Nuevo Incidente')">
-    
+<head>
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Lista de incidentes')">
+
     </div>
-
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
-    <!--JQUery-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- Google Fonts -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <!-- CSS only -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
-    <!-- MDB -->
-
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
-    <link rel="stylesheet" href="/css/suspendido.css">
-    <link rel="stylesheet" href="/css/main.css">
-    <style>
-        *{font-family: Roboto}
-    </style>
 
-    <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-            rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-<body>
-    <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
-    
-    </header>
-<div class="container py-3" >
+
+<body style="background-color: #eee;">
+<header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
+
+</header>
+<div class="container py-5 px-0" >
     <!-- Lista incidencias -->
     <div class="title-28" >
         Todas las Incidencias
+
         <button style="margin-left: 5px" type="button" class="btn btn-outline-dark"data-bs-toggle="modal" data-bs-target="#exampleModal">Aplicar filtros</button>
         <!-- Modal -->
+
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel1">Filtrar</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <label style="font-size: medium" >Estado</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="1">Todo</option>
-                            <option value="2">Registrado</option>
-                            <option value="3">En proceso</option>
-                            <option value="4">Atendido</option>
-                        </select>
-                        <label style="font-size: medium" >Tipo de incidencia</label>
-                        <select class="form-select" aria-label="Default select example">
-                            <option value="7">Todo</option>
-                            <option value="1">Reporte de robo</option>
-                            <option value="2">Objetos perdidos</option>
-                            <option value="3">Infraestructura en mal estado</option>
-                            <option value="4">Ambulancia PUCP</option>
-                            <option value="5">Accidente</option>
-                            <option value="6">Otros</option>
-                        </select>
-                        <label for="start" style="font-size: medium">Fecha de inicio:</label>
+                    <form method="post" th:action="@{/seguridad/filtro}">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1" style="color:black;">Filtrar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label style="font-size: medium" >Estado</label>
+                            <select class="form-select" aria-label="Default select example" name="estado" >
+                                <option hidden>Seleccionar</option>
+                                <option value="Registrado">Registrado</option>
+                                <option value="En proceso">En proceso</option>
+                                <option value="Atendido">Atendido</option>
+                            </select>
+                            <label style="font-size: medium" >Tipo de incidencia</label>
+                            <select class="form-select" aria-label="Default select example" name="nombre">
+                                <option hidden>Seleccionar</option>
+                                <option th:each="tipoincidencia : ${listaTipoIncidencias}" th:value="${tipoincidencia.getNombre()} " th:text="${tipoincidencia.getNombre()}">Todo</option>
 
-                        <input style="font-size: medium" type="date" id="start" name="trip-start"
-                               value="2022-09-13"
-                               min="2018-01-01" max="2080-09-13">
-                        <br>
-                        <label for="start" style="font-size: medium">Fecha de fin:</label>
+                            </select>
+                            <label for="start" style="font-size: medium">Fecha de inicio:</label>
 
-                        <input style="font-size: medium" type="date" id="finish" name="trip-start"
-                               value="2080-09-13"
-                               min="2022-09-13" max="2080-09-13">
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary">Aplicar filtro</button>
-                    </div>
+                            <input style="font-size: medium" type="date" id="start" name="fechainicio"
+                                   value="2022-09-13"
+                                   min="2018-01-01" max="2080-09-13">
+                            <br>
+                            <label for="start" style="font-size: medium">Fecha de fin:</label>
+
+                            <input style="font-size: medium" type="date" id="finish" name="fechafin"
+                                   value="2022-09-14"
+                                   min="2022-09-13" max="2080-09-13">
+                            </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Aplicar filtro</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -265,214 +234,55 @@
 
 
     </div>
-    <form method="post">
-        <input name="searchField" class="form-control mb-3" type="text" placeholder="Search"/>
+    <form method="post" th:action="@{/seguridad/filtro2}">
+        <input name="titulo" class="form-control mb-3" type="text" placeholder="Buscar por título incidencia"/>
     </form>
+    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
 
     <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
-
-
-
-
-        <div class="col">
-            <div class="card h-100 position-relative">
-                <div class="card-tele">
-                    <div class="card-tele-img">
-                        <a href="/sedes/1" >
-                            <img src="https://s3.amazonaws.com/files.pucp.edu.pe/puntoedu/wp-content/uploads/2021/02/23071607/espacios-de-estudio-034-5000x3333.jpg" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </a>
-
-                    </div>
-                    <div class="card-tele-body pb-2">
-                        <div class="card-tele-title" style="font-size: medium">Mucho ruido los cachimbos
-                            <span class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+        <div th:each="incidencia,indice : ${listaIncidentes}">
+            <div  class="col" >
+                <div class="card h-100 position-relative">
+                    <div class="card-tele">
+                        <div class="card-tele-img">
+                            <img  th:src="@{|image/${incidencia.getIdI()}|}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                        </div>
+                        <div class="card-tele-body pb-2">
+                            <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]
+                                <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
                             Leve
                             </span>
-                            <tr></tr>
-                            <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                                <tr></tr>
+                                <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
                             Objetos perdidos
                             </span>
+                            </p>
+
+                            <div class="card-tele-subtitle">
+                                <i th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                            </div>
+                            <div class="card-tele-subtitle">
+                                <span>Estado:</span>
+                                <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
+                            </div>
                         </div>
 
-                        <div class="card-tele-subtitle">
-                            <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                        </div>
-                        <div class="card-tele-subtitle">
-                            <span>Estado:</span>
-                            <span style="font-weight: bolder">En proceso</span>
-                        </div>
-                    </div>
-                    <div class="card-tele-footer justify-content">
-                        <div class="d-flex align-items-start">
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <a class="btn btn-redtele" href="seguridad/info">+INFO</a>
+                        <div class="card-tele-footer justify-content">
+                            <div class="d-flex align-items-start">
+                                <a href="#" title="Love it" class="btn btn-counter" data-count="0"><span>&#x2764;</span></a>
+                            </div>
+                            <div class="d-flex align-items-end">
+                                <a class="btn btn-redtele" th:href="@{'/seguridad/info'+'?id='+${incidencia.idI}}">+INFO</a>
+                            </div>
                         </div>
                     </div>
+
                 </div>
-
             </div>
         </div>
-        <div class="col">
-            <div class="card h-100 position-relative">
-                <div class="card-tele">
-                    <div class="card-tele-img">
-                        <a href="/sedes/1" >
-                            <img src="https://cdn02.pucp.education/administracion/2019/06/07222954/sistema-bibliotecas-772x432.jpg" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </a>
-
-                    </div>
-                    <div class="card-tele-body pb-2">
-                        <div class="card-tele-title" style="font-size: medium">Mochila estraviada en sociales
-                            <span class="alert alert-warning" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Moderado
-                            </span>
-                            <tr></tr>
-                            <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Objetos perdidos
-                            </span>
-                        </div>
-
-                        <div class="card-tele-subtitle">
-                            <i class="bi bi-geo-alt">Av.Universitaria 1802, San Miguel</i>
-                        </div>
-                        <div class="card-tele-subtitle">
-                            <span>Estado:</span>
-                            <span style="font-weight: bolder">En proceso</span>
-                        </div>
-                    </div>
-                    <div class="card-tele-footer justify-content">
-                        <div class="d-flex align-items-start">
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <a class="btn btn-redtele" href="seguridad/info">+INFO</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100 position-relative">
-                <div class="card-tele">
-                    <div class="card-tele-img">
-                        <a href="/sedes/1" >
-                            <img src="https://assets.website-files.com/60a6dd60c32dad3ddc38016c/60d9eebe4d2c9cb20f53b218_IMG_9308.jpeg" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </a>
-
-                    </div>
-                    <div class="card-tele-body pb-2">
-                        <div class="card-tele-title" style="font-size: medium">Libros tirados
-                            <span class="alert alert-danger" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Crítico
-                            </span>
-                            <tr></tr>
-                            <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Infraestructura
-                            </span>
-                        </div>
-
-                        <div class="card-tele-subtitle">
-                            <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                        </div>
-                        <div class="card-tele-subtitle">
-                            <span>Estado:</span>
-                            <span style="font-weight: bolder">En proceso</span>
-                        </div>
-                    </div>
-                    <div class="card-tele-footer justify-content">
-                        <div class="d-flex align-items-start">
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <a class="btn btn-redtele" href="seguridad/info">+INFO</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100 position-relative">
-                <div class="card-tele">
-                    <div class="card-tele-img">
-                        <a href="/sedes/1" >
-                            <img src="https://mapio.net/images-p/8049586.jpg" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </a>
-
-                    </div>
-                    <div class="card-tele-body pb-2">
-                        <div class="card-tele-title" style="font-size: medium">Venados agresivos
-                            <span class="alert alert-danger" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Crítico
-                            </span>
-                            <tr></tr>
-                            <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Infraestructura
-                            </span>
-                        </div>
-
-                        <div class="card-tele-subtitle">
-                            <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                        </div>
-                        <div class="card-tele-subtitle">
-                            <span>Estado:</span>
-                            <span style="font-weight: bolder">En proceso</span>
-                        </div>
-                    </div>
-                    <div class="card-tele-footer justify-content">
-                        <div class="d-flex align-items-start">
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <a class="btn btn-redtele" href="seguridad/info">+INFO</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-        <div class="col">
-            <div class="card h-100 position-relative">
-                <div class="card-tele">
-                    <div class="card-tele-img">
-                        <a href="/sedes/1" >
-                            <img src="https://images.adsttc.com/media/images/57f3/a1fa/e58e/ce71/3600/0094/large_jpg/Construccion-Prototipo-05---foto-Plan-Selva.jpg?1475584500" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                        </a>
-
-                    </div>
-                    <div class="card-tele-body pb-2">
-                        <div class="card-tele-title" style="font-size: medium">Ventana rota en arqui
-                            <span class="alert alert-warning" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Moderado
-                            </span>
-                            <tr></tr>
-                            <span class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Infraestructura
-                            </span>
-                        </div>
-
-                        <div class="card-tele-subtitle">
-                            <i class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                        </div>
-                        <div class="card-tele-subtitle">
-                            <span>Estado:</span>
-                            <span style="font-weight: bolder">Resuelto</span>
-                        </div>
-                    </div>
-                    <div class="card-tele-footer justify-content">
-                        <div class="d-flex align-items-start">
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <a class="btn btn-redtele" href="seguridad/info">+INFO</a>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
     </div>
 </div>
-</div>
+
 
 
 
@@ -487,5 +297,4 @@
     </footer>
     <!-- End of Footer -->
 </body>
-
 </html>
