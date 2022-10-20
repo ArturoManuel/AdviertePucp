@@ -53,7 +53,8 @@ public class AdminController extends Usuario {
     private static final String CELULAR_PATTERN = "^[0-9]{9}$";
     private static final Pattern celularPa = Pattern.compile(CELULAR_PATTERN);
 
-
+    private static final String IMAGE_PATTER = "[^\\\\s]+(.*?)\\\\.(jpg|jpeg|png|JPG|JPEG|PNG)$";
+    private static  final Pattern imageVa = Pattern.compile(IMAGE_PATTER);
 
 
     @Autowired
@@ -489,6 +490,10 @@ public class AdminController extends Usuario {
     public String Crear(@RequestParam("nombre") String nombre ,
                            @RequestParam("archivo") MultipartFile logo ,
                            @RequestParam("color") String color ,RedirectAttributes attr, Model model) {
+        /* Validación de Correo */
+        Matcher matcherImage = emailPa.matcher((CharSequence) logo);
+        boolean imagenValid = matcherImage.matches();
+
         if (logo.isEmpty()) {
             model.addAttribute("msg", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
