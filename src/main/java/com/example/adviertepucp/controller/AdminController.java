@@ -224,6 +224,13 @@ public class AdminController extends Usuario {
         Matcher matchercorreo = emailPa.matcher(correo);
         boolean email1 = matchercorreo.find();
 
+        Usuario usuarioExiste=null;
+        Optional<Usuario> userExiste1=usuarioRepository.findById(codigo);
+        if (userExiste1.isPresent()){
+            attr.addFlashAttribute("usuarioExiste", "El código que está registrando ya existe");
+            flag ++;
+        }
+
         if (codigo.length() != 8) {
             attr.addFlashAttribute("msg", "El codigo debe ser de 9 dígitos y con formato numérico");
             flag ++;
