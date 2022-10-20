@@ -18,6 +18,17 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "t.idtipoincidencia as idt , t.nombre as nombret , t.color as colort from tipoincidencia t",nativeQuery = true)
     List<TipoIncidenciadto> listaTipo();
 
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+            value = "UPDATE incidencia SET estado = 'resuelto' WHERE (idincidencia = ?1)")
+    void resolverIncidencia(int idincidencia);
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+    value = "UPDATE incidencia SET estado = 'atendido' WHERE (idincidencia = ?1)")
+    void atenderIncidencia(int idincidencia);
+
     //agregar comentario
     @Modifying
     @Transactional

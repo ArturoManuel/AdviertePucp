@@ -101,6 +101,39 @@ public class SeguridadController {
 
         return "seguridad/listaMapa";
     }
+    @PostMapping("/atenderincidencia")
+    public String atenderComentario(@RequestParam("idincidencia")  int idincidencia,
+                                    @RequestParam("codigopucp")  int codigopucp,
+                                    @RequestParam("comentario")  String comentario,
+                                    Model model, HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        incidenciaRepository.atenderIncidencia(idincidencia);
+        incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
+
+        String direccion= "redirect:/seguridad/info?id=" + idincidencia ;
+        return direccion;
+    }
+    @PostMapping("/resolverincidencia")
+    public String resolverComentario(@RequestParam("idincidencia")  int idincidencia,
+                                    @RequestParam("codigopucp")  int codigopucp,
+                                    @RequestParam("comentario")  String comentario,
+                                    Model model, HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        incidenciaRepository.resolverIncidencia(idincidencia);
+        incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
+
+        String direccion= "redirect:/seguridad/info?id=" + idincidencia ;
+        return direccion;
+    }
+
     @PostMapping("/agregarcomentario")
     public String masInformacion(@RequestParam("idincidencia")  int idincidencia,
                                      @RequestParam("codigopucp")  int codigopucp,
