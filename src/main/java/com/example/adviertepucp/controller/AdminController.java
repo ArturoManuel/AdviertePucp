@@ -391,31 +391,31 @@ public class AdminController extends Usuario {
 
 
         if (!nombreCompleto){
-            attr.addFlashAttribute("ms1", "El nombre no respeta el Formato requerido");
+            model.addAttribute("ms1", "El nombre no respeta el Formato requerido");
             flag ++;
         }
         if (nombre.isEmpty() || nombre.length() > 45){
-            attr.addFlashAttribute("ms1", "Debe ingresar un nombre");
+            model.addAttribute("ms1", "Debe ingresar un nombre");
             flag ++;
         }
         if (!apellidoCompleto){
-            attr.addFlashAttribute("ms2", "El apellido no respeta el Formato requerido");
+            model.addAttribute("ms2", "El apellido no respeta el Formato requerido");
             flag ++;
         }
         if (apellido.isEmpty() || apellido.length() > 45){
-            attr.addFlashAttribute("ms2", "Debe ingresar un apellido");
+            model.addAttribute("ms2", "Debe ingresar un apellido");
             flag ++;
         }
         if (!dnivalid){
-            attr.addFlashAttribute("ms3", "El DNI dedbe ser de 8 digitos y/o con formato numérico");
+            model.addAttribute("ms3", "El DNI dedbe ser de 8 digitos y/o con formato numérico");
             flag ++;
         }
         if (!celularValid){
-            attr.addFlashAttribute("ms4", "El Celular debe ser de 9 digitos y/o con formato numérico");
+            model.addAttribute("ms4", "El Celular debe ser de 9 digitos y/o con formato numérico");
             flag ++;
         }
         if (correo.length() > 80 || !email) {
-            attr.addFlashAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe");
+            model.addAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe");
             flag ++;
         }
 

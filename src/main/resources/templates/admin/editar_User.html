@@ -127,40 +127,37 @@
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
                         <span class="mx-2">Nombre</span>
-                        <input th:field="*{nombre}" class="form-control validate"
-                               th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}">
+                        <input th:field="*{nombre}" class="form-control validate">
                         <label data-error="wrong" data-success="right" hidden></label>
-                        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${ms1 != null}" th:text="${ms1}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-user prefix grey-text"></i>
                         <span class="mx-2">Apellido</span>
-                        <input th:field="*{apellido}" class="form-control validate"
-                               th:classappend="${#fields.hasErrors('apellido')?'is-invalid':'is-valid'}">
+                        <input th:field="*{apellido}" class="form-control validate">
                         <label data-error="wrong" data-success="right" hidden></label>
-                        <div th:if="${msg2 != null}" th:text="${msg2}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${ms2 != null}" th:text="${ms2}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <i class="bi bi-postcard-fill"></i>
                         <span class="mx-2">DNI</span>
-                        <input th:field="*{dni}" class="form-control validate"
-                               th:classappend="${#fields.hasErrors('dni')?'is-invalid':'is-valid'}">
+                        <input th:field="*{dni}" class="form-control validate">
                         <label class="" data-error="wrong" data-success="right" hidden></label>
-                        <div th:if="${msg3 != null}" th:text="${msg3}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${ms3 != null}" th:text="${ms3}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1">
                         <i class="fas fa-phone prefix grey-text"></i>
                         <span class="mx-2">Teléfono</span>
                         <input th:field="*{celular}" class="form-control validate">
                         <label data-error="wrong" data-success="right" hidden></label>
-                        <div th:if="${msg4 != null}" th:text="${msg4}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${ms4 != null}" th:text="${ms4}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1" style="margin-top: 0.7rem">
                         <i class="fas fa-envelope prefix grey-text"></i>
                         <span class="mx-2">Correo</span>
                         <input th:field="*{correo}" class="form-control validate">
                         <label data-error="wrong" data-success="right" hidden></label>
-                        <div th:if="${msg5 != null}" th:text="${msg5}" class="alert alert-success" role="alert"></div>
+                        <div th:if="${ms5 != null}" th:text="${ms5}" class="alert alert-success" role="alert"></div>
                       </div>
                       <div class="md-form mb-1" style="margin-top: 0.7rem">
                         <i class="bi bi-tag-fill" ></i>
