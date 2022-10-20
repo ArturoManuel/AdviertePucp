@@ -180,8 +180,6 @@ public class AdminController extends Usuario {
                                 String apellido,
                                 @RequestParam("dni") @Size(max = 8 , message = "El DNI tiene un máximo de 8 dígitos")
                                 String dni,
-                                @RequestParam("celular") @Size(max = 9 , message = "El celular tiene un máximo de 9 dígitos")
-                                String celular,
                                 @RequestParam("correo") @Size(max = 80) @NotNull(message = "Este campo no puede estar nulo")
                                 String correo,
                                 @RequestParam("categoria") @NotNull(message = "Este campo no puede estar nulo")
@@ -195,11 +193,8 @@ public class AdminController extends Usuario {
         attr.addFlashAttribute("flashname",nombre);
         attr.addFlashAttribute("flashlastname",apellido);
         attr.addFlashAttribute("flashdni",dni);
-        attr.addFlashAttribute("flashcelular",celular);
         attr.addFlashAttribute("flashcorreo",correo);
-        attr.addFlashAttribute("flashcelular",celular);
-        attr.addFlashAttribute("fcategoria",celular);
-
+        attr.addFlashAttribute("fcategoria",categoria);
 
 
         if (codigo.length() != 8) {
@@ -219,11 +214,6 @@ public class AdminController extends Usuario {
         }
         if (dni.length() != 8) {
             attr.addFlashAttribute("msg3", "El DNI debe ser de 8 dígitos");
-            flag ++;
-
-        }
-        if (celular.length() != 9) {
-            attr.addFlashAttribute("msg4", "El celular debe ser de 9 dígitos");
             flag ++;
 
         }
