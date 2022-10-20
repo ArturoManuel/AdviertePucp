@@ -88,16 +88,6 @@
 
         <div class="container py-5 px-0" th:object="${usuario}">
 
-          <div class="row">
-            <div class="col">
-              <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
-                <ol class="breadcrumb mb-0">
-                  <li class="breadcrumb-item active" style="font-size: medium" aria-current="page">Editar Usuario</li>
-                </ol>
-              </nav>
-            </div>
-          </div>
-
             <form th:action="@{'/administrador/guardarCrearUser'}" method="post">
               <div class="row">
                 <div class="col-lg-4">
@@ -105,40 +95,42 @@
                     <div class="card-body text-center">
                       <img id="preview2" src="/images/defaultprofilepicture.png" alt="avatar"
                            class=" img-fluid" style="width: 255px;">
-                      <h5 class="my-3" style="color: black">Registro de Usuario</h5>
+
                       <div id="galeria"></div>
                     </div>
                   </div>
                 </div>
 
                 <div class="col-lg-8">
+
                   <div class="card mb-4">
                   <div class="card-body">
+                    <h4 class="my-3" style="color: black">Registro de Usuario</h4>
                   <div class="md-form mb-1">
                     <i class="fas fa-user prefix grey-text"></i>
                     <input name="id" class="form-control validate"
-                           th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}" th:value="${flashcode}">
+                            th:value="${flashcode}">
                     <label data-error="wrong" data-success="right" >Código</label>
                     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
                   </div>
                   <div class="md-form mb-1">
                     <i class="fas fa-user prefix grey-text"></i>
                     <input name="nombre" class="form-control validate"
-                           th:classappend="${#fields.hasErrors('nombre')?'is-invalid':'is-valid'}" th:value="${flashname}">
+                           th:value="${flashname}">
                     <label data-error="wrong" data-success="right" >Nombre</label>
                     <div th:if="${msg1 != null}" th:text="${msg1}" class="alert alert-success" role="alert"></div>
                   </div>
                   <div class="md-form mb-1">
                     <i class="fas fa-user prefix grey-text"></i>
                     <input name="apellido" class="form-control validate"
-                           th:classappend="${#fields.hasErrors('apellido')?'is-invalid':'is-valid'}" th:value="${flashlastname}">
+                            th:value="${flashlastname}">
                     <label data-error="wrong" data-success="right" >Apellido</label>
                     <div th:if="${msg2 != null}" th:text="${msg2}" class="alert alert-success" role="alert"></div>
                   </div>
                   <div class="md-form mb-1">
                     <i class="fas fa-user prefix grey-text"></i>
                     <input name="dni" class="form-control validate"
-                           th:classappend="${#fields.hasErrors('dni')?'is-invalid':'is-valid'}" th:value="${flashdni}">
+                           th:value="${flashdni}">
                     <label class="" data-error="wrong" data-success="right" >DNI</label>
                     <div th:if="${msg3 != null}" th:text="${msg3}" class="alert alert-success" role="alert"></div>
                   </div>
