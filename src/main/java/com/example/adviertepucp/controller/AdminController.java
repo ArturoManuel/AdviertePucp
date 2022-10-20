@@ -225,7 +225,7 @@ public class AdminController extends Usuario {
         boolean email1 = matchercorreo.find();
 
         if (codigo.length() != 8) {
-            attr.addFlashAttribute("msg", "El codigo debe ser de 9 dígitos");
+            attr.addFlashAttribute("msg", "El codigo debe ser de 9 dígitos y con formato numérico");
             flag ++;
         }
         if (!nombreCompleto){
@@ -245,11 +245,11 @@ public class AdminController extends Usuario {
             flag ++;
         }
         if (!dnivalid1){
-            attr.addFlashAttribute("msg3", "El DNI dedbe ser de 8 digitos y/o con formato numérico");
+            attr.addFlashAttribute("msg3", "El DNI dede ser de 8 digitos y/o con formato numérico");
             flag ++;
         }
         if (!email1) {
-            attr.addFlashAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
+            attr.addFlashAttribute("msg5", "Correo debe respetar de formato @pucp.edu.pe");
             flag ++;
         }
 
@@ -415,7 +415,7 @@ public class AdminController extends Usuario {
             flag ++;
         }
         if (correo.length() > 80 || !email) {
-            attr.addFlashAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
+            attr.addFlashAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe");
             flag ++;
         }
 
