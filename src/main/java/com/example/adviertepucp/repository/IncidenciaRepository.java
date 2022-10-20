@@ -65,7 +65,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     //inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)
     @Query(value = "select zp.nombre as'nombre', count(i.zonapucp) as 'zona' from incidencia i\n" +
             "inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)\n" +
-            "group by zp.nombre;",
+            "group by zp.nombre",
             nativeQuery = true)
     List<IncidenciaPorZona> ubicacionesPUCP();
 
@@ -86,7 +86,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     @Query(value = "SELECT count(codigo),\n" +
             "CASE WHEN suspendido = 0 THEN 'activo' WHEN suspendido = 1 THEN 'suspendido' ELSE 'no registrado' END AS estado\n" +
             "FROM adviertedb.usuario\n" +
-            "group by estado;",
+            "group by estado",
     nativeQuery = true)
     List<Usuario> estadoUsuarios();
 
@@ -94,7 +94,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "left join favorito f on (f.usuario_codigo= u.codigo)\n" +
             "left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)\n" +
             "group by concat(u.nombre,' ' , u.apellido) \n" +
-            "order by count(i.idincidencia) desc LIMIT 10;",
+            "order by count(i.idincidencia) desc LIMIT 10",
             nativeQuery = true)
     List<IncidenciaDashboardDto> UsariosconMasIncidencias();
     //SELECT  concat(u.nombre,' ' , u.apellido) as 'nombre', u.codigo as 'codigo', count(i.idincidencia) as 'cantidad' from usuario u
