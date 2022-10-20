@@ -53,7 +53,7 @@
             <img class="img-fluid" style="width: 285px;height: 45px;" src="/images/logoNavbar.png" alt="">
           </a>
 
-          <a sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" th:href="@{/usuario}" class="logo">
+          <a sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" th:href="@{/usuario/}" class="logo">
             <img class="img-fluid" style="width: 285px;height: 45px;" src="/images/logoNavbar.png" alt="">
           </a>
 
@@ -62,7 +62,7 @@
             <li sec:authorize="hasAnyAuthority('Administrativo')"><a  th:href="@{/administrador/incidencias}">Gestionar</a></li>
 
             <li sec:authorize="hasAnyAuthority('Administrativo')" ><a th:href="@{/administrador}">Inicio</a></li>
-            <li sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" ><a th:href="@{/usuario}">Inicio</a></li>
+            <li sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" ><a th:href="@{/usuario/}">Inicio</a></li>
             <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad}">Inicio</a></li>
 
             <form th:action="@{/logout}" method="post">

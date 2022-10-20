@@ -44,7 +44,7 @@ public class SeguridadController {
     String listarSeguridad(){
         return "seguridad/listaMapa";
     }*/
-    @GetMapping("")
+    @GetMapping({"/",""})
     String listarSeguridad(Model model, HttpSession session){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
