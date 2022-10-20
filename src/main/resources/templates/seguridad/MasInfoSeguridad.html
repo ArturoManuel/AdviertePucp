@@ -113,7 +113,7 @@
                     <div class="card text-dark">
                         <div class="card-body p-4">
                             <h4 class="mb-0">Comentarios</h4>
-                            <button type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                            <button th:if="${incidencia.getEstado()!='resuelto'}" type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
                                 Comentar
                             </button>
                             <p class="fw-light mb-4 pb-2">(Solo el autor y miembros de seguridad pueden comentar)</p>
