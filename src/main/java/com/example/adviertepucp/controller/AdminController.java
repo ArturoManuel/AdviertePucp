@@ -38,8 +38,23 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/administrador")
 public class AdminController extends Usuario {
-    private static final String EMAIL_PATTERN = "^[\\w-\\.]+@(pucp+\\.)(\\.edu)(\\.pe)$";
-    private static final Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+    private static final String EMAIL_PATTERN = "([A-Za-z0-9-_.]+@[pucp]+(?:\\.[edu]+)+(?:\\.[pe]+)+)";
+    private static final Pattern emailPa = Pattern.compile(EMAIL_PATTERN);
+
+    private static final String NOMBRE_PATTERN = "^\\pL+[\\pL\\pZ\\pP]{1,45}$";
+    private static final Pattern nombrePa = Pattern.compile(NOMBRE_PATTERN);
+
+    private static final String APELLIDO_PATTERN = "\\pL+[\\pL\\pZ\\pP]{1,45}$";
+    private static final Pattern apellidoPa = Pattern.compile(APELLIDO_PATTERN);
+
+    private static final String DNI_PATTERN = "^[0-9]{8}$";
+    private static final Pattern dniPa = Pattern.compile(DNI_PATTERN);
+
+    private static final String CELULAR_PATTERN = "^[0-9]{9}$";
+    private static final Pattern celularPa = Pattern.compile(CELULAR_PATTERN);
+
+
+
 
     @Autowired
     AdmiRepository admiRepository;
@@ -195,29 +210,45 @@ public class AdminController extends Usuario {
         attr.addFlashAttribute("flashdni",dni);
         attr.addFlashAttribute("flashcorreo",correo);
         attr.addFlashAttribute("fcategoria",categoria);
-
+        System.out.println("PROAABDNO SU LLEGA: " + nombre);
+        /* Validación de Nombre */
+        Matcher matcher1 = nombrePa.matcher(nombre);
+        boolean nombreCompleto = matcher1.matches();
+        /* Validación de apellido */
+        Matcher matcherap = apellidoPa.matcher(apellido);
+        boolean apellidoCompleto1 = matcherap.find();
+        /* Validación de DNI */
+        Matcher matcherDNI = dniPa.matcher(dni);
+        boolean dnivalid1 = matcherDNI.find();
+        /* Validación de Correo */
+        Matcher matchercorreo = emailPa.matcher(correo);
+        boolean email1 = matchercorreo.find();
 
         if (codigo.length() != 8) {
-            attr.addFlashAttribute("msg", "El codigo debe ser de 8 dígitos");
-
+            attr.addFlashAttribute("msg", "El codigo debe ser de 9 dígitos");
             flag ++;
-
+        }
+        if (!nombreCompleto){
+            attr.addFlashAttribute("msg1", "El nombre no respeta el Formato requerido");
+            flag ++;
         }
         if (nombre.isEmpty() || nombre.length() > 45){
-            attr.addFlashAttribute("msg1", "El nombre no debe ser nulo");
+            attr.addFlashAttribute("msg1", "Debe ingresar un nombre");
             flag ++;
-
+        }
+        if (!apellidoCompleto1){
+            attr.addFlashAttribute("msg2", "El apellido no respeta el Formato requerido");
+            flag ++;
         }
         if (apellido.isEmpty() || apellido.length() > 45){
-            attr.addFlashAttribute("msg2", "El apellido no debe ser nulo");
+            attr.addFlashAttribute("msg2", "Debe ingresar un apellido");
             flag ++;
         }
-        if (dni.length() != 8) {
-            attr.addFlashAttribute("msg3", "El DNI debe ser de 8 dígitos");
+        if (!dnivalid1){
+            attr.addFlashAttribute("msg3", "El DNI dedbe ser de 8 digitos y/o con formato numérico");
             flag ++;
-
         }
-        if (correo.length() > 80) {
+        if (!email1) {
             attr.addFlashAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
@@ -329,7 +360,11 @@ public class AdminController extends Usuario {
                                 @ModelAttribute("usuario") Usuario usuario,
                                 RedirectAttributes attr) {
 
+        System.out.println("PROAABDNO SU LLEGA: " + nombre);
 
+
+
+        System.out.println("PROAABDNO SU LLEGA 2122222: " + nombre);
         Usuario beforeusuario=null;
         Optional<Usuario> optuser=usuarioRepository.findById(codigo);
         if (optuser.isPresent()){
@@ -337,36 +372,55 @@ public class AdminController extends Usuario {
         }
 
         int flag = 0;
+        /* Validación de Nombre */
+        Matcher matcher = nombrePa.matcher(nombre);
+        boolean nombreCompleto = matcher.matches();
+        /* Validación de apellido */
+        Matcher matcherap = apellidoPa.matcher(apellido);
+        boolean apellidoCompleto = matcherap.matches();
+        /* Validación de DNI */
+        Matcher matcherDNI = dniPa.matcher(dni);
+        boolean dnivalid = matcherDNI.find();
+        /* Validación de Celular */
+        Matcher matcherCelular = celularPa.matcher(celular);
+        boolean celularValid = matcherCelular.matches();
+        /* Validación de Correo */
+        Matcher matchercorreo = emailPa.matcher(correo);
+        boolean email = matchercorreo.matches();
+        System.out.println("PROAABDNO SU LLEGA 2122222: " + nombre);
 
 
-
-
-        if (nombre.isEmpty() || nombre.length() > 45){
-            model.addAttribute("msg1", "El nombre no debe ser nulo");
+        if (!nombreCompleto){
+            attr.addFlashAttribute("ms1", "El nombre no respeta el Formato requerido");
             flag ++;
-
+        }
+        if (nombre.isEmpty() || nombre.length() > 45){
+            attr.addFlashAttribute("ms1", "Debe ingresar un nombre");
+            flag ++;
+        }
+        if (!apellidoCompleto){
+            attr.addFlashAttribute("ms2", "El apellido no respeta el Formato requerido");
+            flag ++;
         }
         if (apellido.isEmpty() || apellido.length() > 45){
-            model.addAttribute("msg2", "El apellido no debe ser nulo");
+            attr.addFlashAttribute("ms2", "Debe ingresar un apellido");
             flag ++;
         }
-        if (dni.length() != 8) {
-            model.addAttribute("msg3", "El DNI debe ser de 8 dígitos");
+        if (!dnivalid){
+            attr.addFlashAttribute("ms3", "El DNI dedbe ser de 8 digitos y/o con formato numérico");
             flag ++;
-
         }
-        if (celular.length() != 9) {
-            model.addAttribute("msg4", "El celular debe ser de 9 dígitos");
+        if (!celularValid){
+            attr.addFlashAttribute("ms4", "El Celular debe ser de 9 digitos y/o con formato numérico");
             flag ++;
-
         }
-        if (correo.length() > 80) {
-            model.addAttribute("msg5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
+        if (correo.length() > 80 || !email) {
+            attr.addFlashAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
 
         if (flag !=0){
-
+            System.out.println("LLEGO ERROR??? +  " + flag);
             model.addAttribute("listaUsers", usuarioRepository.findAll());
             model.addAttribute("listacategorias", categoriaRepository.findAll());
             return "admin/editar_User";
