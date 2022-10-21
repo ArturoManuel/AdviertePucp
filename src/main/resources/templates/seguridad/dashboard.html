@@ -11,6 +11,7 @@
 
     </div>
 
+
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/5d5f09a262.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
@@ -203,25 +204,43 @@
                                                     <th># Incidencias</th>
                                                 </tr>
                                                 <tr th:each="ubiPUCP : ${lista_ubicacionesPUCP}">
+
+                                                    <input hidden th:value="${ubiPUCP.getNombre()}"  name="nombre" id ="nombre"/>
                                                     <td th:text="${ubiPUCP.getNombre()}">
+                                                        <input hidden th:value="${ubiPUCP.getZona()}"  name="zona" id ="zona"/>
                                                     <td th:text="${ubiPUCP.getZona()}"></td>
                                                 </tr>
                                             </table>
-                                            <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> tontodromo
-                                        </span>
-                                                <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> cia
-                                        </span>
-                                                <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> eeggcc
-                                        </span>
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="card shadow mb-4">
+                                    <div
+                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Ubicaciones PUCP</h6>
+                                    </div>
+
+                                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="card shadow mb-4">
+                                    <div
+                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Usuarios con más incidencias registradas</h6>
+                                    </div>
+
+                                    <div id="chartContainer2" style="height: 370px; width: 100%;"></div>
+
+                                </div>
+                            </div>
+
+                            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
                             <!-- Content Row -->
 
@@ -255,40 +274,56 @@
         <!-- Page level custom scripts -->
         <script src="js/demo/chart-area-demo.js"></script>
         <script src="js/demo/chart-pie-demo.js"></script>
-    <script> Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#858796';
 
-    // Pie Chart Example
-    var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
-        type: 'doughnut',
-        data: {
-            labels: ["arturo", "como", "vas "],
-            datasets: [{
-                data: [50, 20, 20],
-                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-                hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
-                hoverBorderColor: "rgba(234, 236, 244, 1)",
-            }],
-        },
-        options: {
-            maintainAspectRatio: false,
-            tooltips: {
-                backgroundColor: "rgb(255,255,255)",
-                bodyFontColor: "#858796",
-                borderColor: '#dddfeb',
-                borderWidth: 1,
-                xPadding: 15,
-                yPadding: 15,
-                displayColors: false,
-                caretPadding: 10,
-            },
-            legend: {
-                display: false
-            },
-            cutoutPercentage: 80,
-        },
-    }); </script>
+
+    <script>
+        window.onload = function funcion1() {
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                data: [{
+                    type: "pie",
+                    startAngle: 240,
+                    yValueFormatString: "##0\"\"",
+                    indexLabel: "{label} {y}",
+                    dataPoints: [
+                        {y: 20, label: "Auditorio de Ciencias Sociales (Gustavo Gutiérrez Merino)"},
+                        {y: 6, label: "Asociación de egresados y graduados"},
+                        {y: 5, label: "Área de Deportes #ParadaSaludable"},
+                        {y: 4, label: "Anfiteatro José Dammert Bellido - Facultad de Derecho"},
+                    ]
+                }]
+            });
+            chart.render();
+
+            var chart = new CanvasJS.Chart("chartContainer2", {
+                animationEnabled: true,
+                theme: "light2", // "light1", "light2", "dark1", "dark2"
+                title:{
+                },
+                axisY: {
+                    title: "cantidad"
+                },
+                data: [{
+                    type: "column",
+                    showInLegend: true,
+                    legendMarkerColor: "grey",
+                    dataPoints: [
+                        { y: 20, label: "Ruben Caleb Casapaico Melendez" },
+                        { y: 10,  label: "Jorge Guillen Rivera" },
+                        { y: 5,  label: "Angel Alvaro Bautista Cutipa" },
+                        { y: 3,  label: "Marcelo Rojas" },
+                        { y: 2,  label: "Jesus Idrogo" },
+                        { y: 1,  label: "Arturo Noriega" },
+
+                    ]
+                }]
+            });
+            chart.render();
+
+        }
+    </script>
+
 
     <!-- Footer -->
     <footer class="sticky-footer bg-white">

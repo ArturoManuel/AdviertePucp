@@ -6,7 +6,11 @@
 
     </div>
     <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
     <script src="html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
 
 </head>
 
@@ -77,18 +81,43 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Resumen de incidentes</h5>
-                        <select class="form-select form-select-sm" style="width: 100px" name="" id="">
+                        <h5 style="color:black"class="modal-title" id="exampleModalLabel">Resumen de incidentes</h5>
+                        <select hidden class="form-select form-select-sm" style="width: 100px" name="" id="">
                             <option value="">xls</option>
                             <option value="">txt</option>
                             <option value="">pdf</option>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
                         </select>
                     </div>
-                    <div class="modal-body">
-
+                    <div class="modal-body" id="exportar2">
+                        <div class="container" style="color: #89e2c2" >
+                            <table hidden class="table" id = "dataTable">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-dark">id_incidencia</th>
+                                    <th class="text-dark">titulo</th>
+                                    <th class="text-dark">descripcion</th>
+                                    <th class="text-dark">fecha</th>
+                                    <th class="text-dark">estado</th>
+                                    <th class="text-dark">urgencia</th>
+                                    <th class="text-dark">tipo_incidencia</th>
+                                    <th class="text-dark">zonapucp</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="incidencia,indice : ${listaIncidentes}">
+                                    <td class="text-dark" th:text="${incidencia.idI}">1111111</td>
+                                    <td class="text-dark" th:text="${incidencia.titulo}">2222222</td>
+                                    <td class="text-dark" th:text="${incidencia.descripcion}">33333333</td>
+                                    <td class="text-dark" th:text="${incidencia.fecha}">444444444444></td>
+                                    <td class="text-dark" th:text="${incidencia.estado}"><555555555555</td>
+                                    <td class="text-dark" th:text="${incidencia.urgencia}">66666666666</td>
+                                    <td class="text-dark" th:text="${incidencia.tincidencia}">777</td>
+                                    <td class="text-dark" th:text="${incidencia.zonapucp}">888</td>
+                                </tr>
+                            </table>
+                        </div>
 
                         <div class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentes}">
                             <div class="card-tele" >
@@ -112,14 +141,13 @@
                                         <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
                                     </div>
                                 </div>
-
                             </div>
-
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <button  onclick="generatePDF()" type="submit" class="btn btn-redtele">Exportar a PDF</button>
+                        <button id="btnExportToCsv" type="submit" class="btn btn-success" >exportar txt</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        <button id="btnCrearPdf" type="submit" class="btn btn-redtele">Exportar</button>
                     </div>
                 </div>
             </div>
@@ -176,6 +204,8 @@
         </div>
     </div>
 </div>
+</div>
+
 
 
 
@@ -190,34 +220,87 @@
         </div>
     </footer>
     <!-- End of Footer -->
-<script>document.addEventListener("DOMContentLoaded", () => {
-    // Escuchamos el click del botón
-    const $boton = document.querySelector("#btnCrearPdf");
-    $boton.addEventListener("click", () => {
-        const $elementoParaConvertir = document.body; // <-- Aquí puedes elegir cualquier elemento del DOM
+
+<script>
+    function generatePDF() {
+        const element= document.getElementById("exportar2")
         html2pdf()
-            .set({
-                margin: 1,
-                filename: 'documento.pdf',
-                image: {
-                    type: 'jpeg',
-                    quality: 0.98
-                },
-                html2canvas: {
-                    scale: 3, // A mayor escala, mejores gráficos, pero más peso
-                    letterRendering: true,
-                },
-                jsPDF: {
-                    unit: "in",
-                    format: "a4",
-                    orientation: 'portrait' // landscape o portrait
-                }
-            })
-            .from($elementoParaConvertir)
-            .save()
-            .catch(err => console.log(err));
+            .from(element)
+        .save("reporte.pdf");
+    }
+</script>
+
+<script>
+    const dataTable = document.getElementById("dataTable");
+    const btnExportToCsv = document.getElementById("btnExportToCsv");
+
+    btnExportToCsv.addEventListener("click", () => {
+        const exporter = new TableCSVExporter(dataTable);
+        const csvOutput = exporter.convertToCSV();
+        const csvBlob = new Blob([csvOutput], { type: "text/csv" });
+        const blobUrl = URL.createObjectURL(csvBlob);
+        const anchorElement = document.createElement("a");
+
+        anchorElement.href = blobUrl;
+        anchorElement.download = "reporte.txt";
+        anchorElement.click();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+        }, 500);
     });
-});</script>
+</script>
+<script>
+    class TableCSVExporter {
+        constructor (table, includeHeaders = true) {
+            this.table = table;
+            this.rows = Array.from(table.querySelectorAll("tr"));
+
+            if (!includeHeaders && this.rows[0].querySelectorAll("th").length) {
+                this.rows.shift();
+            }
+        }
+
+        convertToCSV () {
+            const lines = [];
+            const numCols = this._findLongestRowLength();
+
+            for (const row of this.rows) {
+                let line = "";
+
+                for (let i = 0; i < numCols; i++) {
+                    if (row.children[i] !== undefined) {
+                        line += TableCSVExporter.parseCell(row.children[i]);
+                    }
+
+                    line += (i !== (numCols - 1)) ? "," : "";
+                }
+
+                lines.push(line);
+            }
+
+            return lines.join("\n");
+        }
+
+        _findLongestRowLength () {
+            return this.rows.reduce((l, row) => row.childElementCount > l ? row.childElementCount : l, 0);
+        }
+
+        static parseCell (tableCell) {
+            let parsedValue = tableCell.textContent;
+
+            // Replace all double quotes with two double quotes
+            parsedValue = parsedValue.replace(/"/g, `""`);
+
+            // If value contains comma, new-line or double-quote, enclose in double quotes
+            parsedValue = /[",\n]/.test(parsedValue) ? `"${parsedValue}"` : parsedValue;
+
+            return parsedValue;
+        }
+    }
+
+</script>
+
 
 </body>
 </html>
