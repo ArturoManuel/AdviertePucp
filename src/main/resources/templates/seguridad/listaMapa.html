@@ -11,6 +11,7 @@
     <script src="html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
 </head>
 
@@ -18,6 +19,8 @@
 <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
 
 </header>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
 <div class="container py-5 px-0" >
     <!-- Lista incidencias -->
     <div class="title-28" >
@@ -91,7 +94,7 @@
                         </select>
                     </div>
                     <div class="modal-body" id="exportar2">
-                        <div class="container" style="color: #89e2c2" >
+
                             <table hidden class="table" id = "dataTable">
                                 <thead class="thead-dark">
                                 <tr>
@@ -106,47 +109,63 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="incidencia,indice : ${listaIncidentes}">
-                                    <td class="text-dark" th:text="${incidencia.idI}">1111111</td>
-                                    <td class="text-dark" th:text="${incidencia.titulo}">2222222</td>
-                                    <td class="text-dark" th:text="${incidencia.descripcion}">33333333</td>
-                                    <td class="text-dark" th:text="${incidencia.fecha}">444444444444></td>
-                                    <td class="text-dark" th:text="${incidencia.estado}"><555555555555</td>
-                                    <td class="text-dark" th:text="${incidencia.urgencia}">66666666666</td>
-                                    <td class="text-dark" th:text="${incidencia.tincidencia}">777</td>
-                                    <td class="text-dark" th:text="${incidencia.zonapucp}">888</td>
-                                </tr>
+                                    <tr th:each="incidencia : ${listaIncidentes}">
+                                        <td class="text-dark" th:text="${incidencia.idI}"></td>
+                                        <td class="text-dark" th:text="${incidencia.titulo}"></td>
+                                        <td class="text-dark" th:text="${incidencia.descripcion}"></td>
+                                        <td class="text-dark" th:text="${incidencia.fecha}"></td>
+                                        <td class="text-dark" th:text="${incidencia.estado}"></td>
+                                        <td class="text-dark" th:text="${incidencia.urgencia}"></td>
+                                        <td class="text-dark" th:text="${incidencia.tincidencia}"></td>
+                                        <td class="text-dark" th:text="${incidencia.zonapucp}"></td>
+                                    </tr>
+                                </tbody>
                             </table>
-                        </div>
 
-                        <div class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentes}">
-                            <div class="card-tele" >
+                        <div>
+                            <div class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentes}">
+                                <div class="card text-dark" >
 
-                                <div class="card-tele-body pb-2">
-                                    <div class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
-                                        <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-                            Leve
-                            </span>
-                                        <tr></tr>
-                                        <span th:text="${incidencia.tincidencia}" class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                            Objetos perdidos
-                            </span>
-                                    </div>
+                                    <div class=" card-body text-dark">
+                                        <div class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
+                                            <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+                                                Leve
+                                            </span>
+                                            <tr></tr>
+                                            <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                                                Objetos perdidos
+                                            </span>
+                                        </div>
 
-                                    <div class="card-tele-subtitle">
-                                        <i  th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
-                                    </div>
-                                    <div class="card-tele-subtitle">
-                                        <span>Estado:</span>
-                                        <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
+                                        <div class="card-tele-subtitle">
+                                            <i  th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                                        </div>
+                                        <div class="card-tele-subtitle">
+                                            <span>Estado:</span>
+                                            <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
+                                        </div>
                                     </div>
                                 </div>
+                                <br>
+
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button  onclick="generatePDF()" type="submit" class="btn btn-redtele">Exportar a PDF</button>
-                        <button id="btnExportToCsv" type="submit" class="btn btn-success" >exportar txt</button>
+                        <input type="button" onclick="generate()" class="btn btn-redtele" value="Exportar a PDF" />
+                        <button id="btnExportToCsv" type="submit" class="btn btn-success" >Exportar a txt</button>
+                        <button onclick="ExportToExcel('xlsx')" type="submit" class="btn btn-light">Exportar a xlsx</button>
+                        <script>
+
+                            function ExportToExcel(type, fn, dl) {
+                                var elt = document.getElementById('dataTable');
+                                var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+                                return dl ?
+                                    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                                    XLSX.writeFile(wb, fn || ('Reporte.' + (type || 'xlsx')));
+                            }
+
+                        </script>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
@@ -221,14 +240,69 @@
     </footer>
     <!-- End of Footer -->
 
-<script>
-    function generatePDF() {
-        const element= document.getElementById("exportar2")
-        html2pdf()
-            .from(element)
-        .save("reporte.pdf");
+
+<script type="text/javascript">
+    function generate() {
+        var doc = new jsPDF('p','pt', 'a1', true);
+        var htmlstring = '';
+        var tempVarToCheckPageHeight = 0;
+        var pageHeight = 0;
+        pageHeight = doc.internal.pageSize.height;
+        specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '#bypassme': function(element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true
+            }
+        };
+        margins = {
+            top: 150,
+            bottom: 60,
+            left: 40,
+            right: 40,
+            width: 600
+        };
+        var y = 20;
+        doc.setLineWidth(2);
+        doc.text(200, y = y + 30, "Reporte de incidencias");
+        doc.autoTable({
+            html: '#dataTable',
+            startY: 70,
+            theme: 'grid',
+            columnStyles: {
+                0: {
+                    cellWidth: 180,
+                },
+                1: {
+                    cellWidth: 180,
+                },
+                2: {
+                    cellWidth: 180,
+                },
+                3: {
+                    cellWidth: 180,
+                },
+                4: {
+                    cellWidth: 180,
+                },
+                5: {
+                    cellWidth: 180,
+                },
+                6: {
+                    cellWidth: 180,
+                },
+                7: {
+                    cellWidth: 180,
+                }
+            },
+            styles: {
+                minCellHeight: 40
+            }
+        })
+        doc.save('Reporte.pdf');
     }
 </script>
+
 
 <script>
     const dataTable = document.getElementById("dataTable");
