@@ -66,7 +66,7 @@ public class SeguridadController {
     }
 
     //filtro
-    @PostMapping("/filtro")
+    @PostMapping("filtro")
     public String busquedaIncidencia(@RequestParam("fechainicio") String fechainicio,
                                       @RequestParam("fechafin") String fechafin,
                                       @RequestParam("estado") String estado,
@@ -85,7 +85,7 @@ public class SeguridadController {
 
         return "seguridad/listaMapa";
     }
-    @PostMapping("/filtro2")
+    @PostMapping("filtro2")
     public String busquedaIncidencia(@RequestParam("titulo") String titulo,
                                      Model model, HttpSession session,
                                      RedirectAttributes attr) {
@@ -134,7 +134,7 @@ public class SeguridadController {
         return direccion;
     }
 
-    @PostMapping("/agregarcomentario")
+    @PostMapping("agregarcomentario")
     public String masInformacion(@RequestParam("idincidencia")  int idincidencia,
                                      @RequestParam("codigopucp")  int codigopucp,
                                      @RequestParam("comentario")  String comentario,
@@ -158,7 +158,7 @@ public class SeguridadController {
         Optional<Incidencia> opt = incidenciaRepository.findById(id);
         return "seguridad/MasInfoSeguridad";
     }*/
-    @GetMapping({"/lista"})
+    @GetMapping({"lista"})
     public String listaIncidencias(Model model, HttpSession session) {
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
@@ -168,7 +168,7 @@ public class SeguridadController {
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "seguridad/listaMapa";
     }
-    @GetMapping("/info")
+    @GetMapping("info")
     String masInformacion(@RequestParam("id") int id,
                           Model model, HttpSession session){
 
@@ -205,7 +205,7 @@ public class SeguridadController {
 
         return "seguridad/MasInfoSeguridad";
     }
-    @GetMapping("/mapa")
+    @GetMapping("mapa")
     String mapa(Model model,HttpSession session){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
@@ -226,7 +226,7 @@ public class SeguridadController {
 
 
 
-    @GetMapping("/estadisticas")
+    @GetMapping("estadisticas")
     public String dashboard(Model model, HttpSession session) {
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){

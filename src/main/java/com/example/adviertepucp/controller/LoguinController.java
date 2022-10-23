@@ -455,9 +455,6 @@ public class LoguinController {
         return "redirect:/";
     }
 
-
-
-
     @GetMapping({"oauth2/login"})
     public String oauth2Login(OAuth2AuthenticationToken oAuth2AuthenticationToken, HttpSession session,RedirectAttributes attr,Authentication auth) {
 

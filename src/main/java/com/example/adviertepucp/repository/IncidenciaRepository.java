@@ -74,7 +74,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
 
     //select zp.nombre from incidencia i
     //inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)
-    @Query(value = "select zp.nombre as'nombre', count(i.zonapucp) as 'zona' from incidencia i\n" +
+    @Query(value = "select ANY_VALUE(zp.nombre) as'nombre', count(ANY_VALUE(i.zonapucp)) as 'zona' from incidencia i\n" +
             "inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)\n" +
             "group by zp.nombre",
             nativeQuery = true)
@@ -82,8 +82,8 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
 
     //select count(codigo) from usuario WHERE suspendido = '1';
 
-    @Query(value = "SELECT  concat(round((count(u.suspendido)*100)/t.total, 2), '%') as 'porcentaje' from usuario u\n" +
-            "CROSS JOIN (SELECT count(codigo)  as total FROM usuario u) t\n" +
+    @Query(value = "SELECT  concat(round((count(ANY_VALUE(u.suspendido))*100)/ANY_VALUE(t.total), 2), '%') as 'porcentaje' from usuario u\n" +
+            "CROSS JOIN (SELECT count(ANY_VALUE(codigo))  as total FROM usuario u) t\n" +
             "where u.suspendido=1",
             nativeQuery = true)
     String usuariosReportados();
@@ -101,7 +101,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     nativeQuery = true)
     List<Usuario> estadoUsuarios();
 
-    @Query(value = "SELECT  concat(u.nombre,' ' , u.apellido) as 'nombre', u.codigo as 'codigo', count(i.idincidencia) as 'cantidad' from usuario u\n" +
+    @Query(value = "SELECT  concat(ANY_VALUE(u.nombre),' ' , ANY_VALUE(u.apellido)) as 'nombre', ANY_VALUE(u.codigo) as 'codigo', count(ANY_VALUE(i.idincidencia)) as 'cantidad' from usuario u\n" +
             "left join favorito f on (f.usuario_codigo= u.codigo)\n" +
             "left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)\n" +
             "group by concat(u.nombre,' ' , u.apellido) \n" +
