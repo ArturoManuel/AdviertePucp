@@ -170,7 +170,7 @@ public class LoguinController {
             updatedAuthorities.add(new SimpleGrantedAuthority("Seguridad"));
             Authentication newAuth = new UsernamePasswordAuthenticationToken(authe.getPrincipal(), authe.getCredentials(), updatedAuthorities);
             SecurityContextHolder.getContext().setAuthentication(newAuth);
-            return "redirect:/seguridad";
+            return "redirect:/seguridad/";
         }
         attr.addFlashAttribute("invalidcode","invalidcode");
         return "redirect:/autenticacion";
@@ -491,7 +491,7 @@ public class LoguinController {
                 return "redirect:/nuevacontrasena?token="+codigoVerificacion;
             }
             session.setAttribute("usuariolog",usuario);
-            return "redirect:/usuario";
+            return "redirect:/usuario/";
         }
         session.invalidate();
         SecurityContextHolder.clearContext();

@@ -62,7 +62,7 @@ public class UsuarioController {
 
 
 
-    @GetMapping("")
+    @GetMapping("/")
     String listaUsuario(Model model, HttpSession session){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
