@@ -3,6 +3,7 @@
 package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.dto.IncidenciaComentarioDto;
+import java.util.Random;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.dto.TipoIncidenciadto;
@@ -83,7 +84,6 @@ public class UsuarioController {
             return "redirect:/suspendido";
         }
 
-
         IncidenciaListadto incidencia = null;
         List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
        for( IncidenciaListadto lista : listaIncidencias){
@@ -96,7 +96,7 @@ public class UsuarioController {
         model.addAttribute("incidenciaId",incidencia.getIdI());
         List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
         model.addAttribute("listaComentarios", listaComentarios);
-
+        model.addAttribute("listaFotoId",usuarioRepository.listaDeFotosId(incidencia.getIdI()));
         return "usuario/MasInfoUsuario";
     }
     //comentario
@@ -341,9 +341,11 @@ public class UsuarioController {
 
     @GetMapping("/image/{id}")
     public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
-        System.out.println("Probando lulu ");
-        System.out.println(id);
-        byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(0);
+        Random rand = new Random();
+        List<byte[]> lista = usuarioRepository.listaFotoIncidencia(id);
+        int index = rand.nextInt(lista.size());
+        System.out.println(index);
+        byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(index);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(
                 MediaType.parseMediaType("image/png"));
@@ -352,6 +354,19 @@ public class UsuarioController {
                 imagenComoBytes,
                 httpHeaders,
                 HttpStatus.OK);
+    }
+    @GetMapping("/images/{id}")
+    public ResponseEntity<byte[]> mostrarImagenInfo(@PathVariable("id") int id) {
+            byte[] imagenComoBytes =usuarioRepository.fotoAlmacenada(id);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(
+                    MediaType.parseMediaType("image/png"));
+
+            return new ResponseEntity<>(
+                    imagenComoBytes,
+                    httpHeaders,
+                    HttpStatus.OK);
+
     }
 
 

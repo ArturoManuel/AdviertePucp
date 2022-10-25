@@ -497,8 +497,9 @@ public class AdminController extends Usuario {
                            @RequestParam("archivo") MultipartFile logo ,
                            @RequestParam("color") String color ,RedirectAttributes attr, Model model) {
         /* Validación de Correo */
-        Matcher matcherImage = emailPa.matcher((CharSequence) logo);
+        /*Matcher matcherImage = emailPa.matcher((CharSequence) logo);
         boolean imagenValid = matcherImage.matches();
+        System.out.println(imagenValid);*/
 
         if (logo.isEmpty()) {
             model.addAttribute("msg", "Debe subir un archivo");
@@ -508,7 +509,7 @@ public class AdminController extends Usuario {
         String nombrelogo=logo.getContentType();
         System.out.println(nombrelogo);
         if (nombrelogo.contains("..")) {
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("msg", "El tipo de archivo no es el correcto");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
