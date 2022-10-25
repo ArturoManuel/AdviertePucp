@@ -399,6 +399,8 @@ public class AdminController extends Usuario {
         /* Validación de Correo */
         Matcher matchercorreo = emailPa.matcher(correo);
         boolean email = matchercorreo.matches();
+        Matcher matchercorreo2 = emailPa2.matcher(correo);
+        boolean email2 = matchercorreo2.matches();
         System.out.println("PROAABDNO SU LLEGA 2122222: " + nombre);
 
 
@@ -426,7 +428,7 @@ public class AdminController extends Usuario {
             model.addAttribute("ms4", "El Celular debe ser de 9 digitos y/o con formato numérico");
             flag ++;
         }
-        if (correo.length() > 80 || !email) {
+        if (correo.length() > 80 || !email || !email2) {
             model.addAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe");
             flag ++;
         }
