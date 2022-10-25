@@ -40,6 +40,8 @@ import java.util.regex.Pattern;
 public class AdminController extends Usuario {
     private static final String EMAIL_PATTERN = "([A-Za-z0-9-_.]+@[pucp]+(?:\\.[edu]+)+(?:\\.[pe]+)+)";
     private static final Pattern emailPa = Pattern.compile(EMAIL_PATTERN);
+    private static final String EMAIL_PATTERN2 = "([A-Za-z0-9-_.]+@[pucp]+(?:\\.[pe]+)+)";
+    private static final Pattern emailPa2 = Pattern.compile(EMAIL_PATTERN2);
 
     private static final String NOMBRE_PATTERN = "^\\pL+[\\pL\\pZ\\pP]{1,45}$";
     private static final Pattern nombrePa = Pattern.compile(NOMBRE_PATTERN);
@@ -224,6 +226,8 @@ public class AdminController extends Usuario {
         /* Validación de Correo */
         Matcher matchercorreo = emailPa.matcher(correo);
         boolean email1 = matchercorreo.find();
+        Matcher matchercorreo2 = emailPa2.matcher(correo);
+        boolean email2 = matchercorreo2.find();
 
         Usuario usuarioExiste=null;
         Optional<Usuario> userExiste1=usuarioRepository.findById(codigo);
@@ -256,8 +260,8 @@ public class AdminController extends Usuario {
             attr.addFlashAttribute("msg3", "El DNI dede ser de 8 digitos y/o con formato numérico");
             flag ++;
         }
-        if (!email1) {
-            attr.addFlashAttribute("msg5", "Correo debe respetar de formato @pucp.edu.pe");
+        if (!email1 || !email2) {
+            attr.addFlashAttribute("msg5", "Correo debe respetar de formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
 
