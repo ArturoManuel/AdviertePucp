@@ -429,7 +429,7 @@ public class AdminController extends Usuario {
             flag ++;
         }
         if (correo.length() > 80 || !email || !email2) {
-            model.addAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe");
+            model.addAttribute("ms5", "Correo debe respetar el formato @pucp.edu.pe o @pucp.pe");
             flag ++;
         }
 
