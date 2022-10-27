@@ -102,15 +102,31 @@ public class AdminController extends Usuario {
 
 
 
-        @GetMapping("/suspenderUser")
-    public String suspenderUser(@RequestParam("id") int id) {
-        System.out.println("ESTO ES ID: " + id);
+        @PostMapping("/suspenderUser")
+    public String suspenderUser(@RequestParam("id") int id,@RequestParam(value = "mensajesuspendido",required = false) String mensajesuspendido, RedirectAttributes attr){
+
+            System.out.println(mensajesuspendido);
 
 
-            admiRepository.suspenderUsuario(id);
-            System.out.println("Se ha suspendido correctamente");
 
+        Optional<Usuario> usuario = usuarioRepository.findById(String.valueOf(id));
+        if (mensajesuspendido == null) {
+            attr.addFlashAttribute("error", "El comentario debe tener entre 11 y 300 caracteres");
             return "redirect:/administrador/";
+        }
+        else if (mensajesuspendido.length()<10 || mensajesuspendido.length()>300){
+                attr.addFlashAttribute("error", "El comentario debe tener entre 11 y 300 caracteres");
+                return "redirect:/administrador/";
+            }
+        else if(usuario.isPresent()){
+            admiRepository.suspenderUsuario(id,mensajesuspendido);
+            attr.addFlashAttribute("success", "Usuario suspendido correctamente");
+            return "redirect:/administrador/";
+        }
+        else{
+            attr.addFlashAttribute("error", "No se pudo suspender el usuario");
+            return "redirect:/administrador/";
+        }
 
     }
     @GetMapping("/activarUser")
@@ -152,11 +168,7 @@ public class AdminController extends Usuario {
         model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
         return "admin/listaIncidentes";
     }
-    @GetMapping("/prueba")
 
-    String pruebas(){
-        return "admin/prueba";
-    }
 
     //Para obtener imagenes de la base de datos
     //Para ver al el llamado vayan al archivo listaIncidentes.html
@@ -278,12 +290,6 @@ public class AdminController extends Usuario {
                 otp=new BCryptPasswordEncoder().encode(otp);
                 admiRepository.crearSeguridad(codigo,nombre,apellido,dni,correo,categoria, suspendido,otp);
                 usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
-
-                /*TODO: A pesar de que sale mensaje de error al momento de crear un usuario, se genera un DataIntegrityViolationException en la consola de Java
-                  TODO: y si se crea varias veces a un mismo seguridad, se le envia el correo con la contrseña cambiada.Sin embargo, ya que se envió mensaje de error,
-                   TODO: la contraseña sigue siendo la misma generada por primera vez...*/
-
-                //TODO: Cuando se crea un nuevo usuario, cellphone=null
 
                 attr.addFlashAttribute("msg", "Personal de Seguridad registrado exitosamente");
             }

@@ -39,12 +39,12 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
-            value = "UPDATE `adviertedb`.`usuario` SET `suspendido` = 3 WHERE (`codigo` = ?1);")
-    void suspenderUsuario(Integer id_codigo);
+            value = "UPDATE usuario SET `suspendido` = 3,mensajesuspendido=?2 WHERE (`codigo` = ?1);")
+    void suspenderUsuario(Integer id,String mensajesuspendido);
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
-            value = "UPDATE `adviertedb`.`usuario` SET `suspendido` = 0 WHERE (`codigo` = ?1);")
+            value = "UPDATE `adviertedb`.`usuario` SET `suspendido` = 0,mensajesuspendido=null WHERE (`codigo` = ?1);")
     void activarUsuario(Integer id_codigo);
 
     @Transactional

@@ -35,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/usuario","/usuario/**").access("isAuthenticated() and not hasAnyAuthority('Administrativo','Seguridad','transitorio')")
                 .antMatchers("/seguridad","/seguridad/**").hasAnyAuthority("Seguridad")
                 .antMatchers("/administrador","/administrador/**").hasAnyAuthority("Administrativo")
-                .antMatchers("/suspendido").access("isAuthenticated() and not hasAnyAuthority('Administrativo','Seguridad','transitorio')")
+                .antMatchers("/suspendido").access("isAuthenticated() and not hasAnyAuthority('Administrativo','transitorio')")
                 .antMatchers("/autenticacion").access("isAuthenticated() and hasAnyAuthority('transitorio')")
                 .anyRequest().permitAll();
 

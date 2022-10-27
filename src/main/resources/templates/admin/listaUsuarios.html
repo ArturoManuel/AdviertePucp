@@ -86,9 +86,12 @@
     <br>
 
     <main>
+        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+        <div th:if="${success != null}" th:text="${success}" class="alert alert-success" role="alert"></div>
+        <div th:if="${error != null}" th:text="${error}" class="alert alert-alert" role="alert"></div>
 
         <div class="container px-4 py-0">
-            <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+
             <div class="title-28 py-1 d-flex mb-3">
                 Lista de Usuarios
                 <div class="ms-auto">
@@ -157,27 +160,35 @@
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
 
-                                        <!-- Modal Suspender -->
-                                        <div class="modal fade"
+                                        <!-- Modal Suspender Seguridad PUCP -->
+                                        <div class="modal fade"  data-backdrop="static" data-keyboard="false"
                                              th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
                                              aria-hidden="true" aria-labelleby="modalTitle">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                        porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                        <button  type="submit" class="btn btn-redtele">
                                                             Suspender
-                                                        </a>
+                                                        </button>
 
                                                     </div>
+                                                    </form>
 
                                                 </div>
 
@@ -199,10 +210,11 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
@@ -239,29 +251,41 @@
                                                 style="background-color: limegreen"
                                                 data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
 
-                                        <!-- Modal Suspender -->
+                                        <!-- Modal Suspender Usuario PUCP -->
                                         <div class="modal fade"
-                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"  data-backdrop="static" data-keyboard="false"
                                              aria-hidden="true" aria-labelleby="modalTitle">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
+
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                        <button  type="submit" class="btn btn-redtele">
                                                             Suspender
-                                                        </a>
-
+                                                        </button>
                                                     </div>
+                                                    </form>
+
+
+
 
                                                 </div>
+
 
                                             </div>
 
@@ -281,10 +305,11 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
@@ -306,7 +331,7 @@
                                 </div>
                             </div>
                             <div th:case="4">
-                                <a type="button"; class="btn btn-redtele accion_button"
+                                <a type="button" class="btn btn-redtele accion_button"
                                         th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
                                         style="background-color: #3a7dec">Editar
                                 </a>  <!--Editar1 es el ID de este Usuario-->
@@ -322,25 +347,33 @@
 
                                         <!-- Modal Suspender -->
                                         <div class="modal fade"
-                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1" data-backdrop="static" data-keyboard="false"
                                              aria-hidden="true" aria-labelleby="modalTitle">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                        <button  type="submit" class="btn btn-redtele">
                                                             Suspender
-                                                        </a>
+                                                        </button>
 
                                                     </div>
+                                                    </form>
 
                                                 </div>
 
@@ -362,10 +395,11 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
@@ -404,25 +438,32 @@
 
                                         <!-- Modal Suspender -->
                                         <div class="modal fade"
-                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1" data-backdrop="static" data-keyboard="false"
                                              aria-hidden="true" aria-labelleby="modalTitle">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                        <button  type="submit" class="btn btn-redtele">
                                                             Suspender
-                                                        </a>
+                                                        </button>
 
                                                     </div>
+                                                    </form>
 
                                                 </div>
 
@@ -444,10 +485,11 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
@@ -485,26 +527,33 @@
 
                                         <!-- Modal Suspender -->
                                         <div class="modal fade"
-                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1" data-backdrop="static" data-keyboard="false"
                                              aria-hidden="true" aria-labelleby="modalTitle">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de suspender al usuario?</p>
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
                                                             Cerrar
                                                         </button>
-                                                        <a th:href="@{'/administrador/suspenderUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                        <button  type="submit" class="btn btn-redtele">
                                                             Suspender
-                                                        </a>
+                                                        </button>
 
                                                     </div>
-
+                                                    </form>
                                                 </div>
 
                                             </div>
@@ -525,10 +574,11 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <p> ¿Está seguro de reactivar al usuario?</p>
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >

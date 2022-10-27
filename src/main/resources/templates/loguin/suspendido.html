@@ -112,13 +112,25 @@
     <div class="card" style="max-width: 800px">
         <div class="card-body">
 
-            <p class="card-text" style="font-family: Roboto;font-size: 20px;color:#6b6f7b">El acceso a tu cuenta se ha suspendido debido a 3 reportes por parte del
-                personal de seguridad en tus incidencias registradas o por decisión del
+            <div th:if="${session.usuariolog.getMensajesuspendido()!=null}">
+            <p  class="card-text" style="font-family: Roboto;font-size: 20px;color:#6b6f7b">El acceso a tu cuenta se ha suspendido por decisión del
                 administrador. Si crees que se trata de un error, envía un correo con el
                 asunto: “Solicitud de recuperación de cuenta suspendida” a la dirección
                 <a style="color: blue" href = "mailto:20191660@pucp.edu.pe?subject = Solicitud de recuperación de cuenta suspendida">
                     a20191660@pucp.edu.pe
-                </a></p>
+                </a>.<br>
+                <span style="font-style: italic;color: #8f0000 ">Motivo: <span style="color: #8f0000" th:text="${session.usuariolog.getMensajesuspendido()}"></span></span></p>
+            </div>
+
+            <div th:unless="${session.usuariolog.getMensajesuspendido()!=null}">
+            <p class="card-text" style="font-family: Roboto;font-size: 20px;color:#6b6f7b">El acceso a tu cuenta se ha suspendido debido a 3 reportes por parte del
+                personal de seguridad en tus incidencias registradas. Si crees que se trata de un error, envía un correo con el
+                asunto: “Solicitud de recuperación de cuenta suspendida” a la dirección
+                <a style="color: blue" href = "mailto:20191660@pucp.edu.pe?subject = Solicitud de recuperación de cuenta suspendida">
+                    a20191660@pucp.edu.pe
+                </a>.</p>
+
+            </div>
             <!-- -<div  class="centered text-center"><a href="#" class="btn btn-primary" style="border-radius: 20px;text-align: center">Regresa a la página principal</a></div>-->
         </div>
     </div>

@@ -45,11 +45,11 @@
       <div class="col-12">
         <nav class="main-nav">
           <!-- ***** Logo Start ***** -->
-          <a  sec:authorize="hasAnyAuthority('Administrativo')"  class="logo" th:href="@{/administrador}" >
+          <a  sec:authorize="hasAnyAuthority('Administrativo')"  class="logo" th:href="@{/administrador/}" >
             <img class="img-fluid" style="width: 285px;height: 45px;" src="/images/logoNavbar.png" alt="">
           </a>
 
-          <a sec:authorize="hasAnyAuthority('Seguridad')" th:href="@{/seguridad}" class="logo">
+          <a sec:authorize="hasAnyAuthority('Seguridad')" th:href="@{/seguridad/}" class="logo">
             <img class="img-fluid" style="width: 285px;height: 45px;" src="/images/logoNavbar.png" alt="">
           </a>
 
@@ -61,9 +61,9 @@
             <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad/estadisticas}">Estadísticas</a></li>
             <li sec:authorize="hasAnyAuthority('Administrativo')"><a  th:href="@{/administrador/incidencias}">Gestionar</a></li>
 
-            <li sec:authorize="hasAnyAuthority('Administrativo')" ><a th:href="@{/administrador}">Inicio</a></li>
+            <li sec:authorize="hasAnyAuthority('Administrativo')" ><a th:href="@{/administrador/}">Inicio</a></li>
             <li sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" ><a th:href="@{/usuario/}">Inicio</a></li>
-            <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad}">Inicio</a></li>
+            <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad/}">Inicio</a></li>
 
             <form th:action="@{/logout}" method="post">
               <li><button type="submit" style="margin-top: 5px"  class="btn btn-outline-danger" >Cerrar Sesión</button></li>

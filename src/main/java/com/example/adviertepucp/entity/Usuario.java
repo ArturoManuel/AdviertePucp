@@ -81,6 +81,18 @@ public class Usuario implements Serializable {
     @Column(name = "otp")
     private Byte otp;
 
+    @Size(max = 300)
+    @Column(name = "mensajesuspendido", length = 300)
+    private String mensajesuspendido;
+
+    public String getMensajesuspendido() {
+        return mensajesuspendido;
+    }
+
+    public void setMensajesuspendido(String mensajesuspendido) {
+        this.mensajesuspendido = mensajesuspendido;
+    }
+
     public Byte getOtp() {
         return otp;
     }
