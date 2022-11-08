@@ -32,74 +32,32 @@
     </header>
 
 <div class="container py-5" >
-    <div >
-        <span th:text="'Incidencia #'+ ${incidencia.idI}" style="font-size: medium">(Incidencia #001454)</span>
-        <h2 th:text="${incidencia.titulo}"></h2>
-        <div class="card-tele-title" style="font-size: medium">
-            <span th:text="${incidencia.urgencia}"
-                   class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-            </span>
-            <tr></tr>
-            <span th:text="${incidencia.tincidencia}"
-                  th:styleappend="';background-color:'+${incidencia.color}" class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                Objetos perdidos</span>
 
-        </div>
-        <div class="card-tele-subtitle">
-            <i class="bi bi-geo-alt" th:text="${incidencia.zonapucp}"></i>
-        </div>
-        <div class="card-tele-subtitle">
-            <span>Estado:</span>
-            <span th:text="${incidencia.estado}"
-                  style="font-weight: bolder">En proceso</span>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-xs-6 col-md-10">
-            <button type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
-                Comentar
-            </button>
-            <!-- Modal -->
-            <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="post" th:action="@{/usuario/agregarcomentario}">
-                            <div class="modal-header">
-
-                                <h5 class="modal-title" id="exampleModalLabel3">Agregar comentario</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div class="form-floating">
-                                    <div >
-                                        <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
-                                        <span hidden th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
-                                    </div>
-                                    <div>
-                                        <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
-                                        <span hidden class="text-muted mb-0" th:value="${session.usuariolog.getId()}" th:text="'Codigo: '+ ${session.usuariolog.getId()}" > codigo </span>
-                                    </div>
-                                    <div>
-                                        <textarea class="form-control" placeholder="Escribe tu comentario aquí" id="floatingTextarea3" style="height: 100px" name="comentario"></textarea>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
-                                <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">Guardar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <br>
     <div class="row">
         <div class="col-lg-6">
+            <div >
+                <span th:text="'Incidencia #'+ ${incidencia.idI}" style="font-size: medium">(Incidencia #001454)</span>
+                <h2 th:text="${incidencia.titulo}"></h2>
+                <div class="card-tele-title" style="font-size: medium">
+            <span th:text="${incidencia.urgencia}"
+                  class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+            </span>
+                    <tr></tr>
+                    <span th:text="${incidencia.tincidencia}"
+                          th:styleappend="';background-color:'+${incidencia.color}" class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                Objetos perdidos</span>
+
+                </div>
+                <div class="card-tele-subtitle">
+                    <i class="bi bi-geo-alt" th:text="${incidencia.zonapucp}"></i>
+                </div>
+                <div class="card-tele-subtitle">
+                    <span>Estado:</span>
+                    <span th:text="${incidencia.estado}"
+                          style="font-weight: bolder">En proceso</span>
+                </div>
+            </div>
         <div id="carouselExampleIndicators" class="carousel slide col-md-10 offset-md-1" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -124,37 +82,85 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
+            <br>
+            <br>
+            <div class="card-tele" style="padding: 14px">
+
+                <div class="card-tele-title" style="font-size: large"> Descripción
+                </div>
+                <div th:text="${incidencia.descripcion}">
+                </div>
+            </div>
         </div>
         <br>
-        <br>
-        <br>
+
         <div class="col-lg-6">
         <div class="card-tele" style="padding: 14px">
 
-            <div class="card-tele-title" style="font-size: large"> Descripción
+            <div class="card-tele-title" style="font-size: large"> Ubicacion en el mapa
             </div>
-            <div th:text="${incidencia.descripcion}">
-            </div>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3475.927032152855!2d-77.08123351933439!3d-12.071278199656282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c96caf9dbcaf%3A0xa729c63564e4353!2sComplejo%20de%20Innovaci%C3%B3n%20Academica%20CIA%20PUCP!5e0!3m2!1ses!2spe!4v1663094644972!5m2!1ses!2spe" width="100%" height="600px" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+        </div>
         </div>
         </div>
         </div>
 
-    <br>
-    <br>
     <section >
+
         <div class="container my-5 py-5">
 
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12 col-lg-10">
 
-                    <br/>
-                    <br/>
-                    <br/>
-                    <br/>
                     <div class="card text-dark">
                         <div class="card-body p-4">
-                            <h4 class="mb-0">Comentarios</h4>
-                            <p class="fw-light mb-4 pb-2">(Solo el autor y miembros de seguridad pueden comentar)</p>
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <h4 class="mb-0">Comentarios</h4>
+                                    <p class="fw-light mb-4 pb-2">(Solo el autor y miembros de seguridad pueden comentar)</p>
+                                </div>
+                                <div class="col-lg-3">
+                                    <button type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                                                Comentar
+                                    </button>
+                                            <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <form method="post" th:action="@{/usuario/agregarcomentario}">
+                                                            <div class="modal-header">
+
+                                                                <h5 class="modal-title" id="exampleModalLabel3">Agregar comentario</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <div class="form-floating">
+                                                                    <div >
+                                                                        <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
+                                                                        <span hidden th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
+                                                                        <span hidden class="text-muted mb-0" th:value="${session.usuariolog.getId()}" th:text="'Codigo: '+ ${session.usuariolog.getId()}" > codigo </span>
+                                                                    </div>
+                                                                    <div>
+                                                                        <textarea class="form-control" placeholder="Escribe tu comentario aquí" id="floatingTextarea3" style="height: 100px" name="comentario"></textarea>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
+                                                                <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">Guardar</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                </div>
+                            </div>
                             <div >
                                 <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
                                 <span hidden th:text="'Incidencia #'+ ${incidenciaId}" style="font-size: medium" >(Incidencia #001454)</span>
@@ -186,16 +192,8 @@
             </div>
         </div>
 
-        <br>
-        <br>
+
     </section>
-
-
-
-
-    <div class="card-tele-title" style="font-size: large">Ubicación en el mapa        </div>
-
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3475.927032152855!2d-77.08123351933439!3d-12.071278199656282!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c96caf9dbcaf%3A0xa729c63564e4353!2sComplejo%20de%20Innovaci%C3%B3n%20Academica%20CIA%20PUCP!5e0!3m2!1ses!2spe!4v1663094644972!5m2!1ses!2spe" width="100%" height="600px" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 
     <!-- Footer -->
     <footer class="sticky-footer bg-white">
