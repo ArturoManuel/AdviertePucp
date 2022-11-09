@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head >
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -34,7 +32,7 @@
 <div class="container py-5" >
     <div >
         <span th:text="'Incidencia #'+ ${incidencia.idI}" style="font-size: medium">(Incidencia #001454)</span>
-        <h2>Mucho ruido los cachimbos</h2>
+        <h2 th:text="${incidencia.titulo}"></h2>
         <div class="card-tele-title" style="font-size: medium">
             <span th:text="${incidencia.urgencia}"
                   class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
