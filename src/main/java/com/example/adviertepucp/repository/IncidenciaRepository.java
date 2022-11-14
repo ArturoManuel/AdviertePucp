@@ -44,9 +44,19 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "from incidencia i \n" +
             "inner join zonapucp z on (z.idzonapucp=i.zonapucp) \n" +
             "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
-            "WHERE (i.fecha >= concat(?1, ' ', '0:0:0') AND i.fecha <= concat(?2, ' ', '23:59:59')) and (i.estado = ?3) and (t.nombre = ?4);",
+            "WHERE (i.fecha >= concat(?1, ' ', '0:0:0') AND i.fecha <= concat(?2, ' ', '23:59:59')) and (i.estado = ?3) and (t.nombre = ?4)",
             nativeQuery = true)
     List<IncidenciaListadto> buscarlistaFiltroIncidencia(String fechainicio, String fechafin,String estado, String nombre);
+
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , \n" +
+            "estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, \n" +
+            "longitud as longitud ,  z.nombre as zonapucp \n" +
+            "from incidencia i \n" +
+            "inner join zonapucp z on (z.idzonapucp=i.zonapucp) \n" +
+            "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+            "WHERE (i.fecha >= concat(LEFT(?1, 10), ' ', '0:0:0') AND i.fecha <= concat(right(?1, 10), ' ', '23:59:59')) and (i.estado = ?2) and (t.nombre = ?3)",
+            nativeQuery = true)
+    List<IncidenciaListadto> buscarlistaFiltro(String datetimes,String estado, String nombre);
 
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , \n" +
             "estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +

@@ -67,8 +67,8 @@ public class SeguridadController {
 
     //filtro
     @PostMapping("filtro")
-    public String busquedaIncidencia(@RequestParam("fechainicio") String fechainicio,
-                                      @RequestParam("fechafin") String fechafin,
+    public String busquedaIncidencia(
+                                     @RequestParam("datetimes") String datetimes,
                                       @RequestParam("estado") String estado,
                                       @RequestParam("nombre") String nombre,
                                       Model model, HttpSession session,
@@ -79,7 +79,8 @@ public class SeguridadController {
             return "redirect:/suspendido";
         }
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
-        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio,fechafin,estado,nombre);
+        //List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio,fechafin,estado,nombre);
+        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
         model.addAttribute("msg", "Filtro aplicado exitosamente");
 
