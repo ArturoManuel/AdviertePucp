@@ -67,8 +67,7 @@ public class SeguridadController {
 
     //filtro
     @PostMapping("filtro")
-    public String busquedaIncidencia(
-                                     @RequestParam("datetimes") String datetimes,
+    public String busquedaIncidencia(@RequestParam("datetimes") String datetimes,
                                       @RequestParam("estado") String estado,
                                       @RequestParam("nombre") String nombre,
                                       Model model, HttpSession session,
@@ -82,7 +81,7 @@ public class SeguridadController {
         //List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio,fechafin,estado,nombre);
         List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
-        model.addAttribute("msg", "Filtro aplicado exitosamente");
+        model.addAttribute("msg", "Filtro aplicado");
 
         return "seguridad/listaMapa";
     }
@@ -98,7 +97,7 @@ public class SeguridadController {
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
         model.addAttribute("listaIncidentes", listaFiltroTitulo);
-        model.addAttribute("msg", "Filtro aplicado exitosamente");
+        model.addAttribute("msg", "Filtro aplicado");
 
         return "seguridad/listaMapa";
     }

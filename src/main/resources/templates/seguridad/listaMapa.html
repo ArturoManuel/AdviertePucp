@@ -44,20 +44,34 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <label style="font-size: medium" >Estado</label>
-                            <select class="form-select" aria-label="Default select example" name="estado" >
-                                <option hidden>Seleccionar</option>
+
+
+
+
+                            <label for="validationCustom04" class="form-label" style="font-size: medium">Estado</label>
+                            <select class="form-select" id="validationCustom04" required name="estado">
+                                <option hidden selected disabled value="">Seleccionar</option>
+                                <option value="">Todos</option>
                                 <option value="registrado">Registrado</option>
                                 <option value="atendido">Atendido</option>
                                 <option value="resuelto">Resuelto</option>
                             </select>
+                            <div class="invalid-feedback">
+                                Selecciona un estado válido.
+                            </div>
 
-                            <label style="font-size: medium" >Tipo de incidencia</label>
-                            <select class="form-select" aria-label="Default select example" name="nombre">
-                                <option hidden>Seleccionar</option>
+                            <label for="validationCustom04" class="form-label" style="font-size: medium">Tipo de incidencia</label>
+                            <select class="form-select" id="validationCustom05" required name="nombre">
+                                <option hidden selected disabled value="">Seleccionar</option>
+                                <option value="">Todos</option>
                                 <option th:each="tipoincidencia : ${listaTipoIncidencias}" th:value="${tipoincidencia.getNombre()} " th:text="${tipoincidencia.getNombre()}">Todo</option>
-
                             </select>
+                            <div class="invalid-feedback">
+                                Selecciona un estado válido.
+                            </div>
+
+
+
                             <label style="font-size: medium" >Filtrar por fecha:
                             </label>
 
