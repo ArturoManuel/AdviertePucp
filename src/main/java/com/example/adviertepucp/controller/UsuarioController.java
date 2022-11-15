@@ -370,7 +370,16 @@ public class UsuarioController {
     }
 
 
+    @GetMapping({"/misIncidencias"})
+    public String misIncidencias(Model model, HttpSession session) {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
 
+        model.addAttribute("listaIncidentes",usuarioRepository.misIncidencias(usuario.getId()));
+        return "usuario/misIncidencias";
+    }
 
 
 }
