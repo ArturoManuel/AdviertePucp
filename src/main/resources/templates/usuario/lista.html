@@ -3,10 +3,29 @@
 <head>
     <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Lista de incidentes')">
     </div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
 
 
 
-   <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+
+    <style>
+        .textarea-container {
+            position: relative;
+        }
+        .textarea-container textarea {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .textarea-container button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 5px;
+        }
+    </style>
 
 </head>
 
@@ -64,6 +83,10 @@
                 </div>
             </div>
         </div>
+        <input id="subscriptionKey" type="hidden" size="40" value="0886a0bdfc564ff1a43b36b512bec2d2">
+        <input id="serviceRegion" type="hidden" size="40" value="eastus">
+        <input id="languageSourceOptions" type="hidden" size="40" value="es-ES">
+        <input id="languageTargetOptions" type="hidden" size="40" value="es">
 
         <a style="margin-left: 5px" type="button" href="/usuario/mapa" class="btn btn-outline-dark">Ver Mapa</a>
         <a href="/usuario/nuevoIncidente" type="button" class="btn btn-redtele bSalir">
@@ -71,7 +94,12 @@
         </a>
     </div>
     <form method="post" th:action="@{/usuario/filtro2}">
-        <input name="titulo" class="form-control mb-3" type="text" placeholder="Buscar por título incidencia"/>
+        <div class="textarea-container">
+            <button type="submit" hidden></button>
+            <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
+            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por título incidencia">
+        </div>
+
     </form>
     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
 
@@ -129,5 +157,94 @@
     </div>
 </footer>
 <!-- End of Footer -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Speech SDK reference sdk. -->
+<script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+
+<!-- Speech SDK USAGE -->
+<script>
+    // status fields and start button in UI
+    var phraseDiv;
+    var startRecognizeOnceAsyncButton;
+
+    // subscription key and region for speech services.
+    var subscriptionKey, serviceRegion, languageTargetOptions, languageSourceOptions;
+    var SpeechSDK;
+    var recognizer;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
+        subscriptionKey = document.getElementById("subscriptionKey");
+        serviceRegion = document.getElementById("serviceRegion");
+        languageTargetOptions = document.getElementById("languageTargetOptions");
+        languageSourceOptions = document.getElementById("languageSourceOptions");
+        phraseDiv = document.getElementById("phraseDiv");
+
+        startRecognizeOnceAsyncButton.addEventListener("click", function () {
+            startRecognizeOnceAsyncButton.disabled = true;
+            phraseDiv.innerHTML = "";
+
+            if (subscriptionKey.value === "" || subscriptionKey.value === "subscription") {
+                alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+                startRecognizeOnceAsyncButton.disabled = false;
+                return;
+            }
+            var speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
+
+            speechConfig.speechRecognitionLanguage = languageSourceOptions.value;
+            let language = languageTargetOptions.value
+            speechConfig.addTargetLanguage(language)
+
+            var audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            recognizer = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+
+            recognizer.recognizeOnceAsync(
+                function (result) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    if (result.reason === SpeechSDK.ResultReason.TranslatedSpeech) {
+                        let translation = result.translations.get(language);
+                        window.console.log(translation);
+                        phraseDiv.innerHTML += translation;
+                        document.getElementById('phraseDiv').value = translation;
+                    }
+
+                    recognizer.close();
+                    recognizer = undefined;
+                },
+                function (err) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    phraseDiv.innerHTML += err;
+                    document.getElementById('phraseDiv').value = err;
+                    window.console.log(err);
+
+                    recognizer.close();
+                    recognizer = undefined;
+                });
+        });
+
+        if (!!window.SpeechSDK) {
+            SpeechSDK = window.SpeechSDK;
+            startRecognizeOnceAsyncButton.disabled = false;
+
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('warning').style.display = 'none';
+        }
+    });
+</script>
+
+
 </body>
 </html>

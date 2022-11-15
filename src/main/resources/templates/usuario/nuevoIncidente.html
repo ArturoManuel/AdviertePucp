@@ -37,6 +37,21 @@
             box-shadow: 0 0 8px rgba(0,0,0,0.2);
             opacity: 85%;
         }
+        .textarea-container {
+            position: relative;
+        }
+        .textarea-container textarea {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .textarea-container button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 5px;
+        }
+
     </style>
 </head>
 <body style="background-color: #eee;">
@@ -57,6 +72,13 @@
             </div>
         </div>
         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+        <!--  -->
+        <input id="subscriptionKey" type="hidden" size="40" value="0886a0bdfc564ff1a43b36b512bec2d2">
+        <input id="serviceRegion" type="hidden" size="40" value="eastus">
+        <input id="languageSourceOptions" type="hidden" size="40" value="es-ES">
+        <input id="languageTargetOptions" type="hidden" size="40" value="es">
+
+
         <form method="post" th:action="@{'/usuario/guardarincidente'}" enctype="multipart/form-data" th:object="${incidencia}">
 
         <div class="row">
@@ -97,8 +119,10 @@
                             <div class="col-sm-3">
                                 <p class="mb-0">Describe lo sucedido a detalle</p>
                             </div>
-                            <div class="col-sm-9">
-                                <textarea th:field="*{descripcion}" name="descripcion" class="form-control" id="textAreaExample" rows="4"></textarea>
+                            <div class="col-sm-9 textarea-container">
+                                <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
+                                <textarea th:field="*{descripcion}" name="descripcion" class="form-control" id="phraseDiv" rows="4"></textarea>
+
                             </div>
                         </div>
                         <hr>
@@ -173,5 +197,80 @@
         }
         
     </script>
+
+<!-- Speech SDK reference sdk. -->
+<script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+
+<!-- Speech SDK USAGE -->
+<script>
+    // status fields and start button in UI
+    var phraseDiv;
+    var startRecognizeOnceAsyncButton;
+
+    // subscription key and region for speech services.
+    var subscriptionKey, serviceRegion, languageTargetOptions, languageSourceOptions;
+    var SpeechSDK;
+    var recognizer;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
+        subscriptionKey = document.getElementById("subscriptionKey");
+        serviceRegion = document.getElementById("serviceRegion");
+        languageTargetOptions = document.getElementById("languageTargetOptions");
+        languageSourceOptions = document.getElementById("languageSourceOptions");
+        phraseDiv = document.getElementById("phraseDiv");
+
+        startRecognizeOnceAsyncButton.addEventListener("click", function () {
+            startRecognizeOnceAsyncButton.disabled = true;
+            phraseDiv.innerHTML = "";
+
+            if (subscriptionKey.value === "" || subscriptionKey.value === "subscription") {
+                alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+                startRecognizeOnceAsyncButton.disabled = false;
+                return;
+            }
+            var speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
+
+            speechConfig.speechRecognitionLanguage = languageSourceOptions.value;
+            let language = languageTargetOptions.value
+            speechConfig.addTargetLanguage(language)
+
+            var audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            recognizer = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+
+            recognizer.recognizeOnceAsync(
+                function (result) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    if (result.reason === SpeechSDK.ResultReason.TranslatedSpeech) {
+                        let translation = result.translations.get(language);
+                        window.console.log(translation);
+                        phraseDiv.innerHTML += translation;
+
+                    }
+
+                    recognizer.close();
+                    recognizer = undefined;
+                },
+                function (err) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    phraseDiv.innerHTML += err;
+                    window.console.log(err);
+
+                    recognizer.close();
+                    recognizer = undefined;
+                });
+        });
+
+        if (!!window.SpeechSDK) {
+            SpeechSDK = window.SpeechSDK;
+            startRecognizeOnceAsyncButton.disabled = false;
+
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('warning').style.display = 'none';
+        }
+    });
+</script>
+
+
     
 </html>
