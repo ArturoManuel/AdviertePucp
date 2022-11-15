@@ -30,32 +30,79 @@
                             <h5 class="modal-title" id="exampleModalLabel1" style="color:black;">Filtrar</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <label style="font-size: medium" >Estado</label>
-                            <select class="form-select" aria-label="Default select example" name="estado" >
-                                <option hidden>Seleccionar</option>
-                                <option value="Registrado">Registrado</option>
-                                <option value="En proceso">En proceso</option>
-                                <option value="Atendido">Atendido</option>
-                            </select>
-                            <label style="font-size: medium" >Tipo de incidencia</label>
-                            <select class="form-select" aria-label="Default select example" name="nombre">
-                                <option hidden>Seleccionar</option>
-                                <option th:each="tipoincidencia : ${listaTipoIncidencias}" th:value="${tipoincidencia.getNombre()} " th:text="${tipoincidencia.getNombre()}">Todo</option>
+                            <div class="modal-body">
+                                <label for="validationCustom04" class="form-label" style="font-size: medium">Estado</label>
+                                <select class="form-select" id="validationCustom04" required name="estado">
+                                    <option hidden selected disabled value="">Seleccionar</option>
+                                    <option value="">Todos</option>
+                                    <option value="registrado">Registrado</option>
+                                    <option value="atendido">Atendido</option>
+                                    <option value="resuelto">Resuelto</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Selecciona un estado válido.
+                                </div>
 
-                            </select>
-                            <label for="start" style="font-size: medium">Fecha de inicio:</label>
+                                <label for="validationCustom04" class="form-label" style="font-size: medium">Tipo de incidencia</label>
+                                <select class="form-select" id="validationCustom05" required name="nombre">
+                                    <option hidden selected disabled value="">Seleccionar</option>
+                                    <option value="">Todos</option>
+                                    <option th:each="tipoincidencia : ${listaTipoIncidencias}" th:value="${tipoincidencia.getNombre()} " th:text="${tipoincidencia.getNombre()}">Todo</option>
+                                </select>
+                                <div class="invalid-feedback">
+                                    Selecciona un estado válido.
+                                </div>
 
-                            <input style="font-size: medium" type="date" id="start" name="fechainicio"
-                                   value="2022-09-13"
-                                   min="2018-01-01" max="2080-09-13">
-                            <br>
-                            <label for="start" style="font-size: medium">Fecha de fin:</label>
 
-                            <input style="font-size: medium" type="date" id="finish" name="fechafin"
-                                   value="2022-09-14"
-                                   min="2022-09-13" max="2080-09-13">
-                        </div>
+
+                                <label style="font-size: medium" >Filtrar por fecha:
+                                </label>
+
+                                <div class="input-group mb-3 col">
+                                    <input  type="text" name="datetimes" value="" style="font-size: medium" />
+                                </div>
+                                <script type="text/javascript">
+                                    $(function() {
+                                        $('input[name="datetimes"]').daterangepicker({
+
+                                            startDate: moment().startOf('hour'),
+                                            endDate: moment().startOf('hour').add(32, 'hour'),
+                                            "locale": {
+                                                "format": "YYYY/MM/DD",
+                                                "separator": " - ",
+                                                "applyLabel": "Aplicar",
+                                                "cancelLabel": "Cancelar",
+                                                "fromLabel": "From",
+                                                "toLabel": "To",
+                                                "customRangeLabel": "Custom",
+                                                "daysOfWeek": [
+                                                    "do",
+                                                    "Lu",
+                                                    "Ma",
+                                                    "Mi",
+                                                    "Ju",
+                                                    "Vi",
+                                                    "Sa"
+                                                ],
+                                                "monthNames": [
+                                                    "Enero",
+                                                    "Febrero",
+                                                    "Marzo",
+                                                    "Abril",
+                                                    "Mayo",
+                                                    "Junio",
+                                                    "Julio",
+                                                    "Agosto",
+                                                    "Septiembre",
+                                                    "Octubre",
+                                                    "Noviembre",
+                                                    "Diciembre"
+                                                ],
+                                            }
+                                        });
+                                    });
+                                </script>
+                            </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             <button type="submit" class="btn btn-primary">Aplicar filtro</button>
