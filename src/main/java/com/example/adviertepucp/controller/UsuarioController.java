@@ -246,12 +246,15 @@ public class UsuarioController {
 
     }
     @PostMapping("/guardarincidente")
-    public String guardarIncidente(@RequestParam("archivos") MultipartFile[] files,
+    public String guardarIncidente( @RequestParam(value = "latitud",required = false)   String latitud,
+                                    @RequestParam(value = "longitud",required = false)  String longitud,
+                                    @RequestParam("archivos") MultipartFile[] files,
                                    @ModelAttribute("incidencia") @Valid Incidencia incidencia,
                                    BindingResult bindingResult,
                                    Model model,
                                    HttpSession session,
                                    Authentication auth){
+
 
 
 
@@ -289,12 +292,13 @@ public class UsuarioController {
                 Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
                 Usuario usuarioLogueado=usuarioLogueadoOpt.get();
 
-                Double latitud = 1.5;
-                Double longitud = 2.6;
+
                 String estado = "registrado";
                 Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
                 Integer idasdasd= incidencia.getId();
                 incidencia.setEstado(estado);
+                incidencia.setLatitud(Double.valueOf(latitud));
+                incidencia.setLongitud(Double.valueOf(longitud));
 
                 incidencia.setFecha(datetime);
                 incidencia.setPublicado(1);

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head >
+<head  >
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -80,6 +80,9 @@
 
 
         <form method="post" th:action="@{'/usuario/guardarincidente'}" enctype="multipart/form-data" th:object="${incidencia}">
+            <div id="coordinates" hidden ></div>
+            <input type="hidden" name="latitud" id="latitud" />
+            <input type="hidden" name="longitud" id="longitud" />
 
         <div class="row">
             <div class="col-lg-4">
@@ -173,7 +176,7 @@
 
                     <div class="col-md-12">
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary">PUBLICAR</button>
+                            <button type="submit"  class="btn btn-primary">PUBLICAR</button>
                         </div>
                     </div>
                 </div>
@@ -197,6 +200,41 @@
         }
         
     </script>
+
+
+<!-- Latitude and Longitude script -->
+<script>
+
+    $(document).ready(function(){
+        getLocation();
+
+    });
+
+
+
+    function getLocation() {
+
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+    }
+
+    function showPosition(position) {
+
+        document.getElementById("coordinates").innerHTML = "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+        document.getElementById("latitud").value = position.coords.latitude;
+        document.getElementById("longitud").value = position.coords.longitude;
+    }
+</script>
+
+
+
+<!-- EOF -->
 
 <!-- Speech SDK reference sdk. -->
 <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
