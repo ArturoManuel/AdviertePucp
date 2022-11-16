@@ -93,7 +93,7 @@
     <br>
 
     <main>
-        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+        <div th:if="${msg != null}" th:text="${msg}" id="success-alert" class="alert alert-success" role="alert"></div>
         <div th:if="${success != null}" th:text="${success}" class="alert alert-success" role="alert"></div>
         <div th:if="${error != null}" th:text="${error}" class="alert alert-alert" role="alert"></div>
 
@@ -711,5 +711,13 @@
             });
         });
     </script>
+<script>
+    $(document).ready(function() {
+        $("#success-alert").hide();
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+                $("#success-alert").slideUp(500);
+            });
+    });
+</script>
 </body>
 </html>
