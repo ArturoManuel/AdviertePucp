@@ -88,7 +88,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
 
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion \n" +
-            "as descripcion , fecha as fecha , estado as estado , urgencia \n" +
+            "as descripcion , concat(substring(fecha,1,10),'  (' ,substring(fecha,12,5),')') as fecha , estado as estado , urgencia \n" +
             "as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
             " longitud as longitud ,  z.nombre as zonapucp from incidencia i inner join \n" +
             "zonapucp z on (z.idzonapucp=i.zonapucp)\n" +
