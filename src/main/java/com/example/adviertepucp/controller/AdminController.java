@@ -619,6 +619,10 @@ public class AdminController extends Usuario {
         Usuario usuario= usuarioRepository.usuarioExiste(codigo);
         if( usuario!=null){
             usuario.setFoto(fotoalmacenada);
+            session.getAttribute("usuariolog");
+
+            System.out.println(session.getAttribute("usuariolog"));
+            session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
             usuarioRepository.save(usuario);
         }else{
             model.addAttribute("msg","Ocurrio un error en el guardado");

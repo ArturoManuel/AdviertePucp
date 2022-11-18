@@ -100,14 +100,17 @@ public class LoguinController {
 
         Optional<Usuario> optusuario=usuarioRepository.findById(auth.getName());
         if (optusuario.isPresent()){
+
             usuario= optusuario.get();
             session.setAttribute("usuariolog",usuario);
             session.setAttribute("rol",rol);
+            session.setAttribute("foto",usuarioRepository.fotoAlmacenadaUser(usuario.getId()));
         }
         else if  (usuario==null && rol!=null){
             usuario= (Usuario) session.getAttribute("usuariolog");
             session.setAttribute("usuariolog",usuario);
             session.setAttribute("rol",rol);
+            session.setAttribute("foto",usuarioRepository.fotoAlmacenadaUser(usuario.getId()));
         }
 
         if (usuario.getSuspendido()==3){
@@ -491,6 +494,7 @@ public class LoguinController {
                 return "redirect:/nuevacontrasena?token="+codigoVerificacion;
             }
             session.setAttribute("usuariolog",usuario);
+            session.setAttribute("foto",usuarioRepository.fotoAlmacenadaUser(usuario.getId()));
             return "redirect:/usuario/";
         }
         session.invalidate();

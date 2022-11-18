@@ -104,8 +104,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(value = "select idfotoalmacenada from incidenciatienefoto where idincidencia=?;",nativeQuery = true)
     List<Integer> listaDeFotosId(Integer id);
 
-    @Query(value = "select fotoalmacenada from fotoalmacenada where idfotoalmacenada=?;",nativeQuery = true)
-    byte[] fotoAlmacenada(Integer id);
+    @Query(value = "select f.fotoalmacenada from  \n" +
+            "            usuario u inner join fotoalmacenada f on (u.foto=f.idfotoalmacenada) where u.codigo=20191660;",nativeQuery = true)
+    String fotoAlmacenadaUser(String codigo);
     @Query(nativeQuery = true,
     value = "select f.idinteraccion,f.usuario_codigo,i.idincidencia\n" +
             "from favorito f left join incidencia i on (f.incidencia_idincidencia=i.idincidencia)\n" +
