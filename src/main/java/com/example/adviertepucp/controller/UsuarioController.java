@@ -10,6 +10,7 @@ import com.example.adviertepucp.dto.TipoIncidenciadto;
 import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
 import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
+import com.example.adviertepucp.service.BlobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -57,6 +58,8 @@ public class UsuarioController {
 
     @Autowired
     FavoritoRepository favoritoRepository;
+    @Autowired
+    BlobService blobService;
 
 
 
@@ -71,6 +74,13 @@ public class UsuarioController {
 
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidencia();
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+        System.out.println(listaFotos);
 
         return "usuario/lista";
     }
@@ -96,7 +106,9 @@ public class UsuarioController {
         model.addAttribute("incidenciaId",incidencia.getIdI());
         List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
         model.addAttribute("listaComentarios", listaComentarios);
-        model.addAttribute("listaFotoId",usuarioRepository.listaDeFotosId(incidencia.getIdI()));
+        model.addAttribute("listaFotosInfo",usuarioRepository.listaFotoIncidencia(incidencia.getIdI()));
+        System.out.println(usuarioRepository.listaFotoIncidencia(incidencia.getIdI()).get(0));
+
         return "usuario/MasInfoUsuario";
     }
     //comentario
@@ -173,6 +185,15 @@ public class UsuarioController {
         }
 
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+
+
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidencia();
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
         return "usuario/lista";
     }
     @GetMapping({"/perfil"})
@@ -272,18 +293,19 @@ public class UsuarioController {
                     model.addAttribute("msg", "No se permiten '..' en el archivo");
                     return "usuario/nuevoIncidente";
                 }
-                try{
+                try {
                     Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
-                    fotoalmacenada.setFotoalmacenada(foto.getBytes());
+                    blobService.subirArchivo(foto);
+                    fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(foto.getOriginalFilename()));
                     fotoalmacenada.setTipofoto(foto.getContentType());
                     fotoalmacenadaRepository.save(fotoalmacenada);
                     listaFotoAlmacenada.add(fotoalmacenada);
-
-
-
-                }catch (IOException e){
+                    System.out.println("Se subio la foto");
+                    System.out.println("Esta es la foto" +fotoalmacenada);
+                } catch (Exception e){
                     e.printStackTrace();
-                    model.addAttribute("msg", "Ocurrió un error al subir los archivo");
+                    model.addAttribute("msg", "Debe subir un archivo");
+                    model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
                     return "usuario/nuevoIncidente";
                 }
             }
@@ -343,35 +365,8 @@ public class UsuarioController {
 
 
 
-    @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
-        Random rand = new Random();
-        List<byte[]> lista = usuarioRepository.listaFotoIncidencia(id);
-        int index = rand.nextInt(lista.size());
-        System.out.println(index);
-        byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(index);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(
-                MediaType.parseMediaType("image/png"));
 
-        return new ResponseEntity<>(
-                imagenComoBytes,
-                httpHeaders,
-                HttpStatus.OK);
-    }
-    @GetMapping("/images/{id}")
-    public ResponseEntity<byte[]> mostrarImagenInfo(@PathVariable("id") int id) {
-            byte[] imagenComoBytes =usuarioRepository.fotoAlmacenada(id);
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType("image/png"));
 
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK);
-
-    }
 
 
     @GetMapping({"/misIncidencias"})

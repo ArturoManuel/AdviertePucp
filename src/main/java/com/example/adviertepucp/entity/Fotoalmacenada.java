@@ -16,7 +16,7 @@ public class Fotoalmacenada {
 
     @NotNull
     @Column(name = "fotoalmacenada", nullable = false)
-    private byte[] fotoalmacenada;
+    private String fotoalmacenada;
 
     @Size(max = 255)
     @NotNull
@@ -37,11 +37,11 @@ public class Fotoalmacenada {
         this.id = id;
     }
 
-    public byte[] getFotoalmacenada() {
+    public String getFotoalmacenada() {
         return fotoalmacenada;
     }
 
-    public void setFotoalmacenada(byte[] fotoalmacenada) {
+    public void setFotoalmacenada(String fotoalmacenada) {
         this.fotoalmacenada = fotoalmacenada;
     }
 

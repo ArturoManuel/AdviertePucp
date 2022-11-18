@@ -9,6 +9,6 @@ public interface AdminUsuariosDto {
     int getEstado();
     int getRegistrado();
     String getRol();
-    int getFoto();
+    String getFoto();
 
 }

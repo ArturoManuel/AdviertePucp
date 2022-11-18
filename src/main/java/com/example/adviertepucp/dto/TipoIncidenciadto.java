@@ -7,6 +7,7 @@ public interface TipoIncidenciadto {
     int getIdt();
     String getNombret();
     String getColort();
+    String getFotot();
 
 
 }

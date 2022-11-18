@@ -73,19 +73,19 @@
             <li sec:authorize="hasAnyAuthority('Alumno','Jefe de Practica','Profesor','Egresado','ROLE_USER')" ><a th:href="@{/usuario/perfil}">
               <span th:text="'Perfil: '+${session.usuariolog.nombre}"> </span>
               <span style="color: blue;" th:text="${'('}+${session.usuariolog.getCategoria().getNombre()}+${')'}"></span>
-              <span th:if="${session.usuariolog.foto.getId() == 22}"><img  src="/images/defaultprofilepicture.png"  style="width: 25px;height: 25px" alt="perfil"></span>
+              <span ><img  th:src="${session.usuariolog.getFoto().getFotoalmacenada()}" style="width: 25px;height: 25px" alt="perfil"></span>
             </a></li>
 
             <li sec:authorize="hasAnyAuthority('Seguridad')" ><a th:href="@{/seguridad/perfil}">
             <span th:text="'Perfil: '+${session.usuariolog.nombre}"> </span>
             <span style="color: blue;" th:text="${'('}+${session.usuariolog.getCategoria().getNombre()}+${')'}"></span>
-            <span th:if="${session.usuariolog.foto.getId() == 22}"><img  src="/images/defaultprofilepicture.png"  style="width: 25px;height: 25px" alt="perfil"></span>
+            <span ><img  th:src="${session.usuariolog.getFoto().getFotoalmacenada()}"  style="width: 25px;height: 25px" alt="perfil"></span>
           </a></li>
 
             <li sec:authorize="hasAnyAuthority('Administrativo')" ><a th:href="@{/administrador/perfil}">
               <span th:text="'Perfil: '+${session.usuariolog.nombre}"> </span>
               <span style="color: blue;" th:text="${'('}+${session.usuariolog.getCategoria().getNombre()}+${')'}"></span>
-              <span th:if="${session.usuariolog.foto.getId() == 22}"><img  src="/images/defaultprofilepicture.png"  style="width: 25px;height: 25px" alt="perfil"></span>
+              <span ><img  th:src="${session.usuariolog.getFoto().getFotoalmacenada()}"  style="width: 25px;height: 25px" alt="perfil"></span>
             </a></li>
 
           </ul>

@@ -263,18 +263,6 @@ public class SeguridadController {
         }
         return "redirect:/seguridad/lista";
     }*/
-    @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
 
-        byte[] imagenComoBytes = usuarioRepository.listaFotoIncidencia(id).get(0);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(
-                MediaType.parseMediaType("image/png"));
-
-        return new ResponseEntity<>(
-                imagenComoBytes,
-                httpHeaders,
-                HttpStatus.OK);
-    }
 
 }

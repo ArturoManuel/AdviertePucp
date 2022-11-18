@@ -14,8 +14,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer> {
-    @Query(value = "select " +
-            "t.idtipoincidencia as idt , t.nombre as nombret , t.color as colort from tipoincidencia t",nativeQuery = true)
+    @Query(value = "select t.idtipoincidencia as idt , t.nombre as nombret , t.color as colort , ft.fotoalmacenada as fotot from tipoincidencia t inner join fotoalmacenada ft on (t.logo=ft.idfotoalmacenada);",nativeQuery = true)
     List<TipoIncidenciadto> listaTipo();
 
     @Modifying

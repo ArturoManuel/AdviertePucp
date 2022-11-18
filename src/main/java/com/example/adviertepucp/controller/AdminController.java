@@ -3,6 +3,7 @@ package com.example.adviertepucp.controller;
 import com.example.adviertepucp.dto.UsuariosDBDto;
 import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
+import com.example.adviertepucp.service.BlobService;
 import com.example.adviertepucp.service.MailService;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,6 +82,9 @@ public class AdminController extends Usuario {
     @Autowired
     MailService mailService;
 
+    @Autowired
+    BlobService blobService;
+
 
 
     @GetMapping("")
@@ -141,23 +145,7 @@ public class AdminController extends Usuario {
     }
 
 
-    @GetMapping("fotoUser/{id2}")
-    public ResponseEntity<byte[]>mostrarImagenUser(@PathVariable("id2") int id2){
-        Optional<Fotoalmacenada> opt = fotoalmacenadaRepository.findById(id2);
-        if (opt.isPresent()){
-            Fotoalmacenada f = opt.get();
-            byte[] fotoComoByte = f.getFotoalmacenada();
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType("image/png"));
-            return new ResponseEntity<>(
-                    fotoComoByte,
-                    httpHeaders,
-                    HttpStatus.OK);
-        } else {
-            return null;
-        }
-    }
+
 
 
 
@@ -172,26 +160,8 @@ public class AdminController extends Usuario {
 
     //Para obtener imagenes de la base de datos
     //Para ver al el llamado vayan al archivo listaIncidentes.html
-    @GetMapping("/image/{id}")
-    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") int id) {
-        Optional<Tipoincidencia> opt = tipoincidenciaRepository.findById(id);
-        if (opt.isPresent()) {
-            Tipoincidencia p = opt.get();
 
-            byte[] imagenComoBytes = p.getLogo().getFotoalmacenada();
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(
-                    MediaType.parseMediaType("image/png"));
-
-            return new ResponseEntity<>(
-                    imagenComoBytes,
-                    httpHeaders,
-                    HttpStatus.OK);
-        } else {
-            return null;
-        }
-    }
 
 
     @GetMapping("/crearUser")
@@ -524,11 +494,12 @@ public class AdminController extends Usuario {
 
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
-            fotoalmacenada.setFotoalmacenada(logo.getBytes());
+            blobService.subirArchivo(logo);
+            fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
             fotoalmacenada.setTipofoto(logo.getContentType());
             fotoalmacenadaRepository.save(fotoalmacenada);
-            System.out.println("he guardado mi imagen");
-        } catch (IOException e) {
+            System.out.println("Se subio la foto");
+        } catch (Exception e){
             e.printStackTrace();
             model.addAttribute("msg", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
@@ -579,11 +550,12 @@ public class AdminController extends Usuario {
         }
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
-            fotoalmacenada.setFotoalmacenada(logo.getBytes());
+            blobService.subirArchivo(logo);
+            fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
             fotoalmacenada.setTipofoto(logo.getContentType());
             fotoalmacenadaRepository.save(fotoalmacenada);
-
-        } catch (IOException e) {
+            System.out.println("Se subio la foto");
+        } catch (Exception e){
             e.printStackTrace();
             model.addAttribute("msg", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
@@ -626,6 +598,32 @@ public class AdminController extends Usuario {
         }
         return "redirect:/administrador/incidencias";
 
+    }
+
+    @PostMapping("/perfilEditar")
+    public String editarPerfil(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo, HttpSession session){
+        Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
+        try {
+            blobService.subirArchivo(logo);
+            fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
+            fotoalmacenada.setTipofoto(logo.getContentType());
+            fotoalmacenadaRepository.save(fotoalmacenada);
+            System.out.println("Se subio la foto");
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/perfil";
+        }
+        System.out.println(codigo);
+        Usuario usuario= usuarioRepository.usuarioExiste(codigo);
+        if( usuario!=null){
+            usuario.setFoto(fotoalmacenada);
+            usuarioRepository.save(usuario);
+        }else{
+            model.addAttribute("msg","Ocurrio un error en el guardado");
+        }
+        return "admin/perfil";
     }
 
 
