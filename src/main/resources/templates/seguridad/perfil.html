@@ -41,20 +41,52 @@
             <div class="col-lg-4">
                     <div class="card mb-4"  style="padding-top: 75px">
                     <div class="card-body text-center">
-
-                        <img th:if="${session.usuariolog.getFoto().getId() ==22 }" src="/images/defaultprofilepicture.png" alt="avatar"
+                        <img th:src="${session.foto}" alt="avatar"
                              class="rounded-circle img-fluid" style="width: 150px;height: 150px">
                         <h5 class="my-3" style="color: black" th:text="${session.usuariolog.getNombre()}"></h5>
                         <p class="text-muted mb-1" th:text="${session.usuariolog.getCategoria().getNombre()}"></p>
                         <p class="text-muted mb-4" style="padding-bottom: 45px">Estado: Activo</p>
                         <div class="d-flex justify-content-center mb-2">
-                            <button type="button" class="btn btn-primary">CAMBIAR FOTO</button>
+                            <div class="d-flex justify-content-center mb-2">
+                                <button type="button" class="btn btn-primary"
+                                        data-bs-toggle="modal"
+                                        th:attr="data-bs-target='#editar'+${session.usuariolog.getNombre()}">CAMBIAR FOTO</button>
+                            </div>
                             <button type="button" class="btn btn-outline-primary ms-1">CAMBIAR ICONO</button>
                         </div>
                     </div>
                 </div>
 
             </div>
+
+            <!-- ModalEditar-->
+            <div class="modal fade"
+                 th:attr="id='editar'+${session.usuariolog.getNombre()}"
+                 tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <form method="post" th:action="@{'/seguridad/perfilEditar'}"   enctype="multipart/form-data">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Foto</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="d-flex flex-row">
+                                    <label> Icono : </label>
+                                    <input type="file" id="profile_pic" name="archivo"
+                                           accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                    <input name="codigo" type="hidden" th:value="${session.usuariolog.getId()}">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                                <button type="submit" class="btn btn-primary">Guardar </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
             <div class="col-lg-8">
                 <div class="card mb-4" style="padding-bottom: 101px" >
                     <div class="card-body">

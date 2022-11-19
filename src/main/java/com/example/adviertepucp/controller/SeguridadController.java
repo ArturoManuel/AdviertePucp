@@ -6,10 +6,8 @@ import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Comentario;
 import com.example.adviertepucp.entity.Usuario;
-import com.example.adviertepucp.repository.IncidenciaRepository;
-import com.example.adviertepucp.repository.ComentarioRepository;
-import com.example.adviertepucp.repository.TipoincidenciaRepository;
-import com.example.adviertepucp.repository.UsuarioRepository;
+import com.example.adviertepucp.repository.*;
+import com.example.adviertepucp.service.BlobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,11 +17,13 @@ import org.springframework.stereotype.Controller;
 import com.example.adviertepucp.entity.Incidencia;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,6 +38,11 @@ public class SeguridadController {
     UsuarioRepository  usuarioRepository;
     @Autowired
     ComentarioRepository comentarioRepository;
+    @Autowired
+    BlobService blobService;
+
+    @Autowired
+    FotoalmacenadaRepository fotoalmacenadaRepository;
 
     /*
     @GetMapping("")
@@ -52,6 +57,13 @@ public class SeguridadController {
         }
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidencia();
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+        System.out.println(listaFotos);
         return "seguridad/listaMapa";
     }
     //Perfil
@@ -166,6 +178,14 @@ public class SeguridadController {
         }
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+
+
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidencia();
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
         return "seguridad/listaMapa";
     }
     @GetMapping("info")
@@ -202,6 +222,11 @@ public class SeguridadController {
         List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
         model.addAttribute("listaComentarios", listaComentarios);
         //model.addAttribute("listaComentarios",comentarioRepository.listaComentario(idincidencia));
+
+
+        model.addAttribute("listaFotosInfo",usuarioRepository.listaFotoIncidencia(incidencia.getIdI()));
+        System.out.println(usuarioRepository.listaFotoIncidencia(incidencia.getIdI()).get(0));
+
 
         return "seguridad/MasInfoSeguridad";
     }
@@ -264,5 +289,35 @@ public class SeguridadController {
         return "redirect:/seguridad/lista";
     }*/
 
+
+    @PostMapping("/perfilEditar")
+    public String editarPerfil(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo, HttpSession session){
+        Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
+        try {
+            blobService.subirArchivo(logo);
+            fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
+            fotoalmacenada.setTipofoto(logo.getContentType());
+            fotoalmacenadaRepository.save(fotoalmacenada);
+            System.out.println("Se subio la foto");
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/perfil";
+        }
+        System.out.println(codigo);
+        Usuario usuario= usuarioRepository.usuarioExiste(codigo);
+        if( usuario!=null){
+            usuario.setFoto(fotoalmacenada);
+            session.getAttribute("usuariolog");
+
+            System.out.println(session.getAttribute("usuariolog"));
+            session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
+            usuarioRepository.save(usuario);
+        }else{
+            model.addAttribute("msg","Ocurrio un error en el guardado");
+        }
+        return "seguridad/perfil";
+    }
 
 }

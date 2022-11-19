@@ -71,14 +71,13 @@
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                     <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 </div>
-                <div class="carousel-inner " style="height: 250px;width: border-box;">
-                    <div class="carousel-item active"  >
-                        <img src="https://cdn02.pucp.education/administracion/2019/06/07222954/sistema-bibliotecas-772x432.jpg" alt="Sede"   class="d-block w-100" height="100%" width="100%"/>
+                <div class="carousel-inner "  style="height: 250px;width: border-box;">
+                    <div th:each="listaFotosInfova,indice:${listaFotosInfo}">
+                        <div th:attr="class=${ indice.index ==0 ? 'carousel-item active' : 'carousel-item '}" >
+                            <img th:src="${listaFotosInfo.get(indice.index)}"  alt="Sede"   class="d-block w-100" height="100%" width="100%"/>
+                        </div>
                     </div>
-                    <div class="carousel-item" >
-                        <img src="https://assets.website-files.com/60a6dd60c32dad3ddc38016c/60d9eebe4d2c9cb20f53b218_IMG_9308.jpeg" alt="Sede"  class="d-block w-100" height="100%" width="100%"/>
 
-                    </div>
                 </div>
                 <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
