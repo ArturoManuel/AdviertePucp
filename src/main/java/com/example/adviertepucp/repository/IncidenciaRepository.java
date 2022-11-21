@@ -3,7 +3,10 @@ package com.example.adviertepucp.repository;
 import com.example.adviertepucp.dto.IncidenciaListadto;
 import com.example.adviertepucp.dto.TipoIncidenciadto;
 import com.example.adviertepucp.dto.IncidenciaDashboardDto;
+import com.example.adviertepucp.dto.UsuarioCantidadIncidencia;
+import com.example.adviertepucp.dto.UsarioMasIncidencia;
 import com.example.adviertepucp.dto.IncidenciaPorZona;
+import com.example.adviertepucp.dto.ZonaPUCP;
 import com.example.adviertepucp.entity.Incidencia;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -48,7 +51,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             nativeQuery = true)
     List<IncidenciaListadto> buscarlistaFiltroIncidencia(String fechainicio, String fechafin,String estado, String nombre);
     */
-    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , \n" +
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , left(fecha,10) as fecha , \n" +
             "estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud, \n" +
             "longitud as longitud ,  z.nombre as zonapucp \n" +
             "from incidencia i \n" +
@@ -86,9 +89,25 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     //inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)
     @Query(value = "select ANY_VALUE(zp.nombre) as'nombre', count(ANY_VALUE(i.zonapucp)) as 'zona' from incidencia i\n" +
             "inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)\n" +
-            "group by zp.nombre",
+            "group by zp.nombre\n" +
+            "order by count(ANY_VALUE(i.zonapucp)) desc LIMIT 5",
             nativeQuery = true)
     List<IncidenciaPorZona> ubicacionesPUCP();
+
+    @Query(value = "select ANY_VALUE(zp.nombre) as'nombre' from incidencia i\n" +
+            "inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)\n" +
+            "group by zp.nombre\n" +
+            "order by count(ANY_VALUE(i.zonapucp)) desc LIMIT 5",
+            nativeQuery = true)
+    List<IncidenciaPorZona> ubicacionesNombrePUCP();
+
+    @Query(value = "select count(ANY_VALUE(i.zonapucp)) as 'zona' from incidencia i\n" +
+            "inner join zonapucp zp on (zp.idzonapucp = i.zonapucp)\n" +
+            "group by zp.nombre\n" +
+            "order by count(ANY_VALUE(i.zonapucp)) desc LIMIT 5",
+            nativeQuery = true)
+    List<ZonaPUCP> ubicacionesZonaPUCP();
+
 
     //select count(codigo) from usuario WHERE suspendido = '1';
 
@@ -118,6 +137,25 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "order by count(i.idincidencia) desc LIMIT 10",
             nativeQuery = true)
     List<IncidenciaDashboardDto> UsariosconMasIncidencias();
+
+    @Query(value = "SELECT  concat(ANY_VALUE(u.nombre),' ' , ANY_VALUE(u.apellido)) as 'nombre' from usuario u\n" +
+            "left join favorito f on (f.usuario_codigo= u.codigo)\n" +
+            "left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)\n" +
+            "group by concat(u.nombre,' ' , u.apellido) \n" +
+            "order by count(i.idincidencia) desc LIMIT 10",
+            nativeQuery = true)
+    List<UsarioMasIncidencia> NombreUsariosconMasIncidencias();
+
+
+    @Query(value = "SELECT  count(ANY_VALUE(i.idincidencia)) as 'cantidad' from usuario u\n" +
+            "left join favorito f on (f.usuario_codigo= u.codigo)\n" +
+            "left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)\n" +
+            "group by concat(u.nombre,' ' , u.apellido) \n" +
+            "order by count(i.idincidencia) desc LIMIT 10",
+            nativeQuery = true)
+    List<UsuarioCantidadIncidencia> CantidadUsariosconMasIncidencias();
+
+
     //SELECT  concat(u.nombre,' ' , u.apellido) as 'nombre', u.codigo as 'codigo', count(i.idincidencia) as 'cantidad' from usuario u
     //left join favorito f on (f.usuario_codigo= u.codigo)
     //left join incidencia i on (i.idincidencia= f.incidencia_idincidencia)

@@ -1,7 +1,6 @@
 package com.example.adviertepucp.controller;
 
-import com.example.adviertepucp.dto.IncidenciaComentarioDto;
-import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.dto.*;
 import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Comentario;
@@ -265,7 +264,22 @@ public class SeguridadController {
 
         model.addAttribute("lista_UsariosconMasIncidencias", incidenciaRepository.UsariosconMasIncidencias());
 
+        List<UsarioMasIncidencia> lista_NombreUsariosconMasIncidencias = incidenciaRepository.NombreUsariosconMasIncidencias();
+        model.addAttribute("lista_NombreUsariosconMasIncidencias", lista_NombreUsariosconMasIncidencias);
+
+        List<UsuarioCantidadIncidencia> lista_CantidadUsariosconMasIncidencias = incidenciaRepository.CantidadUsariosconMasIncidencias();
+        model.addAttribute("lista_CantidadUsariosconMasIncidencias", lista_CantidadUsariosconMasIncidencias);
+
         model.addAttribute("lista_ubicacionesPUCP", incidenciaRepository.ubicacionesPUCP());
+        //model.addAttribute("lista_ubicacionesNombrePUCP", incidenciaRepository.ubicacionesNombrePUCP());
+        //model.addAttribute("lista_ubicacionesZonaPUCP", incidenciaRepository.ubicacionesZonaPUCP());
+
+        List<IncidenciaPorZona> lista_ubicacionesNombrePUCP = incidenciaRepository.ubicacionesNombrePUCP();
+        model.addAttribute("lista_ubicacionesNombrePUCP", lista_ubicacionesNombrePUCP);
+
+        List<ZonaPUCP> lista_ubicacionesZonaPUCP = incidenciaRepository.ubicacionesZonaPUCP();
+        model.addAttribute("lista_ubicacionesZonaPUCP", lista_ubicacionesZonaPUCP);
+
         model.addAttribute("num_usuariosReportados", incidenciaRepository.usuariosReportados());
         /*
         model.addAttribute("num_totalUsuario", incidenciaRepository.totalUsuarios());
