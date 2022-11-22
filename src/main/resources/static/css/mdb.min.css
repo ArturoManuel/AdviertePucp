@@ -19253,14 +19253,14 @@ a{
   font-size: 16px;
   font-weight: 600;
   transition: 0.4s all;
-  line-height: 1.4;
+
   display: block;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 42px;
+  height: 60px;
 }
 
 .card-tele-subtitle{

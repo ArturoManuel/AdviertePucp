@@ -37,6 +37,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
 
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+
     <style>
         *{font-family: Roboto}
     </style>
@@ -156,10 +158,28 @@
 
                             <!-- Content Row -->
 
+
+                            <!-- Content Row -->
+
                             <div class="row">
 
                                 <!-- Area Chart -->
-                                <div class="col-xl-8 col-lg-7">
+                                <div class="col-xl-7 col-lg-7">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">Ubicaciones PUCP</h6>
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div
+                                                id="myChart" style="width:100%; max-width:100%; height:500px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pie Chart -->
+                                <div class="col-xl-5 col-lg-5">
                                     <div class="card shadow mb-4">
                                         <!-- Card Header - Dropdown -->
                                         <div
@@ -173,12 +193,10 @@
                                                 <table class="table table-sm">
                                                     <tr>
                                                         <th>Usuario</th>
-                                                        <th>Código</th>
                                                         <th># Incidencias</th>
                                                     </tr>
                                                     <tr th:each="userMas : ${lista_UsariosconMasIncidencias}">
                                                         <td th:text="${userMas.getNombre()}">
-                                                        <td th:text="${userMas.getCodigo()}">
                                                         <td th:text="${userMas.getCantidad()}"></td>
                                                     </tr>
                                                 </table>
@@ -186,57 +204,42 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <!-- Pie Chart -->
-                                <div class="col-xl-4 col-lg-5">
-                                    <div class="card shadow mb-4">
-                                        <!-- Card Header - Dropdown -->
-                                        <div
-                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                            <h6 class="m-0 font-weight-bold text-primary">Ubicaciones PUCP</h6>
-                                        </div>
-                                        <!-- Card Body -->
-                                        <div class="card-body">
-                                            <table class="table table-sm">
-                                                <tr>
-                                                    <th>Ubicacion</th>
-                                                    <th># Incidencias</th>
-                                                </tr>
-                                                <tr th:each="ubiPUCP : ${lista_ubicacionesPUCP}">
-
-                                                    <input hidden th:value="${ubiPUCP.getNombre()}"  name="nombre" id ="nombre"/>
-                                                    <td th:text="${ubiPUCP.getNombre()}">
-                                                        <input hidden th:value="${ubiPUCP.getZona()}"  name="zona" id ="zona"/>
-                                                    <td th:text="${ubiPUCP.getZona()}"></td>
-                                                </tr>
-                                            </table>
-
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
-                            <!----------------------------------- Ubicaciones PUCP--------------------------- -->
-                            <div class="row">
-                                <div class="card shadow mb-4">
-                                    <div
-                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Ubicaciones PUCP</h6>
-                                    </div>
+                            <script th:inline="javascript">
+                                var listanombre = [[${lista_ubicacionesNombrePUCP}]];
+                               // var nombreValues = Object.values(listanombre);
+                                var nombrePUCP = [];
+                                for (i=0;i<listanombre.length;i++){
+                                    //console.log(listanombre[i]);
+                                    //console.log(Object.values(listanombre[i]));
+                                    nombrePUCP += Object.values(listanombre[i]) + "? ";
 
-                                    <div
-                                            id="myChart" style="width:100%; max-width:100%; height:500px;">
-                                    </div>
+                                }
+                                var nombreSplit = nombrePUCP.split('?');
+                                console.log(nombrePUCP);
+                                console.log(nombreSplit);
 
-                                </div>
-                            </div>
-                            <script>
+
+
+                                var listazona = [[${lista_ubicacionesZonaPUCP}]]
+                               // var zonaValues = Object.values(listazona);
+                                var zonaPUCP = [];
+                                for (i=0;i<listazona.length;i++){
+                                    zonaPUCP += Object.values(listazona[i]) + "? ";
+
+                                }
+                                var zonaSplit = zonaPUCP.split('?');
+                                console.log(zonaSplit);
+
+
                                 var xArray = ["Auditorio de Ciencias Sociales (Gustavo Gutiérrez Merino)", "Asociación de egresados y graduados",
                                     "Área de Deportes #ParadaSaludable", "Anfiteatro José Dammert Bellido - Facultad de Derecho", "Tontodromo"];
                                 var yArray = [55, 49, 44, 24, 15];
+                                console.log(yArray);
 
                                 var layout = {title:""};
 
-                                var data = [{labels:xArray, values:yArray, type:"pie"}];
+                                var data = [{labels: nombreSplit , values:zonaSplit, type:"pie"}];
 
                                 Plotly.newPlot("myChart", data, layout);
                             </script>
@@ -254,18 +257,39 @@
                                 </div>
                             </div>
 
-                            <script>
+                            <script th:inline="javascript">
+                                var listaUsuario = [[${lista_NombreUsariosconMasIncidencias}]]
+                                // var zonaValues = Object.values(listazona);
+                                var usuarioPUCP = [];
+                                for (i=0;i<listaUsuario.length;i++){
+                                    usuarioPUCP += Object.values(listaUsuario[i]) + "? ";
+
+                                }
+                                var usuarioPUCPSplit = usuarioPUCP.split('?');
+                                console.log(usuarioPUCPSplit);
+
+                                var listaUsuarioCantidad = [[${lista_CantidadUsariosconMasIncidencias}]]
+                                // var zonaValues = Object.values(listazona);
+                                var usuariocantidadPUCP = [];
+                                for (i=0;i<listaUsuarioCantidad.length;i++){
+                                    usuariocantidadPUCP += Object.values(listaUsuarioCantidad[i]) + "? ";
+
+                                }
+                                var usuariocantidadPUCPSplit = usuariocantidadPUCP.split('?');
+                                console.log(usuariocantidadPUCPSplit);
+
+
                                 var xValues = ["Ruben Caleb Casapaico Melendez","Jorge Guillen Rivera", "Angel Alvaro Bautista Cutipa", "Marcelo Rojas", "Jesus Idrogo"];
                                 var yValues = [55, 49, 44, 24, 20];
-                                var barColors = ["red", "green","blue","orange","brown"];
+                                var barColors = ["red", "green","blue","orange","brown","red", "green","blue","orange","brown"];
 
                                 new Chart("myChart2", {
                                     type: "bar",
                                     data: {
-                                        labels: xValues,
+                                        labels: usuarioPUCPSplit, //xValues
                                         datasets: [{
-                                            backgroundColor: barColors,
-                                            data: yValues
+                                            backgroundColor: "rgba(0,0,255,0.1)", //barColors
+                                            data: usuariocantidadPUCPSplit //yValues
                                         }]
                                     },
                                     options: {
@@ -276,44 +300,6 @@
                                     }
                                 });
                             </script>
-                            <!----------------------------------- Incidencias registradas última semana--------------------------- -->
-                            <div class="row">
-                                <div class="card shadow mb-4">
-                                    <div
-                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                        <h6 class="m-0 font-weight-bold text-primary">Incidencias registradas en la última semana</h6>
-                                    </div>
-                                    <div id="myPlot3" style="width:100%;max-width:100%"></div>
-                                </div>
-                            </div>
-
-
-                            <script>
-                                var xArray = ["Lunes","Martes","Miercoles","Jueves","Sábado","Domingo"];
-                                var yArray = [7,10,9,20,18,14,15];
-
-                                // Define Data
-                                var data = [{
-                                    x: xArray,
-                                    y: yArray,
-                                    mode:"lines"
-                                }];
-
-                                // Define Layout
-                                var layout = {
-                                    yaxis: { title: "Incidencias Registradas"},
-                                    xaxis: { title: "Días de la última semana"},
-
-                                };
-
-                                // Display using Plotly
-                                Plotly.newPlot("myPlot3", data, layout);
-                            </script>
-
-
-                            <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-                            <!-- Content Row -->
 
                         </div>
                         <!-- /.container-fluid -->
@@ -345,56 +331,12 @@
         <!-- Page level custom scripts -->
         <script src="js/demo/chart-area-demo.js"></script>
         <script src="js/demo/chart-pie-demo.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 
 
-    <script>
-        window.onload = function funcion1() {
 
-            var chart = new CanvasJS.Chart("chartContainer", {
-                animationEnabled: true,
-                data: [{
-                    type: "pie",
-                    startAngle: 240,
-                    yValueFormatString: "##0\"\"",
-                    indexLabel: "{label} {y}",
-                    dataPoints: [
-                        {y: 20, label: "Auditorio de Ciencias Sociales (Gustavo Gutiérrez Merino)"},
-                        {y: 6, label: "Asociación de egresados y graduados"},
-                        {y: 5, label: "Área de Deportes #ParadaSaludable"},
-                        {y: 4, label: "Anfiteatro José Dammert Bellido - Facultad de Derecho"},
-                    ]
-                }]
-            });
-            chart.render();
 
-            var chart = new CanvasJS.Chart("chartContainer2", {
-                animationEnabled: true,
-                theme: "light2", // "light1", "light2", "dark1", "dark2"
-                title:{
-                },
-                axisY: {
-                    title: "cantidad"
-                },
-                data: [{
-                    type: "column",
-                    showInLegend: true,
-                    legendMarkerColor: "grey",
-                    dataPoints: [
-                        { y: 20, label: "Ruben Caleb Casapaico Melendez" },
-                        { y: 10,  label: "Jorge Guillen Rivera" },
-                        { y: 5,  label: "Angel Alvaro Bautista Cutipa" },
-                        { y: 3,  label: "Marcelo Rojas" },
-                        { y: 2,  label: "Jesus Idrogo" },
-                        { y: 1,  label: "Arturo Noriega" },
-
-                    ]
-                }]
-            });
-            chart.render();
-
-        }
-    </script>
 
 
     <!-- Footer -->
