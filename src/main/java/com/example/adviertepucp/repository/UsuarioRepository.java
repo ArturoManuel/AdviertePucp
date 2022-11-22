@@ -100,6 +100,25 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             , nativeQuery = true)
     List<IncidenciaListadto> listaIncidencia();
 
+    @Query (value = "select i.idincidencia as idI , titulo as titulo , descripcion\n" +
+            "as descripcion , concat(substring(i.fecha,1,10),'  (' ,substring(i.fecha,12,5),')') as fecha , estado as estado , urgencia\n" +
+            "as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
+            "longitud as longitud ,  z.nombre as zonapucp, subq1.creador, subq2.usuario_codigo,\n" +
+            "subq2.esfavorito\n" +
+            "from incidencia i inner join\n" +
+            "zonapucp z on (z.idzonapucp=i.zonapucp)\n" +
+            "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+            "left join (select incidencia_idincidencia,usuario_codigo as 'creador'\n" +
+            "from favorito where esfavorito=0) subq1\n" +
+            "on (subq1.incidencia_idincidencia=i.idincidencia)\n" +
+            "left join (select i.idincidencia, f.usuario_codigo, f.esfavorito\n" +
+            "from incidencia i left join favorito f on (i.idincidencia=f.incidencia_idincidencia)\n" +
+            "where f.usuario_codigo=?) subq2 on (i.idincidencia=subq2.idincidencia)\n" +
+            "where publicado=1 and estado!=\"resuelto\" order by i.fecha desc"
+    , nativeQuery = true)
+
+    List<IncidenciaListadto> listaIncidenciaUsuarios(Integer codigo);
+
     //Para extraer las fotos de cada incidencia
     @Query(value="select f.fotoalmacenada from  \n" +
             "incidencia i inner join incidenciatienefoto it on (i.idincidencia=it.idincidencia) \n" +

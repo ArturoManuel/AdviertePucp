@@ -96,9 +96,9 @@ public class UsuarioController {
 
         model.addAttribute("usercodigo", Integer.parseInt(usuarioLogueado.getId()));
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
-        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId())));
         List<List<String>> listaFotos = new ArrayList<>();
-        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidencia();
+        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()));
         for (IncidenciaListadto incidenciaListadto : listaIncidencias){
             listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
         }
