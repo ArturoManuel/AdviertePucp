@@ -3,9 +3,9 @@
 <html lang="en"       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Perfil')">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     </div>
@@ -120,14 +120,12 @@
         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
           <div class="title-28 " style="margin-top: 70px">
             Tipo de Incidencias
-
             <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem"
                     type="button" class="btn btn-outline-dark"
                     data-bs-toggle="modal"
                     data-bs-target='#crear'
             >Crear</button>
           </div>
-
           <!-- Crear-->
           <div class="modal fade"
                id="crear"
@@ -163,12 +161,9 @@
               </div>
             </form>
           </div>
-
-
-
         <br>
         <br>
-        <table id="tableUp" class="table align-middle mb-0 bg-white">
+        <table id="tablax" class="table align-middle mb-0 bg-white">
           <thead class="bg-light">
             <tr>
               <th>#</th>
@@ -187,10 +182,8 @@
               <td th:text="${info.index+1}"></td>
               <td>
                   <div th:style="'background-color:'+${incidencia.colort}+';width: 60px;height: 40px;'"
-                       onclick="changeColor()"
-                        class="d-flex align-items-center">
+                       onclick="changeColor()" class="d-flex align-items-center">
                   </div>
-
               </td>
               <td>
                 <img style="width: 60px ; height: 60px" class="icon_lis_admi" th:src="${incidencia.fotot}"/>
@@ -290,21 +283,16 @@
         </table>
       </div>
     <!-- Script para paginado -->
-    <!-- JQUERY -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-    >
     </script>
     <!-- DATATABLES -->
-    <script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js">
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">
     </script>
     <!-- BOOTSTRAP -->
-    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js">
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js">
     </script>
-
-
     <script>
       $(document).ready(function () {
-        $('#tableUp').DataTable()({
+        $('#tablax').DataTable({
           language: {
             processing: "Tratamiento en curso...",
             search: "Buscar&nbsp;:",
@@ -328,12 +316,23 @@
             }
           },
           scrollY: 400,
-          lengthMenu: [ [10, 25, -1], [10, 25, "All"] ],
+          lengthMenu: [ [4, 10, -1], [4, 10, "All"] ],
         });
       });
     </script>
 
-    <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $("#success-alert").hide();
+        $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+          $("#success-alert").slideUp(500);
+        });
+      });
+    </script>
+
+
+
+
   </body>
 </html>
 

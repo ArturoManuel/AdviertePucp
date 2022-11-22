@@ -113,9 +113,7 @@
             <thead class="bg-light">
             <tr>
                 <th>
-                    <img    alt=""
-                            class="icon_lis_admi"
-                            src="/images/Bold.png" />Codigo
+                    <img alt=""  class="icon_lis_admi" src="/images/Bold.png" />Codigo
                 </th>
                 <th><img class="icon_lis_admi" src="/images/Bold.png" />Apellido y Nombre</th>
                 <th><img class="icon_lis_admi" src="/images/Bold.png" />Estado de la cuenta</th>
@@ -130,17 +128,15 @@
                             <img
                                     th:src="${usuarios.getFoto()}"
                                     alt=""
-                                    style="width: 45px; height: 45px"
-                                    class="rounded-circle"
-                            />
+                                    style="width: 45px; height: 45px" class="rounded-circle"/>
+
                             <div class="ms-3">
                                 <p class="fw-bold mb-1" th:text="${usuarios.getNombres()}" >Casapaico Meléndez, Rubén Caleb</p>
                                 <p class="text-muted mb-0" th:text="${usuarios.getCorreo()}">calebp@pucp.edu.pe</p>
                             </div>
+
                         </div>
                     </td>
-
-
                     <td>
                         <div>
                             <p  th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}" class="status" style="background-color: limegreen" > Activo</p>
@@ -254,7 +250,6 @@
 
 
                             <div th:case="3">
-
 
                                 <div>
 
@@ -664,6 +659,7 @@
 
 
         </table>
+
     </div>
     </div>
 
