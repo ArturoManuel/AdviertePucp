@@ -1,6 +1,7 @@
 
 package com.example.adviertepucp.controller;
 
+import com.azure.core.annotation.Post;
 import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.UsuarioRepository;
 import com.example.adviertepucp.service.MailService;
@@ -60,17 +61,7 @@ public class LoguinController {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    /*El código es número?*/
 
-
-
-    /*Pagina principal:Loguin*/
-    /*Borrador*/
-
-//    @GetMapping({"loginForm"})
-//    public String loginForm(){
-//        return "loguin/form";
-//    }
 
     @PostMapping({"logout"})
     public String logout(){
