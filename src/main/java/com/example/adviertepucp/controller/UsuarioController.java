@@ -154,12 +154,13 @@ public class UsuarioController {
     }
 
     @GetMapping("/mapa")
-    String mapa(HttpSession session){
+    String mapa(HttpSession session, Model model){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
+
             return "redirect:/suspendido";
         }
-
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
 
         return "usuario/mapa";
     }
