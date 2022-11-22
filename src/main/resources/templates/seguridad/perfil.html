@@ -50,7 +50,7 @@
                             <div class="d-flex justify-content-center mb-2">
                                 <button type="button" class="btn btn-primary"
                                         data-bs-toggle="modal"
-                                        th:attr="data-bs-target='#editar'+${session.usuariolog.getNombre()}">CAMBIAR FOTO</button>
+                                        th:attr="data-bs-target='#editar'+${session.usuariolog.getId()}">CAMBIAR FOTO</button>
                             </div>
                             <button type="button" class="btn btn-outline-primary ms-1">CAMBIAR ICONO</button>
                         </div>
@@ -61,7 +61,7 @@
 
             <!-- ModalEditar-->
             <div class="modal fade"
-                 th:attr="id='editar'+${session.usuariolog.getNombre()}"
+                 th:attr="id='editar'+${session.usuariolog.getId()}"
                  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <form method="post" th:action="@{'/seguridad/perfilEditar'}"   enctype="multipart/form-data">
                     <div class="modal-dialog modal-dialog-centered">

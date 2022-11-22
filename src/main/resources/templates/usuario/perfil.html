@@ -57,11 +57,44 @@
                         <p class="text-muted mb-1" th:text="${session.usuariolog.getCategoria().getNombre()}"></p>
                         <p class="text-muted mb-4">Estado: Activo</p>
                         <div class="d-flex justify-content-center mb-2">
-                            <button type="button" class="btn btn-primary">CAMBIAR FOTO</button>
+                            <button type="button" class="btn btn-primary"
+                                    data-bs-toggle="modal"
+                                    th:attr="data-bs-target='#editar'+${session.usuariolog.getId()}" >CAMBIAR FOTO</button>
                             <button type="button" class="btn btn-outline-primary ms-1">CAMBIAR ICONO</button>
                         </div>
                     </div>
                 </div>
+
+
+                <!-- ModalEditar-->
+                <div class="modal fade"
+                     th:attr="id='editar'+${session.usuariolog.getId()}"
+                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form method="post" th:action="@{'/seguridad/perfilEditar'}"   enctype="multipart/form-data">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Foto</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-row">
+                                        <label> Icono : </label>
+                                        <input type="file" id="profile_pic" name="archivo"
+                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                        <input name="codigo" type="hidden" th:value="${session.usuariolog.getId()}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                                    <button type="submit" class="btn btn-primary">Guardar </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+
 
                 <div class="card mb-4">
                     <div class="card-body text-center">
