@@ -22,6 +22,10 @@ public interface IncidenciaListadto {
     double getLatitud();
     double getLongitud();
     String getZonapucp();
+    String getCreador();
+    Integer getUsuario_codigo();
+    String getEsfavorito();
+
 
 
 

@@ -28,7 +28,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background-color: #eee;">
 <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
 
 </header>
@@ -71,7 +71,7 @@
                         </div>
                         <div class="d-flex justify-content-center mb-2">
 
-                            <button type="button" class="btn btn-outline-primary ms-1">MIS FAVORITOS</button>
+                            <a type="button" class="btn btn-outline-primary ms-1" th:href="@{'/usuario/misFavoritos'}">MIS FAVORITOS</a>
                         </div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" HIDDEN>
 
                     <div class="col-md-12">
                         <div class="card mb-4 mb-md-0">

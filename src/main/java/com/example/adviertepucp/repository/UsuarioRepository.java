@@ -87,13 +87,17 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     Usuario oauth2User(String correo);
 
 
-    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion \n" +
-            "as descripcion , concat(substring(fecha,1,10),'  (' ,substring(fecha,12,5),')') as fecha , estado as estado , urgencia \n" +
-            "as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
-            " longitud as longitud ,  z.nombre as zonapucp from incidencia i inner join \n" +
-            "zonapucp z on (z.idzonapucp=i.zonapucp)\n" +
-            "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
-            "where publicado=1 and estado!=\"resuelto\" order by fecha desc", nativeQuery = true)
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion\n" +
+            "            as descripcion , concat(substring(i.fecha,1,10),'  (' ,substring(i.fecha,12,5),')') as fecha , estado as estado , urgencia\n" +
+            "            as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
+            "            longitud as longitud ,  z.nombre as zonapucp, subq1.creador\n" +
+            "            from incidencia i inner join\n" +
+            "            zonapucp z on (z.idzonapucp=i.zonapucp)\n" +
+            "            inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+            "            left join (select incidencia_idincidencia,usuario_codigo as 'creador' from favorito where esfavorito=0) subq1\n" +
+            "            on (subq1.incidencia_idincidencia=i.idincidencia)\n" +
+            "            where publicado=1 and estado!=\"resuelto\" order by i.fecha desc"
+            , nativeQuery = true)
     List<IncidenciaListadto> listaIncidencia();
 
     //Para extraer las fotos de cada incidencia

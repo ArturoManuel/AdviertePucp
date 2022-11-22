@@ -170,11 +170,12 @@
                     </div>
                     <div class="card-tele-body pb-2">
                         <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]
+                            <br>
                             <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
                             Leve
                             </span>
                             <tr></tr>
-                            <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                            <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px;margin-bottom:8px" >
                             Objetos perdidos
                             </span>
                         </p>
@@ -188,8 +189,9 @@
                         </div>
                     </div>
                     <div class="card-tele-footer justify-content">
-                        <div class="d-flex align-items-start">
-                            <a onclick="darLike()" id="corazon" title="Love it" class="btn btn-counter" data-count="0"><span>&#9825;</span></a>
+                        <div  class="d-flex align-items-start">
+                            <a  th:href="@{'/usuario/darlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#9825;</a>
+                            <a  th:href="@{'/usuario/quitarlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#x2764;</a>
                         </div>
                         <div class="d-flex align-items-end">
                             <a class="btn btn-redtele" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">+INFO</a>
