@@ -60,11 +60,13 @@
                             <button type="button" class="btn btn-primary"
                                     data-bs-toggle="modal"
                                     th:attr="data-bs-target='#editar'+${session.usuariolog.getId()}" >CAMBIAR FOTO</button>
-                            <button type="button" class="btn btn-outline-primary ms-1">CAMBIAR ICONO</button>
+                            <button type="button" class="btn btn-outline-primary ms-1"
+                                    data-bs-toggle="modal"
+                                    th:attr="data-bs-target='#editar2'+${session.usuariolog.getId()}">CAMBIAR ICONO</button>
                         </div>
                     </div>
                 </div>
-                <!-- ModalEditar-->
+                <!-- ModalEditar2-->
                 <div class="modal fade"
                      th:attr="id='editar'+${session.usuariolog.getId()}"
                      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -79,6 +81,33 @@
                                     <div class="d-flex flex-row">
                                         <label> Icono : </label>
                                         <input type="file" id="profile_pic" name="archivo"
+                                               accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                                        <input name="codigo" type="hidden" th:value="${session.usuariolog.getId()}">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                                    <button type="submit" class="btn btn-primary">Guardar </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!--Model Editar 2 -->
+                <div class="modal fade"
+                     th:attr="id='editar2'+${session.usuariolog.getId()}"
+                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <form method="post" th:action="@{'/usuario/iconoEditar'}"   enctype="multipart/form-data">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel2">Foto</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="d-flex flex-row">
+                                        <label> Icono : </label>
+                                        <input type="file" id="profile_pic2" name="archivo"
                                                accept=".jpg, .jpeg, .png" style="margin-left: 10px">
                                         <input name="codigo" type="hidden" th:value="${session.usuariolog.getId()}">
                                     </div>

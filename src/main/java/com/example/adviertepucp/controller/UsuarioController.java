@@ -62,6 +62,9 @@ public class UsuarioController {
     @Autowired
     BlobService blobService;
 
+    @Autowired
+    IconoRepository iconoRepository;
+
 
     //Obtener Coordenadas del usuario
     @PostMapping("/obtenercoordenadas")
@@ -453,7 +456,7 @@ public class UsuarioController {
             e.printStackTrace();
             model.addAttribute("msg", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
-            return "admin/perfil";
+            return "usuario/perfil";
         }
         System.out.println(codigo);
         Usuario usuario= usuarioRepository.usuarioExiste(codigo);
@@ -467,8 +470,37 @@ public class UsuarioController {
         }else{
             model.addAttribute("msg","Ocurrio un error en el guardado");
         }
-        return "seguridad/perfil";
+        return "usuario/perfil";
     }
+
+    @PostMapping("/iconoEditar")
+    public String editarIcono(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo){
+        Icono icono = new Icono();
+        Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
+        try {
+            blobService.subirArchivo(logo);
+            fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
+            fotoalmacenada.setTipofoto(logo.getContentType());
+            fotoalmacenadaRepository.save(fotoalmacenada);
+            System.out.println("Se subio la foto");
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "usuario/perfil";
+        }
+        System.out.println(codigo);
+        Usuario usuario= usuarioRepository.usuarioExiste(codigo);
+        if( usuario!=null){
+            icono.setFoto(fotoalmacenada);
+            iconoRepository.save(icono);
+        }else{
+            model.addAttribute("msg","Ocurrio un error en el guardado");
+        }
+        return "usuario/perfil";
+    }
+
+
 
 
 }
