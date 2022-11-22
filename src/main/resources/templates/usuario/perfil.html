@@ -64,13 +64,11 @@
                         </div>
                     </div>
                 </div>
-
-
                 <!-- ModalEditar-->
                 <div class="modal fade"
                      th:attr="id='editar'+${session.usuariolog.getId()}"
                      tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <form method="post" th:action="@{'/seguridad/perfilEditar'}"   enctype="multipart/form-data">
+                    <form method="post" th:action="@{'/usuario/perfilEditar'}"   enctype="multipart/form-data">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
                                 <div class="modal-header">

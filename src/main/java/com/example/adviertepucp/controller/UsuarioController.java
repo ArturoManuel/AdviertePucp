@@ -440,4 +440,35 @@ public class UsuarioController {
     }
 
 
+    @PostMapping("/perfilEditar")
+    public String editarPerfil(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo, HttpSession session){
+        Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
+        try {
+            blobService.subirArchivo(logo);
+            fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
+            fotoalmacenada.setTipofoto(logo.getContentType());
+            fotoalmacenadaRepository.save(fotoalmacenada);
+            System.out.println("Se subio la foto");
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/perfil";
+        }
+        System.out.println(codigo);
+        Usuario usuario= usuarioRepository.usuarioExiste(codigo);
+        if( usuario!=null){
+            usuario.setFoto(fotoalmacenada);
+            session.getAttribute("usuariolog");
+
+            System.out.println(session.getAttribute("usuariolog"));
+            session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
+            usuarioRepository.save(usuario);
+        }else{
+            model.addAttribute("msg","Ocurrio un error en el guardado");
+        }
+        return "seguridad/perfil";
+    }
+
+
 }
