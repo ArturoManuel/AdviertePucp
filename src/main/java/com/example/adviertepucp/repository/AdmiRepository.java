@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
@@ -91,5 +92,10 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
             value = "UPDATE usuario SET nombre = ?2, apellido = ?3,\n" +
                     " dni = ?4, celular = ?5, correo = ?6, categoria = ?7, suspendido = 0, habilitado = 0,secret=NULL,otp=NULL,pwd=NULL WHERE codigo=?1\n")
     void seguridadUsuario(String codigo,String nombre,String apellido,String dni,String celular,String correo,int categoria);
+
+    @Query(value = "select * from usuario where correo=?1 ",nativeQuery = true)
+    List<Usuario> validarCorreo(String correo);
+    @Query(value = "select * from usuario where dni=?1 ",nativeQuery = true)
+    List<Usuario> validarDNI(String dni);
 
 }

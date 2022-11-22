@@ -211,11 +211,21 @@ public class AdminController extends Usuario {
 
         Usuario usuarioExiste=null;
         Optional<Usuario> userExiste1=usuarioRepository.findById(codigo);
+        List<Usuario> correoEncontrado=admiRepository.validarCorreo(correo);
+        List<Usuario> dniEncontrado=admiRepository.validarDNI(dni);
         if (userExiste1.isPresent()){
             attr.addFlashAttribute("usuarioExiste", "El código que está registrando ya existe");
             flag ++;
         }
 
+        if (correoEncontrado.size()!=0){
+            attr.addFlashAttribute("correoExiste", "El correo registrado ya existe");
+            flag ++;
+        }
+        if (dniEncontrado.size()!=0){
+            attr.addFlashAttribute("dniExiste", "El dni registrado ya existe");
+            flag ++;
+        }
         if (codigo.length() != 8) {
             attr.addFlashAttribute("msg", "El codigo debe ser de 9 dígitos y con formato numérico");
             flag ++;

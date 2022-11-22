@@ -98,7 +98,8 @@
     </div>
     <form th:action="@{'/administrador/guardarCrearUser'}" method="post">
       <div th:if="${usuarioExiste != null}" th:text="${usuarioExiste}" class="alert alert-success" role="alert"></div>
-
+      <div th:if="${correoExiste != null}" th:text="${correoExiste}" class="alert alert-success" role="alert"></div>
+      <div th:if="${dniExiste != null}" th:text="${dniExiste}" class="alert alert-success" role="alert"></div>
       <div class="modal-body  py-9" >
         <div class="row">
 
