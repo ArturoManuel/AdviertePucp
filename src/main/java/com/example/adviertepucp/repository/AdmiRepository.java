@@ -63,19 +63,19 @@ public interface AdmiRepository extends JpaRepository<Usuario, Integer> {
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
-            value = "insert into usuario (codigo, nombre, apellido, dni, correo, categoria, suspendido, habilitado,foto)" +
+            value = "insert into usuario (codigo, nombre, apellido, dni, correo, categoria, suspendido, habilitado)" +
                     " values (?1, ?2, ?3, ?4, ?5,?6, ?7, ?8);")
     void crearUsuario(String codigo, String nombre, String apellido, String dni, String correo, int categoria,
-                        int suspendido, int habilitado,String foto);
+                        int suspendido, int habilitado);
 
 
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
-            value = "insert into usuario (codigo, nombre, apellido, dni, correo, categoria, suspendido, habilitado,otp,secret,pwd,foto)" +
-                    " values (?1, ?2, ?3, ?4, ?5,?6, ?7, 1,1,2,?8,?9);")
+            value = "insert into usuario (codigo, nombre, apellido, dni, correo, categoria, suspendido, habilitado,otp,secret,pwd)" +
+                    " values (?1, ?2, ?3, ?4, ?5,?6, ?7, 1,1,2,?8);")
     void crearSeguridad(String codigo, String nombre, String apellido, String dni, String correo, int categoria,
-                      int suspendido, String otp,String foto);
+                      int suspendido, String otp);
 
     @Modifying
     @Transactional
