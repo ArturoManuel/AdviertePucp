@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.lang.model.element.ModuleElement;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -66,12 +67,16 @@ public class UsuarioController {
 
 
     @GetMapping("/")
-    String listaUsuario(Model model, HttpSession session){
+    String listaUsuario(Model model, HttpSession session, Authentication auth){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
 
+        Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+        Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+
+        model.addAttribute("usercodigo", Integer.parseInt(usuarioLogueado.getId()));
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         List<List<String>> listaFotos = new ArrayList<>();
@@ -378,6 +383,45 @@ public class UsuarioController {
 
         model.addAttribute("listaIncidentes",usuarioRepository.misIncidencias(usuario.getId()));
         return "usuario/misIncidencias";
+    }
+
+    @GetMapping("/darlike")
+    public String darLike(Model model, @RequestParam("id") int id,
+                          Authentication auth){
+        Optional<Incidencia> optionalIncidencia = incidenciaRepository.findById(id);
+
+        if (optionalIncidencia.isPresent()) {
+            Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+            Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+            Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+            Favorito favorito = new Favorito();
+            favorito.setUsuarioCodigo(usuarioLogueado);
+            favorito.setIncidenciaIdincidencia(incidenciaRepository.getById(id));
+            favorito.setFecha(datetime);
+            favorito.setEsfavorito(1);
+            favorito.setReaperturacaso(0);
+            favorito.setPusoenproceso(0);
+            favorito.setHasolucionado(0);
+            favorito.setHacomentado(0);
+            favoritoRepository.save(favorito);
+
+        }
+        return "redirect:/usuario/";
+    }
+
+    @GetMapping("/quitarlike")
+    public String quitarLike(Model model, @RequestParam("id") int id,
+                          Authentication auth){
+        Optional<Incidencia> optionalIncidencia = incidenciaRepository.findById(id);
+
+        if (optionalIncidencia.isPresent()) {
+            Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+            Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+            Integer idfavorito = incidenciaRepository.obtenerFavorito(Integer.parseInt(usuarioLogueado.getId()),id);
+            favoritoRepository.deleteById(idfavorito);
+
+        }
+        return "redirect:/usuario/";
     }
 
 

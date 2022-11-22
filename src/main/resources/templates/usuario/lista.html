@@ -189,9 +189,9 @@
                         </div>
                     </div>
                     <div class="card-tele-footer justify-content">
-                        <div class="d-flex align-items-start">
-                            <a title="Love it" class="btn btn-counter" data-count="0"><span>&#9825;</span></a>
-                            <a title="Love it" class="btn btn-counter" data-count="0"><span>&#x2764;</span></a>
+                        <div  class="d-flex align-items-start">
+                            <a  th:href="@{'/usuario/darlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#9825;</a>
+                            <a  th:href="@{'/usuario/quitarlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#x2764;</a>
                         </div>
                         <div class="d-flex align-items-end">
                             <a class="btn btn-redtele" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">+INFO</a>

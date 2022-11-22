@@ -7,6 +7,7 @@ import com.example.adviertepucp.dto.UsuarioCantidadIncidencia;
 import com.example.adviertepucp.dto.UsarioMasIncidencia;
 import com.example.adviertepucp.dto.IncidenciaPorZona;
 import com.example.adviertepucp.dto.ZonaPUCP;
+import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Incidencia;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,12 +15,18 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.time.Instant;
 import java.util.List;
 
 public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer> {
     @Query(value = "select t.idtipoincidencia as idt , t.nombre as nombret , t.color as colort , ft.fotoalmacenada as fotot from tipoincidencia t inner join fotoalmacenada ft on (t.logo=ft.idfotoalmacenada);",nativeQuery = true)
     List<TipoIncidenciadto> listaTipo();
 
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+            value = "insert into favorito values (?1,?2,1,0,0,0,0,?3)")
+    void darlike(int idusuario, int idincidencia, Instant fecha);
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
@@ -76,6 +83,10 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     @Query(value = "select count(idincidencia) from incidencia WHERE fecha > NOW() - INTERVAL 1 MONTH",
             nativeQuery = true)
     Integer incidenciasPorMes();
+
+    @Query(value = "select idinteraccion from favorito where usuario_codigo=?1 and incidencia_idincidencia=?2 and esfavorito=1;",
+            nativeQuery = true)
+    Integer obtenerFavorito(int codigo, int id);
 
     @Query(value = "select count(idincidencia) from incidencia WHERE fecha > NOW() - INTERVAL 12 MONTH",
             nativeQuery = true)
