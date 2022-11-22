@@ -109,7 +109,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     List<Integer> listaDeFotosId(Integer id);
 
     @Query(value = "select f.fotoalmacenada from  \n" +
-            "            usuario u inner join fotoalmacenada f on (u.foto=f.idfotoalmacenada) where u.codigo=20191660;",nativeQuery = true)
+            "            usuario u inner join fotoalmacenada f on (u.foto=f.idfotoalmacenada) where u.codigo=?;",nativeQuery = true)
     String fotoAlmacenadaUser(String codigo);
     @Query(nativeQuery = true,
     value = "select f.idinteraccion,f.usuario_codigo,i.idincidencia\n" +

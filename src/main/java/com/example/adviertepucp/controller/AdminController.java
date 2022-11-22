@@ -258,15 +258,16 @@ public class AdminController extends Usuario {
                 otp=RandomString.make(16);
                 mailService.otpSeguridad(correo,nombre,codigo,otp);
                 otp=new BCryptPasswordEncoder().encode(otp);
-                admiRepository.crearSeguridad(codigo,nombre,apellido,dni,correo,categoria, suspendido,otp);
+                String foto= usuarioRepository.fotoAlmacenadaUser("22");
+                admiRepository.crearSeguridad(codigo,nombre,apellido,dni,correo,categoria, suspendido,otp,foto);
                 usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
 
                 attr.addFlashAttribute("msg", "Personal de Seguridad registrado exitosamente");
             }
             else{
                 attr.addFlashAttribute("msg", "Usuario registrado exitosamente");
-
-                admiRepository.crearUsuario(codigo,nombre,apellido,dni,correo,categoria, suspendido, habilitado);
+                String foto = usuarioRepository.fotoAlmacenadaUser("22");
+                admiRepository.crearUsuario(codigo,nombre,apellido,dni,correo,categoria, suspendido, habilitado,foto);
                 usuarioBDRepository.crearUsuarioBD(codigo,nombre,apellido,dni,correo);
 
             }
