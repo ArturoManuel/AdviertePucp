@@ -66,21 +66,6 @@ public class UsuarioController {
     IconoRepository iconoRepository;
 
 
-    //Obtener Coordenadas del usuario
-    @PostMapping("/obtenercoordenadas")
-    public void obtenercoordenadas(@RequestParam(value = "latitud",required = false) String latitud, @RequestParam(value = "longitud",required = false) String longitud){
-        System.out.println("Latitud: "+latitud);
-        System.out.println("Longitud: "+longitud);
-    }
-
-
-
-    @GetMapping("/indicadoresmapa")
-    public String indicadoresmapa(HttpSession session,Model model) {
-        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
-        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
-        return "Listamapas";
-    }
 
 
 
