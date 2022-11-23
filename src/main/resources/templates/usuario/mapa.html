@@ -63,8 +63,17 @@
 
 <a type="button" href="/usuario/" class="btn btn-outline-dark">Ver Lista</a>
 <a href="/usuario/nuevoIncidente" type="button" class="btn btn-outline-primary">
-  Nuevo Incidente
+  Nueva Incidencia
 </a>
+</div>
+
+<div id="maploadingalert" class="title-28" style="text-align: center">
+  <div class="alert alert-warning" role="alert">
+    <h4 class="alert-heading"><span class="spinner-border text-dark" role="status"></span>Cargando mapa...</h4>
+    <p>Obteniendo tu localización... Usualmente, el mapa tarda en cargar de unos 7 a 10 segundos. </p>
+  </div>
+
+
 </div>
 
 
@@ -195,6 +204,9 @@
     // Create a marker for each location.
     const markers = locator.locations.map(function(location, index) {
       const marker = new google.maps.Marker({
+
+        icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+
         position: location.coords,
         map: locator.map,
         title: location.title,
@@ -212,6 +224,12 @@
         bounds.extend(locator.searchLocationMarker.getPosition());
       }
       for (let i = 0; i < markers.length; i++) {
+
+        if (i===0){
+          markers[i].icon= 'https://adviertepucp.blob.core.windows.net/adviertepucp/img1.png';
+        }
+
+
         bounds.extend(markers[i].getPosition());
       }
       locator.map.fitBounds(bounds);
@@ -479,7 +497,12 @@
     "mapsApiKey": "AIzaSyDT71SdHy5wcg6PK_JVCcuON5AqLpCcqA4",
     "capabilities": {"input":true,"autocomplete":true,"directions":false,"distanceMatrix":true,"details":false,"actions":false},
 
+
+
+
   };
+
+
 
 
     for (let i = 0; i < parseInt(document.getElementById("indice").innerText); i++) {
@@ -492,7 +515,9 @@
 
   async function initMap() {
     await getLocation();
-    await new Promise(r => setTimeout(r, 6000));
+    await new Promise(r => setTimeout(r, 7000));
+    var elem = document.getElementById("maploadingalert");
+    elem.parentNode.removeChild(elem);
     console.log(CONFIGURATION.locations)
     new LocatorPlus(CONFIGURATION);
 
