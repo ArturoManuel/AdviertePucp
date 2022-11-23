@@ -6,6 +6,7 @@ import com.example.adviertepucp.repository.*;
 import com.example.adviertepucp.service.BlobService;
 import com.example.adviertepucp.service.MailService;
 import net.bytebuddy.utility.RandomString;
+import org.hibernate.event.spi.SaveOrUpdateEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -352,10 +353,11 @@ public class AdminController extends Usuario {
                                 String correo,
                                 @RequestParam("categoria") @NotNull(message = "Este campo no puede estar nulo")
                                 int categoria,
-                                @ModelAttribute("usuario") Usuario usuario,
+
                                 RedirectAttributes attr) {
 
         System.out.println("PROAABDNO SU LLEGA: " + nombre);
+        Usuario usuario = new Usuario();
 
 
 
@@ -387,10 +389,12 @@ public class AdminController extends Usuario {
 
         if (!nombreCompleto){
             model.addAttribute("ms1", "El nombre no respeta el Formato requerido");
+            System.out.println("ERRORR NOMNBRE");
             flag ++;
         }
         if (nombre.isEmpty() || nombre.length() > 45){
             model.addAttribute("ms1", "Debe ingresar un nombre");
+            System.out.println("ERRORR NOMBRE VACIO");
             flag ++;
         }
         if (!apellidoCompleto){
@@ -403,10 +407,12 @@ public class AdminController extends Usuario {
         }
         if (!dnivalid){
             model.addAttribute("ms3", "El DNI dedbe ser de 8 digitos y/o con formato numérico");
+            System.out.println("ERRORR DMO");
             flag ++;
         }
         if (!celularValid){
             model.addAttribute("ms4", "El Celular debe ser de 9 digitos y/o con formato numérico");
+            System.out.println("ERRORR DNI");
             flag ++;
         }
         if (correo.length() > 80 || !email) {
@@ -420,6 +426,8 @@ public class AdminController extends Usuario {
             model.addAttribute("listacategorias", categoriaRepository.findAll());
             return "admin/editar_User";
         }
+
+        usuario.set
         try {
             assert beforeusuario != null;
             int anteriorcat=beforeusuario.getCategoria().getId();
