@@ -91,8 +91,6 @@ public class AdminController extends Usuario {
     @GetMapping("")
     public String listaUsuarios(Model model){
         model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
-        model.addAttribute("listaUsuarios1", admiRepository.findAll());
-        model.addAttribute("usuariosDB", admiRepository.UsuariosDB());
         model.addAttribute("listacategorias", admiRepository.CategoriaList());
         return "admin/listaUsuarios";
     }
@@ -353,12 +351,14 @@ public class AdminController extends Usuario {
                                 String correo,
                                 @RequestParam("categoria") @NotNull(message = "Este campo no puede estar nulo")
                                 int categoria,
-
+                                @RequestParam("foto") @NotNull(message = "Este campo no puede estar nulo")
+                                String foto,
+                                @ModelAttribute("usuario") Usuario usuario,
                                 RedirectAttributes attr) {
 
         System.out.println("PROAABDNO SU LLEGA: " + nombre);
-        Usuario usuario = new Usuario();
-
+        System.out.println("Probando Acá");
+        System.out.println(usuario.getFoto().getFotoalmacenada());
 
 
         System.out.println("PROAABDNO SU LLEGA 2122222: " + nombre);
@@ -427,7 +427,10 @@ public class AdminController extends Usuario {
             return "admin/editar_User";
         }
 
-        usuario.set
+
+
+
+
         try {
             assert beforeusuario != null;
             int anteriorcat=beforeusuario.getCategoria().getId();

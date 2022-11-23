@@ -120,6 +120,7 @@
                     <div class="col-lg-4">
                       <div class="card mb-4">
                         <div class="card-body text-center">
+                          <input type="hidden" th:field="${usuario.foto}">
                           <img id="preview2" th:src="*{foto.getFotoalmacenada()}" alt="avatar"
                                class=" img-fluid" style="width: 255px;">
                           <h5 class="my-3" style="color: black">Foto de perfil</h5>
@@ -133,7 +134,8 @@
                     <div class="card mb-4">
                       <div class="card-body">
                       <div class="md-form mb-1">
-                        <i class="fas fa-user prefix grey-text"></i>
+                        <i class="fas fa-user pref
+                        ix grey-text"></i>
                         <span class="mx-2">Nombre</span>
                         <input th:field="*{nombre}" class="form-control validate">
                         <label data-error="wrong" data-success="right" hidden></label>
