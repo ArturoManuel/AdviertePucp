@@ -93,6 +93,14 @@ public class SeguridadController {
         List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
         model.addAttribute("msg", "Filtro aplicado");
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroIncidencia;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
+        model.addAttribute("msg", "Filtro aplicado exitosamente");
 
         return "seguridad/listaMapa";
     }
@@ -108,6 +116,13 @@ public class SeguridadController {
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
         model.addAttribute("listaIncidentes", listaFiltroTitulo);
+
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroTitulo;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
         model.addAttribute("msg", "Filtro aplicado");
 
         return "seguridad/listaMapa";
@@ -235,6 +250,7 @@ public class SeguridadController {
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "seguridad/mapa";
     }
 /*
@@ -306,6 +322,26 @@ public class SeguridadController {
 
     @PostMapping("/perfilEditar")
     public String editarPerfil(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo, HttpSession session){
+        if (logo.isEmpty()) {
+            System.out.println("No recibi la imagen");
+            model.addAttribute("err", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "seguridad/perfil";
+        }
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "seguridad/perfil";
+        }
+
+
+
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
             blobService.subirArchivo(logo);
@@ -315,7 +351,7 @@ public class SeguridadController {
             System.out.println("Se subio la foto");
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/perfil";
         }
@@ -329,7 +365,7 @@ public class SeguridadController {
             session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
             usuarioRepository.save(usuario);
         }else{
-            model.addAttribute("msg","Ocurrio un error en el guardado");
+            model.addAttribute("err","Ocurrio un error en el guardado");
         }
         return "seguridad/perfil";
     }

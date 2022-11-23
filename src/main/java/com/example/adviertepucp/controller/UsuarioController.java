@@ -165,6 +165,13 @@ public class UsuarioController {
         //List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio, fechafin, estado, nombre);
         List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroIncidencia;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
         model.addAttribute("msg", "Filtro aplicado exitosamente");
         return "usuario/lista";
     }
@@ -181,6 +188,13 @@ public class UsuarioController {
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
         model.addAttribute("listaIncidentes", listaFiltroTitulo);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroTitulo;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
         model.addAttribute("msg", "Filtro aplicado exitosamente");
 
         return "usuario/lista";
@@ -285,22 +299,23 @@ public class UsuarioController {
                                    HttpSession session,
                                    Authentication auth){
 
-
-
-
-
             ArrayList<Fotoalmacenada> listaFotoAlmacenada = new ArrayList<>();
 
             for (MultipartFile foto : files ) {
                 if (foto.isEmpty()){
-                    model.addAttribute("msg", "Debe subir un archivo");
+                    model.addAttribute("err", "Debe subir un archivo");
                     return "usuario/nuevoIncidente";
                 }
-                String fileName = foto.getOriginalFilename();
+                switch (foto.getContentType()) {
 
-                if (fileName.contains("..")){
-                    model.addAttribute("msg", "No se permiten '..' en el archivo");
-                    return "usuario/nuevoIncidente";
+                    case "image/jpeg":
+                    case "image/png":
+                    case "application/octet-stream":
+                        break;
+                    default:
+                        model.addAttribute("err", "Solo se deben de enviar imágenes");
+                        model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                        return "usuario/nuevoIncidente";
                 }
                 try {
                     Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
@@ -313,7 +328,7 @@ public class UsuarioController {
                     System.out.println("Esta es la foto" +fotoalmacenada);
                 } catch (Exception e){
                     e.printStackTrace();
-                    model.addAttribute("msg", "Debe subir un archivo");
+                    model.addAttribute("err", "Debe subir un archivo");
                     model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
                     return "usuario/nuevoIncidente";
                 }
@@ -322,8 +337,6 @@ public class UsuarioController {
             try{
                 Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
                 Usuario usuarioLogueado=usuarioLogueadoOpt.get();
-
-
                 String estado = "registrado";
                 Instant datetime = Instant.now().truncatedTo(ChronoUnit.MILLIS);
                 Integer idasdasd= incidencia.getId();
@@ -347,29 +360,16 @@ public class UsuarioController {
                 favorito.setFecha(datetime);
                 favorito.setIncidenciaIdincidencia(incidencia);
                 favoritoRepository.save(favorito);
-
-
                 for (Fotoalmacenada fotoDB: listaFotoAlmacenada) {
                     incidenciatienefotoRepository.insertarFotoEIncidencia(fotoDB.getId(),incidencia.getId());
+
                 }
-
-
-
+                return "redirect:/usuario/lista";
             }catch (Exception e){
                 e.printStackTrace();
-                model.addAttribute("msg", "Ocurrió un error al crear la incidencia");
+                model.addAttribute("err", "Ocurrió un error al crear la incidencia");
                 return "usuario/nuevoIncidente";
             }
-
-
-            return "redirect:/usuario/lista";
-
-
-
-
-
-
-
     }
 
 
@@ -431,6 +431,26 @@ public class UsuarioController {
 
     @PostMapping("/perfilEditar")
     public String editarPerfil(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo, HttpSession session){
+        if (logo.isEmpty()) {
+            System.out.println("No recibi la imagen");
+            model.addAttribute("err", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "usuario/perfil";
+        }
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "usuario/perfil";
+        }
+
+
+
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
             blobService.subirArchivo(logo);
@@ -440,7 +460,7 @@ public class UsuarioController {
             System.out.println("Se subio la foto");
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "usuario/perfil";
         }
@@ -454,13 +474,32 @@ public class UsuarioController {
             session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
             usuarioRepository.save(usuario);
         }else{
-            model.addAttribute("msg","Ocurrio un error en el guardado");
+            model.addAttribute("err","Ocurrio un error en el guardado");
         }
         return "usuario/perfil";
     }
 
     @PostMapping("/iconoEditar")
     public String editarIcono(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo){
+
+        if (logo.isEmpty()) {
+            System.out.println("No recibi la imagen");
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "usuario/perfil";
+        }
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "usuario/perfil";
+        }
+
         Icono icono = new Icono();
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
@@ -471,17 +510,22 @@ public class UsuarioController {
             System.out.println("Se subio la foto");
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "usuario/perfil";
         }
         System.out.println(codigo);
         Usuario usuario= usuarioRepository.usuarioExiste(codigo);
         if( usuario!=null){
+            icono.setNombre(usuario.getId());
             icono.setFoto(fotoalmacenada);
+            usuario.setIcono(icono);
+
             iconoRepository.save(icono);
+            usuarioRepository.save(usuario);
+            model.addAttribute("msg","Se agrego tu icono correctamente");
         }else{
-            model.addAttribute("msg","Ocurrio un error en el guardado");
+            model.addAttribute("err","Ocurrio un error en el guardado");
         }
         return "usuario/perfil";
     }

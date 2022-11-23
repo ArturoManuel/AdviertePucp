@@ -159,6 +159,7 @@
 
     </form>
     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
 
     <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
         <div th:each="incidencia,indice : ${listaIncidentes}">
