@@ -322,6 +322,26 @@ public class SeguridadController {
 
     @PostMapping("/perfilEditar")
     public String editarPerfil(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo, HttpSession session){
+        if (logo.isEmpty()) {
+            System.out.println("No recibi la imagen");
+            model.addAttribute("err", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "seguridad/perfil";
+        }
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "seguridad/perfil";
+        }
+
+
+
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
             blobService.subirArchivo(logo);
@@ -331,7 +351,7 @@ public class SeguridadController {
             System.out.println("Se subio la foto");
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/perfil";
         }
@@ -345,7 +365,7 @@ public class SeguridadController {
             session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
             usuarioRepository.save(usuario);
         }else{
-            model.addAttribute("msg","Ocurrio un error en el guardado");
+            model.addAttribute("err","Ocurrio un error en el guardado");
         }
         return "seguridad/perfil";
     }

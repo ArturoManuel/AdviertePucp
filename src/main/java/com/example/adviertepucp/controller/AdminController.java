@@ -473,7 +473,7 @@ public class AdminController extends Usuario {
         }catch (Exception e) {
             e.printStackTrace();
 
-            model.addAttribute("msg", "No se pudo realizar la acción");
+            model.addAttribute("err", "No se pudo realizar la acción");
             model.addAttribute("listaUsuarios", admiRepository.listaUsuariosAdmin());
             model.addAttribute("listaUsuarios1", admiRepository.findAll());
             model.addAttribute("usuariosDB", admiRepository.UsuariosDB());
@@ -486,26 +486,26 @@ public class AdminController extends Usuario {
     public String Crear(@RequestParam("nombre") String nombre ,
                            @RequestParam("archivo") MultipartFile logo ,
                            @RequestParam("color") String color ,RedirectAttributes attr, Model model) {
-        /* Validación de Correo */
-        /*Matcher matcherImage = emailPa.matcher((CharSequence) logo);
-        boolean imagenValid = matcherImage.matches();
-        System.out.println(imagenValid);*/
 
         if (logo.isEmpty()) {
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
-        String nombrelogo=logo.getContentType();
-        System.out.println(nombrelogo);
-        if (nombrelogo.contains("..")) {
-            model.addAttribute("msg", "El tipo de archivo no es el correcto");
-            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
-            return "admin/listaIncidentes";
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "admin/listaIncidentes";
         }
 
         if(nombre.isEmpty()){
-            model.addAttribute("msg", "El nombre no debe ser vacio");
+            model.addAttribute("err", "El nombre no debe ser vacio");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
@@ -519,7 +519,7 @@ public class AdminController extends Usuario {
             System.out.println("Se subio la foto");
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
@@ -534,7 +534,7 @@ public class AdminController extends Usuario {
         }catch (Exception e){
             e.printStackTrace();
             System.out.println("No se puede crear ");
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
@@ -551,16 +551,22 @@ public class AdminController extends Usuario {
                                   @RequestParam("color") String color , RedirectAttributes redirectAttributes, Model model) {
         if (logo.isEmpty()) {
             System.out.println("No recibi la imagen");
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
-        String nombrelogo=logo.getOriginalFilename();
-        if (nombrelogo.contains("..")) {
-            model.addAttribute("msg", "El tipo de dato no es el correcto");
-            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
-            return "admin/listaIncidentes";
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "admin/listaIncidentes";
         }
+
         if(nombre.isEmpty()){
             model.addAttribute("msg", "El nombre no debe ser vacio");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
@@ -575,7 +581,7 @@ public class AdminController extends Usuario {
             System.out.println("Se subio la foto");
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
@@ -594,7 +600,7 @@ public class AdminController extends Usuario {
 
         }catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Algun campo esta vacio para editar");
+            model.addAttribute("err", "Algun campo esta vacio para editar");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/listaIncidentes";
         }
@@ -620,6 +626,25 @@ public class AdminController extends Usuario {
 
     @PostMapping("/perfilEditar")
     public String editarPerfil(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo, HttpSession session){
+        if (logo.isEmpty()) {
+            System.out.println("No recibi la imagen");
+            model.addAttribute("err", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "admin/perfil";
+        }
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "admin/perfil";
+        }
+
+
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
             blobService.subirArchivo(logo);
@@ -629,7 +654,7 @@ public class AdminController extends Usuario {
             System.out.println("Se subio la foto");
         } catch (Exception e){
             e.printStackTrace();
-            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("err", "Debe subir un archivo");
             model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
             return "admin/perfil";
         }
@@ -643,7 +668,7 @@ public class AdminController extends Usuario {
             session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
             usuarioRepository.save(usuario);
         }else{
-            model.addAttribute("msg","Ocurrio un error en el guardado");
+            model.addAttribute("err","Ocurrio un error en el guardado");
         }
         return "admin/perfil";
     }

@@ -72,6 +72,7 @@
             </div>
         </div>
         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
         <!--  -->
         <input id="subscriptionKey" type="hidden" size="40" value="0886a0bdfc564ff1a43b36b512bec2d2">
         <input id="serviceRegion" type="hidden" size="40" value="eastus">
@@ -95,13 +96,10 @@
                         <div class="d-flex justify-content-center mb-1">
                             <label for="subirfotos" class="btn btn-lg-primary">Agregar Imágenes</label>
                             <input onchange="document.getElementById('preview2').src = window.URL.createObjectURL(this.files[0]);previewMultiple(event)" name="archivos" id="subirfotos" multiple hidden type="file">
-                            
                         </div>
                     </div>
                     
                 </div>
-             
-
             </div>
             <div class="col-lg-8">
                 <div class="card mb-4">
@@ -188,9 +186,8 @@
     </div>
 </section>
 </body>
-    
     <script>
-    
+
         function previewMultiple(event){
             var saida = document.getElementById("subirfotos");
             var quantos = saida.files.length;
@@ -199,23 +196,14 @@
                 document.getElementById("galeria").innerHTML += '<img src="'+urls+'">';
             }
         }
-        
     </script>
-
-
 <!-- Latitude and Longitude script -->
 <script>
-
     $(document).ready(function(){
         getLocation();
-
     });
 
-
-
     function getLocation() {
-
-
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition);
         } else {
@@ -223,9 +211,7 @@
         }
 
     }
-
     function showPosition(position) {
-
         document.getElementById("coordinates").innerHTML = "Latitude: " + position.coords.latitude +
             "<br>Longitude: " + position.coords.longitude;
         document.getElementById("latitud").value = position.coords.latitude;
@@ -233,13 +219,9 @@
     }
 </script>
 
-
-
 <!-- EOF -->
-
 <!-- Speech SDK reference sdk. -->
 <script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
-
 <!-- Speech SDK USAGE -->
 <script>
     // status fields and start button in UI
@@ -299,7 +281,6 @@
                     recognizer = undefined;
                 });
         });
-
         if (!!window.SpeechSDK) {
             SpeechSDK = window.SpeechSDK;
             startRecognizeOnceAsyncButton.disabled = false;
