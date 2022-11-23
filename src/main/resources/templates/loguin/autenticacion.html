@@ -23,8 +23,8 @@
                                 Para verificar que eres tú, obtén tu código en la aplicación de autenticación e introdúcelo a continuación</p>
                             <form th:action="@{/enviaAutenticacion}" method="post">
                                 <div class="py-2">
-                                    <input type="text" class="form-control" name="code">
-                                    <p th:if="${invalidcode!=null}"  style="color: red">código incorrecto.</p>
+                                    <input type="text" class="form-control" name="code" style="text-align: center">
+                                    <p th:if="${invalidcode!=null}"  style="color: red">Código incorrecto</p>
 
                                 </div>
 

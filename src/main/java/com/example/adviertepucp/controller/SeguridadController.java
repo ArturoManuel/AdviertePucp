@@ -235,6 +235,7 @@ public class SeguridadController {
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
         return "seguridad/mapa";
     }
 /*
