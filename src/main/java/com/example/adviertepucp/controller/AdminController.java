@@ -357,8 +357,6 @@ public class AdminController extends Usuario {
                                 RedirectAttributes attr) {
 
         System.out.println("PROAABDNO SU LLEGA: " + nombre);
-        System.out.println("Probando Acá");
-        System.out.println(usuario.getFoto().getFotoalmacenada());
 
 
         System.out.println("PROAABDNO SU LLEGA 2122222: " + nombre);
