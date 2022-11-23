@@ -356,7 +356,7 @@ public class AdminController extends Usuario {
                                 @ModelAttribute("usuario") Usuario usuario,
                                 RedirectAttributes attr) {
 
-        System.out.println("PROAABDNO SU LLEGA: " + nombre);
+        System.out.println("PROAABDNO SU LLEG A: " + nombre);
 
 
         System.out.println("PROAABDNO SU LLEGA 2122222: " + nombre);

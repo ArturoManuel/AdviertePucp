@@ -180,6 +180,13 @@ public class UsuarioController {
         //List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio, fechafin, estado, nombre);
         List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroIncidencia;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
         model.addAttribute("msg", "Filtro aplicado exitosamente");
         return "usuario/lista";
     }
@@ -196,6 +203,13 @@ public class UsuarioController {
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
         model.addAttribute("listaIncidentes", listaFiltroTitulo);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroTitulo;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
         model.addAttribute("msg", "Filtro aplicado exitosamente");
 
         return "usuario/lista";
