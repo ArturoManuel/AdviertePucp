@@ -49,15 +49,15 @@
                 Objetos perdidos</span>
 
                 </div>
-                <div class="card-tele-subtitle">
+                <div class="card-tele-subtitle" style="font-size: large">
                     <i class="bi bi-geo-alt" th:text="${incidencia.zonapucp}"></i>
                 </div>
-                <div class="card-tele-subtitle">
+                <div class="card-tele-subtitle" style="font-size: larger">
                     <span>Estado:</span>
                     <span th:text="${incidencia.estado}"
                           style="font-weight: bolder">En proceso</span>
                 </div>
-                <button th:if="${incidencia.estado == 'registrado'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button th:if="${incidencia.estado == 'registrado'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal" style="size: A4">
                     Atender
                 </button>
                 <button th:if="${incidencia.estado == 'atendido'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
