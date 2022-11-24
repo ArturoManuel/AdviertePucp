@@ -151,7 +151,7 @@ public class UsuarioController {
 
         model.addAttribute("usuariomapa",usuarioRepository.usuarioExiste(usuario.getId()));
 
-        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        model.addAttribute("listaIncidentes",usuarioRepository.incidenciaMapa());
 
         return "usuario/mapa";
     }

@@ -6,6 +6,7 @@
 package com.example.adviertepucp.repository;
 
 import com.example.adviertepucp.dto.IncidenciaListadto;
+import com.example.adviertepucp.dto.IncidenciaMapaDto;
 import com.example.adviertepucp.dto.MisIncidenciasDto;
 import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
 import com.example.adviertepucp.entity.Favorito;
@@ -100,6 +101,28 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             "            where publicado=1 and estado!=\"resuelto\" order by i.fecha desc"
             , nativeQuery = true)
     List<IncidenciaListadto> listaIncidencia();
+
+
+    @Query (value = "select idincidencia as idI , titulo as titulo , descripcion\n" +
+            "                        as descripcion , concat(substring(i.fecha,1,10),'  (' ,substring(i.fecha,12,5),')') as fecha , estado as estado , urgencia\n" +
+            "                        as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
+            "                       longitud as longitud ,  z.nombre as zonapucp, subq1.creador, f.fotoalmacenada as icono\n" +
+            "                       from incidencia i inner join\n" +
+            "                        zonapucp z on (z.idzonapucp=i.zonapucp)\n" +
+            "                        inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+            "                        left join (select incidencia_idincidencia,usuario_codigo as 'creador' from favorito where esfavorito=0) subq1\n" +
+            "                        on (subq1.incidencia_idincidencia=i.idincidencia)\n" +
+            "                        inner join fotoalmacenada f on (f.idfotoalmacenada=t.logo)\n" +
+            "                        where publicado=1 and estado!=\"resuelto\" order by i.fecha desc;"
+            , nativeQuery = true)
+    List<IncidenciaMapaDto> incidenciaMapa();
+
+
+
+
+
+
+
 
     @Query (value = "select i.idincidencia as idI , titulo as titulo , descripcion\n" +
             "as descripcion , concat(substring(i.fecha,1,10),'  (' ,substring(i.fecha,12,5),')') as fecha , estado as estado , urgencia\n" +
