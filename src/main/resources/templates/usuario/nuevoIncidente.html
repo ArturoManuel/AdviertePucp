@@ -65,7 +65,7 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                     <ol class="breadcrumb mb-0">
-                        <li class="breadcrumb-item" style="font-size: medium"><a th:href="@{'/usuario'}">Inicio</a></li>
+                        <li class="breadcrumb-item" style="font-size: medium"><a th:href="@{'/usuario/'}">Inicio</a></li>
                         <li class="breadcrumb-item active" style="font-size: medium" aria-current="page">Crear incidencia</li>
                     </ol>
                 </nav>
@@ -132,12 +132,20 @@
                                 <p class="mb-0">¿Dónde sucedió?</p>
 
                             </div>
-                            <div class="col-sm-9">
+                            <div class="col-sm-3">
                                 <input th:field="*{zonapucp}" list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
                                 <datalist id="zonapucp">
-                                    <option th:each="zona:${listaZonas}" th:value="${zona.getId()}" th:text="${zona.getNombre()}" th>
+                                    <option
+                                            th:each="zona:${listaZonas}"
+                                            th:value="${zona.getId()}"
+                                            th:text="${zona.getNombre()}" >
 
                                 </datalist>
+                            </div>
+                            <div class="col-sm-6">
+                                <span th:text="${zona.getNombre()}"
+                                      style="font-weight: bolder">En proceso</span>
+
                             </div>
                         </div>
                         <hr>
