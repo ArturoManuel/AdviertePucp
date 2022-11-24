@@ -132,7 +132,7 @@
                                 <p class="mb-0">¿Dónde sucedió?</p>
 
                             </div>
-                            <div class="col-sm-3">
+                            <div class="col-sm-9">
                                 <input th:field="*{zonapucp}" list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
                                 <datalist id="zonapucp">
                                     <option
@@ -141,11 +141,6 @@
                                             th:text="${zona.getNombre()}" >
 
                                 </datalist>
-                            </div>
-                            <div class="col-sm-6">
-                                <span th:text="${zona.getNombre()}"
-                                      style="font-weight: bolder">En proceso</span>
-
                             </div>
                         </div>
                         <hr>
