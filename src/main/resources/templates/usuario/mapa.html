@@ -120,12 +120,11 @@
 
 
 
-
-
   <div th:each="incidencia,indice : ${listaIncidentes}" hidden>
     <span th:id="${'locationvar'}+${indice.index}" th:text="${incidencia.getTitulo()}"></span>
     <span th:id="${'longitud'}+${indice.index}" th:text="${incidencia.getLongitud()}"></span>
     <span th:id="${'latitud'}+${indice.index}" th:text="${incidencia.getLatitud()}"></span>
+    <span th:id="${'iconoincidencia'}+${indice.index}" th:text="${incidencia.getIcono()}"></span>
 
   </div>
 
@@ -229,6 +228,9 @@
 
         if (i===0){
           markers[i].icon= document.getElementById("iconousuario").innerText;
+        }
+        else{
+          markers[i].icon= document.getElementById("iconoincidencia"+(i-1)).innerText;
         }
 
 
@@ -518,7 +520,7 @@
 
   async function initMap() {
     await getLocation();
-    await new Promise(r => setTimeout(r, 7000));
+    await new Promise(r => setTimeout(r, 9000));
     var elem = document.getElementById("maploadingalert");
     elem.parentNode.removeChild(elem);
     console.log(CONFIGURATION.locations)
