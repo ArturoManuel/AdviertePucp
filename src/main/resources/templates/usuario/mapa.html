@@ -116,6 +116,8 @@
   <div id="coordinates" hidden></div>
   <span id="latitudx" hidden></span>
   <span id="longitudx" hidden></span>
+  <span id="iconousuario" th:text="${usuariomapa.getIcono().getFoto().getFotoalmacenada()}" hidden></span>
+
 
 
 
@@ -148,10 +150,10 @@
     const destinationParam = [];
     // Add title to destinationParam except in cases where Quick Builder set
     // the title to the first line of the address
-    if (destination.title !== destination.address1) {
-      destinationParam.push(destination.title);
-    }
-    destinationParam.push(destination.address1, destination.address2);
+
+      destinationParam.push(destination.coords.lat, destination.coords.lng);
+
+
     searchParams.append('destination', destinationParam.join(','));
     return googleMapsUrlBase + searchParams.toString();
   }
@@ -226,7 +228,7 @@
       for (let i = 0; i < markers.length; i++) {
 
         if (i===0){
-          markers[i].icon= 'https://adviertepucp.blob.core.windows.net/adviertepucp/img1.png';
+          markers[i].icon= document.getElementById("iconousuario").innerText;
         }
 
 
@@ -483,7 +485,7 @@
 
     window.geolocat=[position.coords.latitude,position.coords.longitude];
     console.log(window.geolocat[0]);
-    CONFIGURATION.locations.unshift( {"title":"Tu Ubicación","address1":"Lima","address2":"Lima","coords":{"lat":parseFloat(geolocat[0]),"lng":parseFloat(geolocat[1])},"placeId":"ChIJUeVtomzJBZERKXWiYa6GZhk"},)
+    CONFIGURATION.locations.unshift( {"title":"Tu ubicación actual","address1":"Lima","address2":"Lima","coords":{"lat":parseFloat(geolocat[0]),"lng":parseFloat(geolocat[1])},"placeId":"ChIJUeVtomzJBZERKXWiYa6GZhk"},)
 
 
 
@@ -513,6 +515,7 @@
 
 
 
+
   async function initMap() {
     await getLocation();
     await new Promise(r => setTimeout(r, 7000));
@@ -522,6 +525,10 @@
     new LocatorPlus(CONFIGURATION);
 
   }
+
+
+
+
 
 </script>
 <script id="locator-result-items-tmpl" type="text/x-handlebars-template">

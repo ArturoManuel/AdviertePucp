@@ -139,12 +139,18 @@ public class UsuarioController {
     }
 
     @GetMapping("/mapa")
-    String mapa(HttpSession session, Model model){
+    String mapa(HttpSession session, Model model,HttpServletRequest request){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+
+
+        //System.out.println(usuario.getIcono().getFoto().getFotoalmacenada());
         if (usuario.getSuspendido()==3){
 
             return "redirect:/suspendido";
         }
+
+        model.addAttribute("usuariomapa",usuarioRepository.usuarioExiste(usuario.getId()));
+
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
 
         return "usuario/mapa";
