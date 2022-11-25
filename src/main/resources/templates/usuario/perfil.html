@@ -161,10 +161,17 @@
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
-                                <p class="mb-0">Telefono</p>
+                                <p class="mb-0">Celular</p>
                             </div>
                             <div class="col-sm-9">
-                                <p class="text-muted mb-0" th:text="${session.usuariolog.getCelular()}"></p>
+                                <form method="post" th:action="@{'/usuario/actualizarcelular'}" enctype="multipart/form-data" style="display:flex; flex-direction:row;">
+                                    <input th:if="${celular == null}" type="text" class="form-control" name="celular" minlength="9" maxlength="9" th:value="${session.usuariolog.getCelular()}" required/>
+                                    <input th:if="${celular != null}" type="text" class="form-control" name="celular" minlength="9" maxlength="9" th:value="${session.celular}" required/>
+                                    <div class="col-sm-1"></div>
+                                    <button class="btn btn-outline-primary" type="submit">Actualizar</button>
+
+                                </form>
+
                             </div>
                         </div>
                         <hr>

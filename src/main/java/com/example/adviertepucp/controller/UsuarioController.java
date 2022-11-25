@@ -537,6 +537,31 @@ public class UsuarioController {
     }
 
 
+    @PostMapping("/actualizarcelular")
+    public String actualizarcelular(@RequestParam(value = "celular",required = false)  String celular,
+
+                                 Model model, HttpSession session,
+                                 RedirectAttributes attr) {
+
+        if (celular==null || celular.length()!=9 || !celular.matches("[0-9]*")) {
+            attr.addFlashAttribute("err","El celular debe tener 9 digitos");
+            return "redirect:/usuario/perfil";
+        }
+
+        Usuario usuario = (Usuario) session.getAttribute("usuariolog");
+
+        usuarioRepository.actualizarcelular(celular,usuario.getId());
+        attr.addFlashAttribute("msg","Se actualizo tu celular correctamente");
+        session.setAttribute("celular",celular);
+
+        return "redirect:/usuario/perfil";
+
+
+    }
+
+
+
+
 
 
 }
