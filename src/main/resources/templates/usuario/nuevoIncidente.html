@@ -72,7 +72,8 @@
             </div>
         </div>
         <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
-        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+        <div th:if="${err != null}" th:text="${err}" class="alert alert-warning" role="alert"></div>
+        <div th:if="${errZona != null}" th:text="${errZona}" class="alert alert-warning" role="alert"></div>
         <!--  -->
         <input id="subscriptionKey" type="hidden" size="40" value="0886a0bdfc564ff1a43b36b512bec2d2">
         <input id="serviceRegion" type="hidden" size="40" value="eastus">
@@ -136,9 +137,12 @@
                                 <input th:field="*{zonapucp}" list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
                                 <datalist id="zonapucp">
                                     <option
+
+
+
                                             th:each="zona:${listaZonas}"
-                                            th:value="${zona.getId()}"
-                                            th:text="${zona.getNombre()}" >
+                                            th:value="${zona.getNombre()}"
+                                            >
 
                                 </datalist>
                             </div>

@@ -297,13 +297,28 @@ public class UsuarioController {
     }
     @PostMapping("/guardarincidente")
     public String guardarIncidente( @RequestParam(value = "latitud",required = false)   String latitud,
+                                    @RequestParam(value = "zonapucp",required = false)   String zonapucp,
                                     @RequestParam(value = "longitud",required = false)  String longitud,
                                     @RequestParam("archivos") MultipartFile[] files,
                                    @ModelAttribute("incidencia") @Valid Incidencia incidencia,
                                    BindingResult bindingResult,
                                    Model model,
                                    HttpSession session,
-                                   Authentication auth){
+                                   Authentication auth,
+                                    RedirectAttributes attr){
+            if (zonapucp==null || zonapucpRepository.validarZonaPucp(zonapucp)==null){
+                attr.addFlashAttribute("errZona","Debe seleccionar una zona válida");
+                return "redirect:/usuario/nuevoIncidente";
+            }
+            else{
+                Zonapucp zonavalida = zonapucpRepository.validarZonaPucp(zonapucp);
+                incidencia.setZonapucp(zonavalida);
+
+            }
+
+
+
+
 
             ArrayList<Fotoalmacenada> listaFotoAlmacenada = new ArrayList<>();
 

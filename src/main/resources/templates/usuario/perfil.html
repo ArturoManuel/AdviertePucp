@@ -165,8 +165,8 @@
                             </div>
                             <div class="col-sm-9">
                                 <form method="post" th:action="@{'/usuario/actualizarcelular'}" enctype="multipart/form-data" style="display:flex; flex-direction:row;">
-                                    <input th:if="${celular == null}" type="text" class="form-control" name="celular" minlength="9" maxlength="9" th:value="${session.usuariolog.getCelular()}" required/>
-                                    <input th:if="${celular != null}" type="text" class="form-control" name="celular" minlength="9" maxlength="9" th:value="${session.celular}" required/>
+                                    <input th:if="${session.celular == null}" type="text" class="form-control" name="celular" minlength="9" maxlength="9" th:value="${session.usuariolog.getCelular()}" required/>
+                                    <input th:if="${session.celular != null}" type="text" class="form-control" name="celular" minlength="9" maxlength="9" th:value="${session.celular}" required/>
                                     <div class="col-sm-1"></div>
                                     <button class="btn btn-outline-primary" type="submit">Actualizar</button>
 
