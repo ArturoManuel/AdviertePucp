@@ -54,13 +54,13 @@
 
     </style>
 </head>
-<body style="background-color: #eee;">
+<body style="background-color: #eee;" id="container">
 <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
 
 </header>
 <section style="background-color: #eee; margin-top: 0;">
 
-    <div class="container py-5 px-0">
+    <div class="container py-5 px-0" id="maincontainer">
         <div class="row">
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
@@ -81,7 +81,7 @@
         <input id="languageTargetOptions" type="hidden" size="40" value="es">
 
 
-        <form method="post" th:action="@{'/usuario/guardarincidente'}" enctype="multipart/form-data" th:object="${incidencia}">
+        <form method="post" th:action="@{'/usuario/guardarincidente'}" id="guardarincident" enctype="multipart/form-data" th:object="${incidencia}">
             <div id="coordinates" hidden ></div>
             <input type="hidden" name="latitud" id="latitud" />
             <input type="hidden" name="longitud" id="longitud" />
@@ -112,8 +112,8 @@
                                 <p class="mb-0">¿Qué sucedio?</p>
 
                             </div>
-                            <div class="col-sm-9">
-                                <input th:field="*{titulo}" name="titulo" type="text" id="form12" class="form-control" />
+                            <div class="col-sm-9" id="titleincidencia">
+                                <input  type="text" name="validaciondetitulo" id="tituloincidencia" class="form-control" maxlength="60" />
                             </div>
                         </div>
                         <hr>
@@ -121,12 +121,15 @@
                             <div class="col-sm-3">
                                 <p class="mb-0">Describe lo sucedido a detalle</p>
                             </div>
-                            <div class="col-sm-9 textarea-container">
+                            <div class="col-sm-9 textarea-container" id="bodyincidencia">
                                 <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
-                                <textarea th:field="*{descripcion}" name="descripcion" class="form-control" id="phraseDiv" rows="4"></textarea>
+                                <textarea name="validaciondebody" maxlength="400" class="form-control" id="phraseDiv" rows="4" required></textarea>
 
                             </div>
+
+
                         </div>
+                        <br>
                         <hr>
                         <div class="row">
                             <div class="col-sm-3">
@@ -182,7 +185,7 @@
 
                     <div class="col-md-12">
                         <div class="d-grid gap-2">
-                            <button type="submit"  class="btn btn-primary">PUBLICAR</button>
+                            <button type="button" id="publicar" class="btn btn-primary">Publicar Incidencia</button>
                         </div>
                     </div>
                 </div>
@@ -192,6 +195,11 @@
 
     </div>
 </section>
+
+
+
+<script src="/js/presidio.js"></script>
+
 </body>
     <script>
 

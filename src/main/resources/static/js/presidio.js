@@ -1,11 +1,66 @@
 
-$("#anonymizer").click(function(){
-    document.getElementById("anonymizer").innerHTML = "Anonymizing...";
-    document.getElementById("anonymizer").disabled = true;
+$("#publicar").click(function(){
+    document.getElementById("publicar").innerHTML = "Publicando...";
+    document.getElementById("publicar").disabled = true;
 
 
+    let titulo=document.getElementById("tituloincidencia");
+    let texto=document.getElementById("phraseDiv");
+    let separator="-Sp%Str$fr#ttl#&%b#f%txt%gvn-"
 
-    var texto=document.getElementById("textoanonimo").value;
+    let error = document.createElement('div');
+    error.className="invalid-feedback";
+    error.innerHTML="Por favor, llena todos los campos";
+
+    let errorcount=0;
+
+
+    if (!titulo){
+        document.getElementById("titleincidencia").appendChild(error);
+        document.getElementById("tituloincidencia").className="form-control is-invalid";
+        errorcount++
+    }
+
+    if(!texto){
+        document.getElementById("bodyincidencia").appendChild(error);
+        document.getElementById("phraseDiv").className="form-control is-invalid";
+        errorcount++
+    }
+
+    if (errorcount>0){
+        document.getElementById("publicar").innerHTML = "publicar incidencia";
+        document.getElementById("publicar").disabled = false;
+        return;
+    }
+
+    titulo=titulo.value.trim();
+    texto=texto.value.trim();
+
+    if (titulo.length==0){
+
+        document.getElementById("titleincidencia").appendChild(error);
+        document.getElementById("tituloincidencia").className="form-control is-invalid";
+        errorcount++;
+
+    }
+
+    if (texto.length==0){
+        document.getElementById("bodyincidencia").appendChild(error);
+        document.getElementById("phraseDiv").className="form-control is-invalid";
+        errorcount++;
+    }
+
+    if (errorcount>0){
+        document.getElementById("publicar").innerHTML = "publicar incidencia";
+        document.getElementById("publicar").disabled = false;
+        return;
+    }
+
+    //separador de los datos
+
+    texto=titulo+" "+separator+" "+texto
+
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -48,7 +103,7 @@ $("#anonymizer").click(function(){
         .then(response => response.json())
         .then(data => {
 
-            var texto=document.getElementById("textoanonimo").value;
+
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
@@ -72,10 +127,31 @@ $("#anonymizer").click(function(){
             fetch("https://anonymizer-yanc7et5cokxo.azurewebsites.net/anonymize", requestOptions)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("textoanonimo").value=data.text;
-                    //document.getElementById("SampleForm").submit();
 
-                    console.log(data.text)})
+                    //cuerpooincidencia
+                    var output=document.createElement("input");
+                    output.id="presidioreception";
+                    output.type="hidden";
+                    output.name="descripcion";
+                    document.getElementById("guardarincident").appendChild(output);
+                    //Trim data to receive only bodytext
+                    let separator="-Sp%Str$fr#ttl#&%b#f%txt%gvn-"
+                    var recibido=data.text;
+                    recibido=recibido.split(separator);
+                    //tituloincidencia
+                    var tituloinc=document.createElement("input");
+                    tituloinc.id="titulopresidio";
+                    tituloinc.name="titulo";
+                    tituloinc.type="hidden";
+                    document.getElementById("guardarincident").appendChild(tituloinc);
+
+                    document.getElementById("titulopresidio").value=recibido[0].trim();
+
+                    document.getElementById("presidioreception").value=recibido[1].trim();
+
+                    document.getElementById("guardarincident").submit();
+                })
+
                 .catch(error => console.log('error', error));
 
         } )

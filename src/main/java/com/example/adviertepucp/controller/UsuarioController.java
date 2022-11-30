@@ -299,6 +299,8 @@ public class UsuarioController {
     public String guardarIncidente( @RequestParam(value = "latitud",required = false)   String latitud,
                                     @RequestParam(value = "zonapucp",required = false)   String zonapucp,
                                     @RequestParam(value = "longitud",required = false)  String longitud,
+                                    @RequestParam(value = "validaciondetitulo",required = false)  String validaciondetitulo,
+                                    @RequestParam(value = "validaciondebody",required = false)  String validaciondebody,
                                     @RequestParam("archivos") MultipartFile[] files,
                                    @ModelAttribute("incidencia") @Valid Incidencia incidencia,
                                    BindingResult bindingResult,
@@ -306,6 +308,26 @@ public class UsuarioController {
                                    HttpSession session,
                                    Authentication auth,
                                     RedirectAttributes attr){
+
+
+            //*****Validación unicamente para titulo y descripcion (No pueden estar vacíos)*****
+
+            if (Objects.equals(incidencia.getTitulo(), "undefined") || Objects.equals(incidencia.getDescripcion(), "undefined") || (incidencia.getDescripcion()==null) || (incidencia.getTitulo()==null)) {
+                attr.addFlashAttribute("err", "No se puede dejar el titulo o la descripción vacíos");
+                return "redirect:/usuario/nuevoIncidente";
+            }
+            else if(validaciondetitulo.length()>60 || validaciondebody.length()>400){
+                attr.addFlashAttribute("err", "No se puede exceder el limite de caracteres");
+                return "redirect:/usuario/nuevoIncidente";
+            }
+
+        //System.out.println(incidencia.getTitulo());
+        //System.out.println(incidencia.getDescripcion());
+
+
+
+            //**********
+
             if (zonapucp==null || zonapucpRepository.validarZonaPucp(zonapucp)==null){
                 attr.addFlashAttribute("errZona","Debe seleccionar una zona válida");
                 return "redirect:/usuario/nuevoIncidente";
