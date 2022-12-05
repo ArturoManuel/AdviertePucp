@@ -12,6 +12,8 @@ import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
 import com.example.adviertepucp.service.BlobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -66,29 +68,53 @@ public class UsuarioController {
     IconoRepository iconoRepository;
 
 
+    private final int personasPaginas =6;
 
 
-
-    @GetMapping("/")
-    String listaUsuario(Model model, HttpSession session, Authentication auth){
+    @GetMapping({"/","","/lista"})
+    String listaUsuario(Model model, @RequestParam("pag") Optional<String> pag, HttpSession session, Authentication auth){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String ruta =  "/usuario?";
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/usuario";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
 
         Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
         Usuario usuarioLogueado=usuarioLogueadoOpt.get();
 
         model.addAttribute("usercodigo", Integer.parseInt(usuarioLogueado.getId()));
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
-        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId())));
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()),lista));
         List<List<String>> listaFotos = new ArrayList<>();
-        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()));
+        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()),lista);
         for (IncidenciaListadto incidenciaListadto : listaIncidencias){
             listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
         }
         model.addAttribute("listaFotos",listaFotos);
-        System.out.println(listaFotos);
+
+
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
 
         return "usuario/lista";
     }
@@ -206,25 +232,7 @@ public class UsuarioController {
         return "usuario/lista";
     }
 
-    @GetMapping({"/lista"})
-    public String listaIncidencias(Model model, HttpSession session) {
-        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
-        if (usuario.getSuspendido()==3){
-            return "redirect:/suspendido";
-        }
 
-        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
-
-
-        List<List<String>> listaFotos = new ArrayList<>();
-        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidencia();
-        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
-            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
-        }
-        model.addAttribute("listaFotos",listaFotos);
-
-        return "usuario/lista";
-    }
     @GetMapping({"/perfil"})
     public String perfil(HttpSession session)
     {

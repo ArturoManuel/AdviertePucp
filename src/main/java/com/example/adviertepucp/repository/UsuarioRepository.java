@@ -12,6 +12,7 @@ import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
 import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Usuario;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -148,7 +149,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             "where publicado=1 and estado!=\"resuelto\" order by i.fecha desc"
     , nativeQuery = true)
 
-    List<IncidenciaListadto> listaIncidenciaUsuarios(Integer codigo);
+    List<IncidenciaListadto> listaIncidenciaUsuarios(Integer codigo,  Pageable pageable);
 
     //Para extraer las fotos de cada incidencia
     @Query(value="select f.fotoalmacenada from  \n" +
@@ -185,5 +186,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             "WHERE u.codigo=?1\n" +
             "order by i.fecha desc", nativeQuery = true)
     List<MisIncidenciasDto> misIncidencias(String codigo);
+
+    @Query(nativeQuery = true,
+            value = "SELECT count(*) FROM incidencia where zonapucp is not null;")
+    public long countIncidencias();
 
 }
