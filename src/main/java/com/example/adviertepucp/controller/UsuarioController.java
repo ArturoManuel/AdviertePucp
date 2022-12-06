@@ -225,6 +225,7 @@ public class UsuarioController {
         model.addAttribute("ruta", ruta);
 
         model.addAttribute("tit", titulo);
+        model.addAttribute("resultados", incidenciaRepository.countIncidenciasFiltro2(titulo));
 
         model.addAttribute("msg", "Filtro aplicado exitosamente");
 
@@ -329,6 +330,7 @@ public class UsuarioController {
         model.addAttribute("ruta", ruta);
 
         model.addAttribute("tit", titulo);
+        model.addAttribute("resultados", incidenciaRepository.countIncidenciasFiltro2(titulo));
 
         return "usuario/lista";
     }

@@ -259,11 +259,13 @@
         <div class="textarea-container">
             <button type="submit" hidden></button>
             <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
-            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por título incidencia">
+            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por palabra clave">
         </div>
 
    </form>
     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+    <div th:if="${tit != null}" th:text="${'Mostrando '+resultados+' resultados para &quot;'+tit+'&quot;'}" class="title-22"></div>
 
     <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
         <div th:each="incidencia,indice : ${listaIncidentes}">
@@ -308,6 +310,7 @@
             </div>
         </div>
     </div>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
 </div>
 </div>
 

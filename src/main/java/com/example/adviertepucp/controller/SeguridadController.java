@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import com.example.adviertepucp.entity.Incidencia;
 import org.springframework.ui.Model;
@@ -51,21 +52,49 @@ public class SeguridadController {
     String listarSeguridad(){
         return "seguridad/listaMapa";
     }*/
-    @GetMapping({"/",""})
-    String listarSeguridad(Model model, HttpSession session){
+    @GetMapping({"/","","/listaMapa"})
+    String listarSeguridad(Model model,@RequestParam("pag") Optional<String> pag, HttpSession session,Authentication auth){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String ruta =  "/seguridad?";
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/seguridad";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+        Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+        Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+
+
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
-        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()),lista));
         List<List<String>> listaFotos = new ArrayList<>();
-        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidencia();
+        List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()),lista);
         for (IncidenciaListadto incidenciaListadto : listaIncidencias){
             listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
         }
         model.addAttribute("listaFotos",listaFotos);
-        System.out.println(listaFotos);
+
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
         return "seguridad/listaMapa";
     }
     //Perfil
@@ -88,7 +117,7 @@ public class SeguridadController {
                                      RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
-        String ruta =  "/usuario/filtro?";
+        String ruta =  "/seguridad/getfiltro?datetimes="+datetimes+"&estado="+estado+"&nombre="+nombre +"&";
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
@@ -98,11 +127,11 @@ public class SeguridadController {
         try{
             pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
         } catch (Exception e){
-            return "redirect:/usuario";
+            return "redirect:/seguridad";
         }
 
         pagina = pagina<1? 1 : pagina;
-        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro(datetimes,estado,nombre)/personasPaginas);
         pagina = pagina>paginas? paginas : pagina;
         Pageable lista ;
         if (pagina == 0) {
@@ -132,15 +161,22 @@ public class SeguridadController {
 
         model.addAttribute("msg", "Filtro aplicado exitosamente");
 
+        if (datetimes !=null && estado !=null && nombre !=null) {
+            model.addAttribute("datetimes", datetimes);
+            model.addAttribute("estado", estado);
+            model.addAttribute("nombre", nombre);
+        }
+
+
         return "seguridad/listaMapa";
     }
-    @PostMapping("filtro2")
+    @PostMapping({"filtro2","/filtro2"})
     public String busquedaIncidencia( @RequestParam("pag") Optional<String> pag,@RequestParam("titulo") String titulo,
                                      Model model, HttpSession session,
                                      RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
-        String ruta =  "/usuario/filtro2?";
+        String ruta =  "/seguridad/getfiltro2?titulo=" +titulo +"&";
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
@@ -149,11 +185,11 @@ public class SeguridadController {
         try{
             pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
         } catch (Exception e){
-            return "redirect:/usuario";
+            return "redirect:/seguridad";
         }
 
         pagina = pagina<1? 1 : pagina;
-        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro2(titulo)/personasPaginas);
         pagina = pagina>paginas? paginas : pagina;
         Pageable lista ;
         if (pagina == 0) {
@@ -180,6 +216,113 @@ public class SeguridadController {
         model.addAttribute("pag", pagina);
         model.addAttribute("paginas", paginas);
         model.addAttribute("ruta", ruta);
+
+        model.addAttribute("tit", titulo);
+        model.addAttribute("resultados", incidenciaRepository.countIncidenciasFiltro2(titulo));
+
+
+        return "seguridad/listaMapa";
+    }
+    @GetMapping("/getfiltro")
+    String listaUsuariogetfilro(Model model, @RequestParam("pag") Optional<String> pag,@RequestParam("datetimes") Optional<String> optionalDate,@RequestParam("estado") Optional<String> optionalEstado,@RequestParam("nombre") Optional<String> optionalNombre, HttpSession session, Authentication auth){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String datetimes = optionalDate.isPresent()? optionalDate.get().trim() : "";
+        String estado = optionalEstado.isPresent()? optionalEstado.get().trim() : "";
+        String nombre = optionalNombre.isPresent()? optionalNombre.get().trim() : "";
+        String ruta =  "/seguridad/getfiltro?datetimes="+datetimes+"&estado="+estado+"&nombre="+nombre +"&";
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/seguridad";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro(datetimes,estado,nombre)/personasPaginas);
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
+        Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+        Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+
+        model.addAttribute("usercodigo", Integer.parseInt(usuarioLogueado.getId()));
+        model.addAttribute("listaTipoIncidencias", tipoincidenciaRepository.findAll());
+
+        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre,lista);
+        model.addAttribute("listaIncidentes", listaFiltroIncidencia);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroIncidencia;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
+
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
+        return "seguridad/listaMapa";
+    }
+    @GetMapping("/getfiltro2")
+    String listaUsuariogetfilro2(Model model, @RequestParam("pag") Optional<String> pag,@RequestParam("titulo") Optional<String> optionalTitulo, HttpSession session, Authentication auth){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String titulo = optionalTitulo.isPresent()? optionalTitulo.get().trim() : "";
+        String ruta =  "/seguridad/getfiltro2?titulo=" +titulo +"&";
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/seguridad";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro2(titulo)/personasPaginas);
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
+        Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+        Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+
+        model.addAttribute("usercodigo", Integer.parseInt(usuarioLogueado.getId()));
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
+        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo, lista);
+        model.addAttribute("listaIncidentes", listaFiltroTitulo);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroTitulo;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
+        model.addAttribute("tit", titulo);
+        model.addAttribute("resultados", incidenciaRepository.countIncidenciasFiltro2(titulo));
 
         return "seguridad/listaMapa";
     }
