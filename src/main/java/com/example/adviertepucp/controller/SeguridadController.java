@@ -8,6 +8,8 @@ import com.example.adviertepucp.entity.Usuario;
 import com.example.adviertepucp.repository.*;
 import com.example.adviertepucp.service.BlobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,6 +45,7 @@ public class SeguridadController {
     @Autowired
     FotoalmacenadaRepository fotoalmacenadaRepository;
 
+    private final int personasPaginas =6;
     /*
     @GetMapping("")
     String listarSeguridad(){
@@ -78,19 +81,42 @@ public class SeguridadController {
 
     //filtro
     @PostMapping("filtro")
-    public String busquedaIncidencia(@RequestParam("datetimes") String datetimes,
+    public String busquedaIncidencia( @RequestParam("pag") Optional<String> pag,@RequestParam("datetimes") String datetimes,
                                       @RequestParam("estado") String estado,
                                       @RequestParam("nombre") String nombre,
                                       Model model, HttpSession session,
                                      RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String ruta =  "/usuario/filtro?";
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/usuario";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
+
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         //List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio,fechafin,estado,nombre);
-        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre);
+        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre, lista);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
         model.addAttribute("msg", "Filtro aplicado");
         List<List<String>> listaFotos = new ArrayList<>();
@@ -100,21 +126,47 @@ public class SeguridadController {
         }
         model.addAttribute("listaFotos",listaFotos);
 
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
         model.addAttribute("msg", "Filtro aplicado exitosamente");
 
         return "seguridad/listaMapa";
     }
     @PostMapping("filtro2")
-    public String busquedaIncidencia(@RequestParam("titulo") String titulo,
+    public String busquedaIncidencia( @RequestParam("pag") Optional<String> pag,@RequestParam("titulo") String titulo,
                                      Model model, HttpSession session,
                                      RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String ruta =  "/usuario/filtro2?";
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/usuario";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
+
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
-        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
+        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo, lista);
         model.addAttribute("listaIncidentes", listaFiltroTitulo);
 
         List<List<String>> listaFotos = new ArrayList<>();
@@ -124,6 +176,10 @@ public class SeguridadController {
         }
         model.addAttribute("listaFotos",listaFotos);
         model.addAttribute("msg", "Filtro aplicado");
+
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
 
         return "seguridad/listaMapa";
     }

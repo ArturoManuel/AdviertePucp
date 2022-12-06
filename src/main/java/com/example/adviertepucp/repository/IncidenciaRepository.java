@@ -9,6 +9,7 @@ import com.example.adviertepucp.dto.IncidenciaPorZona;
 import com.example.adviertepucp.dto.ZonaPUCP;
 import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Incidencia;
+import org.springframework.data.domain.Pageable;
 import com.example.adviertepucp.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -66,7 +67,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
             "WHERE (i.fecha >= concat(LEFT(?1, 10), ' ', '0:0:0') AND i.fecha <= concat(right(?1, 10), ' ', '23:59:59')) and (i.estado like( concat('%',?2,'%')))and (t.nombre like( concat('%',?3,'%')))",
             nativeQuery = true)
-    List<IncidenciaListadto> buscarlistaFiltro(String datetimes,String estado, String nombre);
+    List<IncidenciaListadto> buscarlistaFiltro(String datetimes,String estado, String nombre, Pageable pageable);
 
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion as descripcion , fecha as fecha , \n" +
             "estado as estado , urgencia as urgencia, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
@@ -76,7 +77,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
             "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
             "WHERE titulo like( concat('%',?1,'%'))",
             nativeQuery = true)
-    List<IncidenciaListadto> buscarlistaPorTitulo(String titulo);
+    List<IncidenciaListadto> buscarlistaPorTitulo(String titulo, Pageable pageable);
 
 
     //dashboard
@@ -183,5 +184,23 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     //select round((count(f.esfavorito)*100)/( count(i.idincidencia)), 2) as 'porcentajedeFavPor',  count(i.idincidencia)  from favorito f
     //left join incidencia i on (f.incidencia_idincidencia = i.idincidencia);
 
+
+
+
+    @Query(nativeQuery = true,
+            value = "select count(*) \n" +
+                    "from incidencia i \n" +
+                    "inner join zonapucp z on (z.idzonapucp=i.zonapucp) \n" +
+                    "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+                    "WHERE titulo like( concat('%',?1,'%'))")
+    public long countIncidenciasFiltro2(String titulo);
+
+    @Query(nativeQuery = true,
+            value = "select count(*) \n" +
+                    "from incidencia i \n" +
+                    "inner join zonapucp z on (z.idzonapucp=i.zonapucp) \n" +
+                    "inner join tipoincidencia t on (t.idtipoincidencia=i.tipoincidencia)\n" +
+                    "WHERE (i.fecha >= concat(LEFT(?1, 10), ' ', '0:0:0') AND i.fecha <= concat(right(?1, 10), ' ', '23:59:59')) and (i.estado like( concat('%',?2,'%')))and (t.nombre like( concat('%',?3,'%')))")
+    public long countIncidenciasFiltro(String datetimes,String estado, String nombre);
 
 }

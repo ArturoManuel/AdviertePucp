@@ -119,83 +119,43 @@ public class UsuarioController {
         return "usuario/lista";
     }
 
-    @GetMapping("/info")
-    String masInformacion(@RequestParam("id") int id,
-                          Model model, HttpSession session){
-
-        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
-        if (usuario.getSuspendido()==3){
-            return "redirect:/suspendido";
-        }
-
-        IncidenciaListadto incidencia = null;
-        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
-       for( IncidenciaListadto lista : listaIncidencias){
-           if(id == lista.getIdI()){
-               incidencia=lista;
-               break;
-           }
-        }
-        model.addAttribute("incidencia",incidencia);
-        model.addAttribute("incidenciaId",incidencia.getIdI());
-        List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
-        model.addAttribute("listaComentarios", listaComentarios);
-        model.addAttribute("listaFotosInfo",usuarioRepository.listaFotoIncidencia(incidencia.getIdI()));
-        System.out.println(usuarioRepository.listaFotoIncidencia(incidencia.getIdI()).get(0));
-
-        return "usuario/MasInfoUsuario";
-    }
-    //comentario
-    @PostMapping("/agregarcomentario")
-    public String masInformacion(@RequestParam("idincidencia")  int idincidencia,
-                                     @RequestParam("codigopucp")  int codigopucp,
-                                     @RequestParam("comentario")  String comentario,
-                                     Model model, HttpSession session,
-                                     RedirectAttributes attr) {
-
-        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
-        if (usuario.getSuspendido()==3){
-            return "redirect:/suspendido";
-        }
-        incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
-
-        //model.addAttribute("comentario", incidenciaRepository.agregarComentario(incidencia, comen, codigopucp));
-        String direccion= "redirect:/usuario/info?id=" + idincidencia ;
-        return direccion;
-    }
-
-    @GetMapping("/mapa")
-    String mapa(HttpSession session, Model model,HttpServletRequest request){
-        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
-
-
-        //System.out.println(usuario.getIcono().getFoto().getFotoalmacenada());
-        if (usuario.getSuspendido()==3){
-
-            return "redirect:/suspendido";
-        }
-
-        model.addAttribute("usuariomapa",usuarioRepository.usuarioExiste(usuario.getId()));
-
-        model.addAttribute("listaIncidentes",usuarioRepository.incidenciaMapa());
-
-        return "usuario/mapa";
-    }
     //filtro
     @PostMapping("/filtro")
-    public String busquedaIncidencia(@RequestParam("datetimes") String datetimes,
+    public String busquedaIncidencia( @RequestParam("pag") Optional<String> pag,@RequestParam("datetimes") String datetimes,
                                      @RequestParam("estado") String estado,
                                      @RequestParam("nombre") String nombre,
                                      Model model, HttpSession session,
                                      RedirectAttributes attr) {
 
         Usuario usuario = (Usuario) session.getAttribute("usuariolog");
+        String ruta =  "/usuario/getfiltro?datetimes="+datetimes+"&estado="+estado+"&nombre="+nombre +"&";
         if (usuario.getSuspendido() == 3) {
             return "redirect:/suspendido";
         }
+
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/usuario";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro(datetimes,estado,nombre)/personasPaginas);
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
         model.addAttribute("listaTipoIncidencias", tipoincidenciaRepository.findAll());
-        //List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltroIncidencia(fechainicio, fechafin, estado, nombre);
-        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre);
+
+        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre,lista);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
         List<List<String>> listaFotos = new ArrayList<>();
         List<IncidenciaListadto> listaIncidencias=  listaFiltroIncidencia;
@@ -204,21 +164,54 @@ public class UsuarioController {
         }
         model.addAttribute("listaFotos",listaFotos);
 
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
+        if (datetimes !=null && estado !=null && nombre !=null) {
+            model.addAttribute("datetimes", datetimes);
+            model.addAttribute("estado", estado);
+            model.addAttribute("nombre", nombre);
+        }
+
+
         model.addAttribute("msg", "Filtro aplicado exitosamente");
         return "usuario/lista";
     }
 
     @PostMapping("/filtro2")
-    public String busquedaIncidencia(@RequestParam("titulo") String titulo,
+    public String busquedaIncidencia(@RequestParam("pag") Optional<String> pag,@RequestParam("titulo") String titulo,
                                      Model model, HttpSession session,
                                      RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String ruta =  "/usuario/getfiltro2?titulo=" +titulo +"&";
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/usuario";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro2(titulo)/personasPaginas);
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
+
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
-        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo);
+        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo, lista);
         model.addAttribute("listaIncidentes", listaFiltroTitulo);
         List<List<String>> listaFotos = new ArrayList<>();
         List<IncidenciaListadto> listaIncidencias=  listaFiltroTitulo;
@@ -227,7 +220,115 @@ public class UsuarioController {
         }
         model.addAttribute("listaFotos",listaFotos);
 
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
+        model.addAttribute("tit", titulo);
+
         model.addAttribute("msg", "Filtro aplicado exitosamente");
+
+        return "usuario/lista";
+    }
+    @GetMapping("/getfiltro")
+    String listaUsuariogetfilro(Model model, @RequestParam("pag") Optional<String> pag,@RequestParam("datetimes") Optional<String> optionalDate,@RequestParam("estado") Optional<String> optionalEstado,@RequestParam("nombre") Optional<String> optionalNombre, HttpSession session, Authentication auth){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String datetimes = optionalDate.isPresent()? optionalDate.get().trim() : "";
+        String estado = optionalEstado.isPresent()? optionalEstado.get().trim() : "";
+        String nombre = optionalNombre.isPresent()? optionalNombre.get().trim() : "";
+        String ruta =  "/usuario/getfiltro?datetimes="+datetimes+"&estado="+estado+"&nombre="+nombre +"&";
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/usuario";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro(datetimes,estado,nombre)/personasPaginas);
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
+        Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+        Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+
+        model.addAttribute("usercodigo", Integer.parseInt(usuarioLogueado.getId()));
+        model.addAttribute("listaTipoIncidencias", tipoincidenciaRepository.findAll());
+
+        List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre,lista);
+        model.addAttribute("listaIncidentes", listaFiltroIncidencia);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroIncidencia;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
+
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
+        return "usuario/lista";
+    }
+    @GetMapping("/getfiltro2")
+    String listaUsuariogetfilro2(Model model, @RequestParam("pag") Optional<String> pag,@RequestParam("titulo") Optional<String> optionalTitulo, HttpSession session, Authentication auth){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        String titulo = optionalTitulo.isPresent()? optionalTitulo.get().trim() : "";
+        String ruta =  "/usuario/getfiltro2?titulo=" +titulo +"&";
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        int pagina=0;
+        try{
+            pagina = pag.isEmpty() ? 1 : Integer.parseInt(pag.get());
+        } catch (Exception e){
+            return "redirect:/usuario";
+        }
+
+        pagina = pagina<1? 1 : pagina;
+        int paginas = (int) Math.ceil((float)incidenciaRepository.countIncidenciasFiltro2(titulo)/personasPaginas);
+        pagina = pagina>paginas? paginas : pagina;
+        Pageable lista ;
+        if (pagina == 0) {
+            lista = PageRequest.of(0, personasPaginas);
+        } else {
+            lista = PageRequest.of(pagina - 1, personasPaginas);
+
+        }
+
+
+        Optional<Usuario> usuarioLogueadoOpt = usuarioRepository.findById(auth.getName());
+        Usuario usuarioLogueado=usuarioLogueadoOpt.get();
+
+        model.addAttribute("usercodigo", Integer.parseInt(usuarioLogueado.getId()));
+        model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
+        List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo, lista);
+        model.addAttribute("listaIncidentes", listaFiltroTitulo);
+        List<List<String>> listaFotos = new ArrayList<>();
+        List<IncidenciaListadto> listaIncidencias=  listaFiltroTitulo;
+        for (IncidenciaListadto incidenciaListadto : listaIncidencias){
+            listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
+        }
+        model.addAttribute("listaFotos",listaFotos);
+
+        model.addAttribute("pag", pagina);
+        model.addAttribute("paginas", paginas);
+        model.addAttribute("ruta", ruta);
+
+        model.addAttribute("tit", titulo);
 
         return "usuario/lista";
     }
@@ -607,6 +708,68 @@ public class UsuarioController {
 
 
 
+    @GetMapping("/info")
+    String masInformacion(@RequestParam("id") int id,
+                          Model model, HttpSession session){
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+
+        IncidenciaListadto incidencia = null;
+        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
+        for( IncidenciaListadto lista : listaIncidencias){
+            if(id == lista.getIdI()){
+                incidencia=lista;
+                break;
+            }
+        }
+        model.addAttribute("incidencia",incidencia);
+        model.addAttribute("incidenciaId",incidencia.getIdI());
+        List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
+        model.addAttribute("listaComentarios", listaComentarios);
+        model.addAttribute("listaFotosInfo",usuarioRepository.listaFotoIncidencia(incidencia.getIdI()));
+        System.out.println(usuarioRepository.listaFotoIncidencia(incidencia.getIdI()).get(0));
+
+        return "usuario/MasInfoUsuario";
+    }
+    //comentario
+    @PostMapping("/agregarcomentario")
+    public String masInformacion(@RequestParam("idincidencia")  int idincidencia,
+                                 @RequestParam("codigopucp")  int codigopucp,
+                                 @RequestParam("comentario")  String comentario,
+                                 Model model, HttpSession session,
+                                 RedirectAttributes attr) {
+
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
+
+        //model.addAttribute("comentario", incidenciaRepository.agregarComentario(incidencia, comen, codigopucp));
+        String direccion= "redirect:/usuario/info?id=" + idincidencia ;
+        return direccion;
+    }
+
+    @GetMapping("/mapa")
+    String mapa(HttpSession session, Model model,HttpServletRequest request){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+
+
+        //System.out.println(usuario.getIcono().getFoto().getFotoalmacenada());
+        if (usuario.getSuspendido()==3){
+
+            return "redirect:/suspendido";
+        }
+
+        model.addAttribute("usuariomapa",usuarioRepository.usuarioExiste(usuario.getId()));
+
+        model.addAttribute("listaIncidentes",usuarioRepository.incidenciaMapa());
+
+        return "usuario/mapa";
+    }
 
 
 }

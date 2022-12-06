@@ -54,7 +54,7 @@
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <form method="post" th:action="@{/usuario/filtro}">
+                    <form method="post" th:action="@{'/usuario/filtro'+${personas.id}}">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel1" style="color:black;">Filtrar</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -154,57 +154,57 @@
         <div class="textarea-container">
             <button type="submit" hidden></button>
             <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
-            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por palabra clave">
+            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por título incidencia">
         </div>
 
     </form>
     <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
     <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
-    <div th:if="${tit != null}" th:text="${'Mostrando resultados para &quot;'+tit+'&quot;'}" class="title-22"></div>
+
     <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
         <div th:each="incidencia,indice : ${listaIncidentes}">
-        <div  class="col" >
-            <div class="card h-100 position-relative">
-                <div class="card-tele">
-                    <div class="card-tele-img">
-                        <img  th:src="${listaFotos.get(indice.index).get(0)}" alt="Sede" class="img-fluid rounded-start img-cover"/>
-                    </div>
-                    <div class="card-tele-body pb-2">
-                        <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]
-                            <br>
-                            <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+            <div  class="col" >
+                <div class="card h-100 position-relative">
+                    <div class="card-tele">
+                        <div class="card-tele-img">
+                            <img  th:src="${listaFotos.get(indice.index).get(0)}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                        </div>
+                        <div class="card-tele-body pb-2">
+                            <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]
+                                <br>
+                                <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
                             Leve
                             </span>
-                            <tr></tr>
-                            <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px;margin-bottom:8px" >
+                                <tr></tr>
+                                <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px;margin-bottom:8px" >
                             Objetos perdidos
                             </span>
-                        </p>
+                            </p>
 
-                        <div class="card-tele-subtitle">
-                            <i th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                            <div class="card-tele-subtitle">
+                                <i th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                            </div>
+                            <div class="card-tele-subtitle">
+                                <span>Estado:</span>
+                                <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
+                            </div>
                         </div>
-                        <div class="card-tele-subtitle">
-                            <span>Estado:</span>
-                            <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
+                        <div class="card-tele-footer justify-content">
+                            <div th:if="${incidencia.getCreador()} != ${usercodigo}" class="d-flex align-items-start">
+                                <a th:if="${incidencia.getEsfavorito()!='1'}" th:href="@{'/usuario/darlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#9825;</a>
+                                <a th:if="${incidencia.getEsfavorito()=='1'}"  th:href="@{'/usuario/quitarlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#x2764;</a>
+                            </div>
+                            <div th:if="${incidencia.getCreador()} == ${usercodigo}" class="d-flex align-items-start">
+                                <a title="Love it" class="btn btn-counter" data-count="0">Mi incidencia</a>
+                            </div>
+                            <div class="d-flex align-items-end">
+                                <a class="btn btn-redtele" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">+INFO</a>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-tele-footer justify-content">
-                        <div th:if="${incidencia.getCreador()} != ${usercodigo}" class="d-flex align-items-start">
-                            <a th:if="${incidencia.getEsfavorito()!='1'}" th:href="@{'/usuario/darlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#9825;</a>
-                            <a th:if="${incidencia.getEsfavorito()=='1'}"  th:href="@{'/usuario/quitarlike?id='+${incidencia.getIdI()}}" title="Love it" class="btn btn-counter" data-count="0">&#x2764;</a>
-                        </div>
-                        <div th:if="${incidencia.getCreador()} == ${usercodigo}" class="d-flex align-items-start">
-                            <a title="Love it" class="btn btn-counter" data-count="0">Mi incidencia</a>
-                        </div>
-                        <div class="d-flex align-items-end">
-                            <a class="btn btn-redtele" th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}">+INFO</a>
-                        </div>
-                    </div>
+
                 </div>
-
             </div>
-        </div>
         </div>
     </div>
     <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
@@ -218,8 +218,8 @@
     //like
     function darLike(x) {
         document.getElementById("corazon").innerHTML="&#x2764";
-        
-        
+
+
     }
     function quitarLike() {
         document.getElementById("corazonBlack").innerHTML = "&#9825;";
