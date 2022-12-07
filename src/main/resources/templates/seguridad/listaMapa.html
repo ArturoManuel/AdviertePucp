@@ -164,7 +164,7 @@
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 style="color:black"class="modal-title" id="exampleModalLabel">Resumen de incidentes</h5>
+                        <h5 style="color:black"class="modal-title" id="exampleModalLabel">Generar Reporte</h5>
                         <select hidden class="form-select form-select-sm" style="width: 100px" name="" id="">
                             <option value="">xls</option>
                             <option value="">txt</option>
@@ -203,11 +203,11 @@
                             </table>
 
                         <div>
-                            <div class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentes}">
+                            <div hidden class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentes}">
                                 <div class="card text-dark" >
 
-                                    <div class=" card-body text-dark">
-                                        <div class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
+                                    <div hidden class=" card-body text-dark">
+                                        <div  hidden class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
                                             <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
                                                 Leve
                                             </span>
@@ -217,10 +217,10 @@
                                             </span>
                                         </div>
 
-                                        <div class="card-tele-subtitle">
+                                        <div hidden class="card-tele-subtitle">
                                             <i  th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
                                         </div>
-                                        <div class="card-tele-subtitle">
+                                        <div  hidden class="card-tele-subtitle">
                                             <span>Estado:</span>
                                             <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
                                         </div>
@@ -229,23 +229,25 @@
                                 <br>
 
                             </div>
+                            <input type="button" onclick="generate()" class="btn btn-redtele" value="Exportar a PDF" />
+                            <button id="btnExportToCsv" type="submit" class="btn btn-success" >Exportar a txt</button>
+                            <button onclick="ExportToExcel('xlsx')" type="submit" class="btn btn-light">Exportar a xlsx</button>
+                            <script>
+
+                                function ExportToExcel(type, fn, dl) {
+                                    var elt = document.getElementById('dataTable');
+                                    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+                                    return dl ?
+                                        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                                        XLSX.writeFile(wb, fn || ('Reporte.' + (type || 'xlsx')));
+                                }
+
+                            </script>
+
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <input type="button" onclick="generate()" class="btn btn-redtele" value="Exportar a PDF" />
-                        <button id="btnExportToCsv" type="submit" class="btn btn-success" >Exportar a txt</button>
-                        <button onclick="ExportToExcel('xlsx')" type="submit" class="btn btn-light">Exportar a xlsx</button>
-                        <script>
 
-                            function ExportToExcel(type, fn, dl) {
-                                var elt = document.getElementById('dataTable');
-                                var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-                                return dl ?
-                                    XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-                                    XLSX.writeFile(wb, fn || ('Reporte.' + (type || 'xlsx')));
-                            }
-
-                        </script>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
