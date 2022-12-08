@@ -106,6 +106,10 @@ public class UsuarioController {
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()),lista));
         List<List<String>> listaFotos = new ArrayList<>();
         List<IncidenciaListadto> listaIncidencias=  usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()),lista);
+
+        List<IncidenciaListadto> listaFiltroIncidenciaSinPaginado = usuarioRepository.listaIncidenciaUsuariosSinPaginado(Integer.parseInt(usuarioLogueado.getId()));
+        model.addAttribute("listaIncidentesSinPaginado", listaFiltroIncidenciaSinPaginado);
+
         for (IncidenciaListadto incidenciaListadto : listaIncidencias){
             listaFotos.add(usuarioRepository.listaFotoIncidencia(incidenciaListadto.getIdI()));
         }
@@ -157,6 +161,10 @@ public class UsuarioController {
 
         List<IncidenciaListadto> listaFiltroIncidencia = incidenciaRepository.buscarlistaFiltro(datetimes,estado,nombre,lista);
         model.addAttribute("listaIncidentes", listaFiltroIncidencia);
+
+        List<IncidenciaListadto> listaFiltroIncidenciaSinPaginado = incidenciaRepository.buscarlistaFiltroSinPaginado(datetimes,estado,nombre);
+        model.addAttribute("listaIncidentesSinPaginado", listaFiltroIncidenciaSinPaginado);
+
         List<List<String>> listaFotos = new ArrayList<>();
         List<IncidenciaListadto> listaIncidencias=  listaFiltroIncidencia;
         for (IncidenciaListadto incidenciaListadto : listaIncidencias){
@@ -213,6 +221,11 @@ public class UsuarioController {
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
         List<IncidenciaListadto> listaFiltroTitulo = incidenciaRepository.buscarlistaPorTitulo(titulo, lista);
         model.addAttribute("listaIncidentes", listaFiltroTitulo);
+
+        List<IncidenciaListadto> listaFiltroTituloSinPaginado = incidenciaRepository.buscarlistaPorTituloSinPaginado(titulo);
+        model.addAttribute("listaIncidentesSinPaginado", listaFiltroTituloSinPaginado);
+
+
         List<List<String>> listaFotos = new ArrayList<>();
         List<IncidenciaListadto> listaIncidencias=  listaFiltroTitulo;
         for (IncidenciaListadto incidenciaListadto : listaIncidencias){

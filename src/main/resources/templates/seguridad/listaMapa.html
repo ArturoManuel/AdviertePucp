@@ -189,7 +189,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="incidencia : ${listaIncidentes}">
+                                    <tr th:each="incidencia : ${listaIncidentesSinPaginado}">
                                         <td class="text-dark" th:text="${incidencia.idI}"></td>
                                         <td class="text-dark" th:text="${incidencia.titulo}"></td>
                                         <td class="text-dark" th:text="${incidencia.descripcion}"></td>
@@ -203,11 +203,11 @@
                             </table>
 
                         <div>
-                            <div hidden class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentes}">
+                            <div  hidden class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentesSinPaginado}">
                                 <div class="card text-dark" >
 
-                                    <div hidden class=" card-body text-dark">
-                                        <div  hidden class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
+                                    <div  class=" card-body text-dark">
+                                        <div   class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
                                             <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
                                                 Leve
                                             </span>
@@ -217,10 +217,10 @@
                                             </span>
                                         </div>
 
-                                        <div hidden class="card-tele-subtitle">
+                                        <div  class="card-tele-subtitle">
                                             <i  th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
                                         </div>
-                                        <div  hidden class="card-tele-subtitle">
+                                        <div   class="card-tele-subtitle">
                                             <span>Estado:</span>
                                             <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
                                         </div>
@@ -259,9 +259,10 @@
     </div>
     <form method="post" th:action="@{/seguridad/filtro2}">
         <div class="textarea-container">
+
             <button type="submit" hidden></button>
             <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
-            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por palabra clave">
+            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por palabra clave"  >
         </div>
 
    </form>
