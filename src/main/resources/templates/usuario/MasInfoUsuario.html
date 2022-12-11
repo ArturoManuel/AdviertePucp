@@ -33,90 +33,106 @@
 <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
     
 </header>
+
 <section style="background-color: #eee;">
+
     <div class="container py-5" >
-
-
-    <br>
-    <div class="row">
-        <div class="col-lg-6">
-            <div >
-                <span th:text="'Incidencia #'+ ${incidencia.idI}" style="font-size: medium">(Incidencia #001454)</span>
-                <h2 th:text="${incidencia.titulo}"></h2>
-                <div class="card-tele-title" style="font-size: medium">
-            <span th:text="${incidencia.urgencia}"
-                  class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
-            </span>
-                    <tr></tr>
-                    <span th:text="${incidencia.tincidencia}"
-                          th:styleappend="';background-color:'+${incidencia.color}" class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
-                Objetos perdidos</span>
-
-                </div>
-                <div class="card-tele-subtitle" style="font-size: large;max-width: fit-content;height: auto">
-                    <i class="bi bi-geo-alt"  th:text="${incidencia.zonapucp}"></i>
-                </div>
-                <br>
-                <div class="card-tele-subtitle" style="font-size: large">
-                    <span>Estado:</span>
-                    <span th:text="${incidencia.estado}"
-                          style="font-weight: bolder">En proceso</span>
-                </div>
-                <br>
-            </div>
-        <div id="carouselExampleIndicators" class="carousel slide col-md-10 offset-md-1" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button th:each="listaFotosInfova,info:${listaFotosInfo}"
-                        type="button"
-                        data-mdb-target="#carouselBasicExample"
-                        th:attr="data-mdb-slide-to=${info.index}, aria-label='Slide '+${info.index +1},
-                            aria-current=${info.index==0}? 'true':'false'"
-                        th:class="${info.index==0}? 'active':''"></button>
-            </div>
-
-
-            <div class="carousel-inner "  style="height: 250px;width: border-box;">
-                <div th:each="listaFotosInfova,indice:${listaFotosInfo}">
-                    <div th:attr="class=${ indice.index ==0 ? 'carousel-item active' : 'carousel-item '}" >
-                        <img th:src="${listaFotosInfo.get(indice.index)}"  alt="Sede"   class="d-block w-100" height="100%" width="100%"/>
-                    </div>
-                </div>
-
-            </div>
-
-            <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-            <br>
-            <br>
-            <div class="card-tele" style="padding: 14px">
-
-                <div class="card-tele-title" style="font-size: large"> Descripción
-                </div>
-                <div th:text="${incidencia.descripcion}">
-                </div>
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4" >
+                    <ol class="breadcrumb mb-0" style="background-color: #fbfbfb ;">
+                        <li class="breadcrumb-item" style="font-size: large"><a th:href="@{'/usuario/'}">Inicio</a></li>
+                        <li class="breadcrumb-item active" style="font-size: large" aria-current="page">Incidencia</li>
+                    </ol>
+                </nav>
             </div>
         </div>
+
         <br>
 
-        <div class="col-lg-6">
-        <div class="card" style="padding: 14px">
+        <div class="row">
+            <div class="col-lg-6">
 
-            <div  class="card-tele-title" style="font-size: large"> Ubicacion en el mapa
+                <div class="card">
+                    <div class="card-body p-4">
+                        <span th:text="'Incidencia #'+ ${incidencia.idI}" style="font-size: medium">(Incidencia #001454)</span>
+                        <h2 th:text="${incidencia.titulo}"></h2>
+                        <div class="card-tele-title" style="font-size: medium">
+                    <span th:text="${incidencia.urgencia}"
+                          class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+                    </span>
+                            <tr></tr>
+                            <span th:text="${incidencia.tincidencia}"
+                                  th:styleappend="';background-color:'+${incidencia.color}" class="alert alert-info" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                        Objetos perdidos</span>
+
+                        </div>
+                        <div class="card-tele-subtitle" style="font-size: large;width: auto;height: auto">
+                            <i class="bi bi-geo-alt"  th:text="${incidencia.zonapucp}"></i>
+                        </div>
+                        <br>
+                        <div class="card-tele-subtitle" style="font-size: large">
+                            <span>Estado:</span>
+                            <span th:text="${incidencia.estado}"
+                                  style="font-weight: bolder">En proceso</span>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div id="carouselExampleIndicators" class="carousel slide col-md-10 offset-md-1" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button th:each="listaFotosInfova,info:${listaFotosInfo}"
+                            type="button"
+                            data-mdb-target="#carouselBasicExample"
+                            th:attr="data-mdb-slide-to=${info.index}, aria-label='Slide '+${info.index +1},
+                                aria-current=${info.index==0}? 'true':'false'"
+                            th:class="${info.index==0}? 'active':''"></button>
+                </div>
+
+
+                <div class="carousel-inner "  style="height: 270px;width: border-box;">
+                    <div th:each="listaFotosInfova,indice:${listaFotosInfo}">
+                        <div th:attr="class=${ indice.index ==0 ? 'carousel-item active' : 'carousel-item '}" >
+                            <img th:src="${listaFotosInfo.get(indice.index)}"  alt="Sede"   class="d-block w-100" height="100%" width="100%"/>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <div class="embed-responsive embed-responsive-16by9" style="height: 600px">
-            <iframe class="embed-responsive-item" th:src="${'https://www.google.com/maps/embed/v1/place?key=AIzaSyDT71SdHy5wcg6PK_JVCcuON5AqLpCcqA4&q='}+${incidencia.getLatitud()}+'+'+${incidencia.getLongitud()}"  frameborder="0" style="border:0;"  loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                <br>
+                <br>
+                <div class="card" style="padding: 14px">
+
+                    <div class="card-tele-title" style="font-size: large"> Descripción
+                    </div>
+                    <div th:text="${incidencia.descripcion}">
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <div class="col-lg-6">
+                <br>
+            <div class="card" style="padding: 14px">
+
+                <div  class="card-tele-title" style="font-size: large"> Ubicacion en el mapa
+                </div>
+                <div class="embed-responsive embed-responsive-16by9" style="height: 600px">
+                <iframe class="embed-responsive-item" th:src="${'https://www.google.com/maps/embed/v1/place?key=AIzaSyDT71SdHy5wcg6PK_JVCcuON5AqLpCcqA4&q='}+${incidencia.getLatitud()}+'+'+${incidencia.getLongitud()}"  frameborder="0" style="border:0;"  loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+                </div>
+            </div>
             </div>
         </div>
-        </div>
-        </div>
-        </div>
+    </div>
 
 
 
