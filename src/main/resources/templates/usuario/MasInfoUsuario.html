@@ -179,7 +179,7 @@
                             </div>
                             <div class="d-flex flex-start" th:each="comentario: ${listaComentarios}">
                                 <img class="rounded-circle shadow-1-strong me-3"
-                                     src="/images/defaultprofilepicture.png" alt="avatar" width="60"
+                                     th:src="${comentario.getFoto()}" alt="avatar" width="60"
                                      height="60" />
                                 <div>
                                     <h6 class="fw-bold mb-1" th:text=" ${comentario.getNombreusuario}+ '('+${comentario.getUsuario_codigo} + ')'">Lupita Lopez</h6>

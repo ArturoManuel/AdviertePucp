@@ -19,12 +19,13 @@ import java.util.List;
 public interface ComentarioRepository extends JpaRepository<Comentario, String> {
 
     @Query (value = "SELECT c.idcomentario as 'idcomentario', c.idincidencia as 'idincidencia', c.nombre as 'nombre',\n" +
-            "c.usuario_codigo as'usuario_codigo', concat(substring(c.fecha,1,10),'  (' ,substring(c.fecha,12,5),')') as 'fecha', concat(u.nombre,' ' , u.apellido) as 'nombreusuario',\n" +
-            "ca.nombre as 'rol'\n" +
-            "FROM comentario c \n" +
-            "left join usuario u on (c.usuario_codigo= u.codigo)\n" +
-            "left join categoria ca on (ca.idcategoria= u.categoria)\n" +
-            "where idincidencia=?1",
+            "            c.usuario_codigo as'usuario_codigo', concat(substring(c.fecha,1,10),'  (' ,substring(c.fecha,12,5),')') as 'fecha', concat(u.nombre,' ' , u.apellido) as 'nombreusuario',\n" +
+            "            ca.nombre as 'rol', f.fotoalmacenada as foto\n" +
+            "            FROM comentario c \n" +
+            "            left join usuario u on (c.usuario_codigo= u.codigo)\n" +
+            "            left join categoria ca on (ca.idcategoria= u.categoria)\n" +
+            "            inner join fotoalmacenada f on (u.foto=f.idfotoalmacenada)\n" +
+            "            where idincidencia=?1",
             nativeQuery = true)
     List<IncidenciaComentarioDto> listaComentario( Integer idincidencia);
 }

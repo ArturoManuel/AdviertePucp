@@ -9,4 +9,5 @@ public interface IncidenciaComentarioDto {
     String getFecha();
     String getNombreusuario();
     String getRol();
+    String getFoto();
 }
