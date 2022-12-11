@@ -555,7 +555,16 @@ public class UsuarioController {
         model.addAttribute("listaIncidentes",usuarioRepository.misIncidencias(usuario.getId()));
         return "usuario/misIncidencias";
     }
+    @GetMapping({"/misFavoritos"})
+    public String misFavoritos(Model model, HttpSession session) {
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
 
+        model.addAttribute("listaIncidentes",usuarioRepository.misFavoritos(usuario.getId()));
+        return "usuario/misFavoritos";
+    }
     @GetMapping("/darlike")
     public String darLike(Model model, @RequestParam("id") int id,
                           Authentication auth){

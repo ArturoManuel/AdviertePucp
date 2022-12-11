@@ -276,7 +276,10 @@
                 <div class="card h-100 position-relative">
                     <div class="card-tele">
                         <div class="card-tele-img">
-                            <img  th:src="${listaFotos.get(indice.index).get(0)}"  alt="Sede" class="img-fluid rounded-start img-cover"/>
+                            <a th:href="@{'/usuario/info'+'?id='+${incidencia.idI}}" >
+                                <img  th:src="${listaFotos.get(indice.index).get(0)}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                            </a>
+
                         </div>
                         <div class="card-tele-body pb-2">
                             <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]

@@ -30,11 +30,12 @@
     </style>
 </head>
 <body style="background-color: #eee;">
-    <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
+<header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
     
-    </header>
+</header>
+<section style="background-color: #eee;">
+    <div class="container py-5" >
 
-<div class="container py-5" >
 
     <br>
     <div class="row">
@@ -52,19 +53,25 @@
                 Objetos perdidos</span>
 
                 </div>
-                <div class="card-tele-subtitle" style="font-size: large">
-                    <i class="bi bi-geo-alt" th:text="${incidencia.zonapucp}"></i>
+                <div class="card-tele-subtitle" style="font-size: large;max-width: fit-content;height: auto">
+                    <i class="bi bi-geo-alt"  th:text="${incidencia.zonapucp}"></i>
                 </div>
+                <br>
                 <div class="card-tele-subtitle" style="font-size: large">
                     <span>Estado:</span>
                     <span th:text="${incidencia.estado}"
                           style="font-weight: bolder">En proceso</span>
                 </div>
+                <br>
             </div>
         <div id="carouselExampleIndicators" class="carousel slide col-md-10 offset-md-1" data-bs-ride="carousel">
             <div class="carousel-indicators">
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button th:each="listaFotosInfova,info:${listaFotosInfo}"
+                        type="button"
+                        data-mdb-target="#carouselBasicExample"
+                        th:attr="data-mdb-slide-to=${info.index}, aria-label='Slide '+${info.index +1},
+                            aria-current=${info.index==0}? 'true':'false'"
+                        th:class="${info.index==0}? 'active':''"></button>
             </div>
 
 
@@ -76,11 +83,12 @@
                 </div>
 
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+
+            <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
@@ -110,7 +118,7 @@
         </div>
         </div>
 
-    <section >
+
 
         <div class="container ">
 

@@ -5,10 +5,7 @@
 
 package com.example.adviertepucp.repository;
 
-import com.example.adviertepucp.dto.IncidenciaListadto;
-import com.example.adviertepucp.dto.IncidenciaMapaDto;
-import com.example.adviertepucp.dto.MisIncidenciasDto;
-import com.example.adviertepucp.dto.UsuarioEstaCreandoDto;
+import com.example.adviertepucp.dto.*;
 import com.example.adviertepucp.entity.Favorito;
 import com.example.adviertepucp.entity.Fotoalmacenada;
 import com.example.adviertepucp.entity.Usuario;
@@ -205,9 +202,22 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             "on f.incidencia_idincidencia=i.idincidencia\n" +
             "INNER JOIN zonapucp z\n" +
             "on i.zonapucp = z.idzonapucp\n" +
-            "WHERE u.codigo=?1\n" +
+            "WHERE u.codigo=?1 and f.esfavorito=0\n" +
             "order by i.fecha desc", nativeQuery = true)
     List<MisIncidenciasDto> misIncidencias(String codigo);
+
+    @Query (value = "SELECT u.codigo as 'codigo', i.idincidencia as 'inci', i.titulo as 'nombre', i.urgencia as 'urgencia', \n" +
+            "z.nombre as 'zona', substring(i.fecha,1,10) as 'fecha', substring(i.fecha,12,5) as 'hora', i.estado as 'estado'\n" +
+            "FROM usuario u\n" +
+            "INNER JOIN favorito f\n" +
+            "ON u.codigo = f.usuario_codigo\n" +
+            "INNER JOIN incidencia i\n" +
+            "on f.incidencia_idincidencia=i.idincidencia\n" +
+            "INNER JOIN zonapucp z\n" +
+            "on i.zonapucp = z.idzonapucp\n" +
+            "WHERE u.codigo=?1 and f.esfavorito=1\n" +
+            "order by i.fecha desc", nativeQuery = true)
+    List<MisFavoritosDto> misFavoritos(String codigo);
 
     @Query(nativeQuery = true,
             value = "SELECT count(*) FROM incidencia where zonapucp is not null;")

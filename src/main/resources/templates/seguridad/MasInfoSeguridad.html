@@ -49,102 +49,25 @@
                 Objetos perdidos</span>
 
                 </div>
-                <div class="card-tele-subtitle" style="font-size: large">
-                    <i class="bi bi-geo-alt" th:text="${incidencia.zonapucp}"></i>
+                <div class="card-tele-subtitle" style="font-size: large;max-width: fit-content;height: auto">
+                    <i class="bi bi-geo-alt"  th:text="${incidencia.zonapucp}"></i>
                 </div>
-                <div class="card-tele-subtitle" style="font-size: larger">
+                <br>
+                <div class="card-tele-subtitle" style="font-size: large">
                     <span>Estado:</span>
                     <span th:text="${incidencia.estado}"
                           style="font-weight: bolder">En proceso</span>
                 </div>
-                <button th:if="${incidencia.estado == 'registrado'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal" style="size: A4">
-                    Atender
-                </button>
-                <button th:if="${incidencia.estado == 'atendido'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
-                    Resolver
-                </button>
-                <br><br>
                 <br>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form method="post" th:action="@{/seguridad/atenderincidencia}">
-                                <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
-                                <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel1">Atender incidente</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="form-floating">
-                                        <textarea name="comentario" class="form-control" placeholder="Comentario..." id="floatingTextarea1" style="height: 100px"></textarea>
-                                        <label for="floatingTextarea2">Agregar comentarios</label>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
-                                    <button style="margin-left: 5px"  type="submit" class="btn btn-outline-warning bSalir">Poner en proceso</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form method="post" th:action="@{/seguridad/resolverincidencia}">
-                                <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
-                                <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel4">Resolver incidente</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="form-floating">
-                                        <textarea name="comentario" class="form-control" placeholder="Comentario..." id="floatingTextarea4" style="height: 100px"></textarea>
-                                        <label for="floatingTextarea2">Agregar comentarios</label>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
-                                    <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir">Resolver</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel2">Reportar incidente</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
-                                    <label for="floatingTextarea2">Agregar comentarios (opcional)</label>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
-                                <button style="margin-left: 5px"  type="button" class="btn btn-outline-success bSalir">Guardar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             <div id="carouselExampleIndicators" class="carousel slide col-md-10 offset-md-1" data-bs-ride="carousel">
                 <div class="carousel-indicators">
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button th:each="listaFotosInfova,info:${listaFotosInfo}"
+                            type="button"
+                            data-mdb-target="#carouselBasicExample"
+                            th:attr="data-mdb-slide-to=${info.index}, aria-label='Slide '+${info.index +1},
+                            aria-current=${info.index==0}? 'true':'false'"
+                            th:class="${info.index==0}? 'active':''"></button>
                 </div>
 
 
@@ -156,11 +79,12 @@
                     </div>
 
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+
+                <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <button th:if="${listaFotosInfo.size()>1}"  class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
