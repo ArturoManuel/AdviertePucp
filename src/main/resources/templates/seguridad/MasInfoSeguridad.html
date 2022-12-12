@@ -108,6 +108,43 @@
                 </div>
                 <div th:text="${incidencia.descripcion}">
                 </div>
+                <div class="card-tele-title" style="font-size: large"> ¿La incidencia es falsa?
+                </div>
+                <div th:text="${incidencia.descripcion}">
+                <!--
+                <button type="button" class="btn btn-redtele accion_button"
+                        style="background-color: #c50606"
+                        data-bs-toggle="modal" th:attr="data-bs-target='#reportar'+${incidencia.getUsuario_codigo()}"
+                >Reportar Usuario</button>
+
+                <div class="modal fade"  data-backdrop="static" data-keyboard="false"
+                     th:attr="id='suspender'+${incidencia.getUsuario_codigo()}"tabindex="-1"
+                     aria-hidden="true" aria-labelleby="modalTitle">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Reportar Usuario</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                <input type="hidden" th:value="${incidencia.getUsuario_codigo()}" name="id" >
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                        Cerrar
+                                    </button>
+                                    <button  type="submit" class="btn btn-redtele">
+                                        Reportar
+                                    </button>
+
+                                </div>
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>-->
+                </div>
             </div>
         </div>
         <br>

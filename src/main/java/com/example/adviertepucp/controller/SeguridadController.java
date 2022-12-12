@@ -46,6 +46,27 @@ public class SeguridadController {
     @Autowired
     FotoalmacenadaRepository fotoalmacenadaRepository;
 
+    //REPORTAR USER
+
+    /*
+    @PostMapping("/reportarUser")
+    public String suspenderUser(@RequestParam("id") int id, RedirectAttributes attr){
+
+        int uno = 1;
+        int dos = 2;
+        int tres = 3;
+
+        Optional<Usuario> usuario = usuarioRepository.findById(String.valueOf(id));
+
+            admiRepository.suspenderUsuario(uno);
+            attr.addFlashAttribute("success", "Usuario suspendido correctamente");
+            return "redirect:/administrador/";
+
+            return "redirect:/administrador/";
+        }
+    */
+
+
     private final int personasPaginas =6;
     /*
     @GetMapping("")
@@ -83,6 +104,7 @@ public class SeguridadController {
 
 
         model.addAttribute("listaTipoIncidencias",tipoincidenciaRepository.findAll());
+        model.addAttribute("listaUsers", usuarioRepository.findAll());
         model.addAttribute("listaIncidentes",usuarioRepository.listaIncidenciaUsuarios(Integer.parseInt(usuarioLogueado.getId()),lista));
 
 
@@ -448,6 +470,7 @@ public class SeguridadController {
         model.addAttribute("incidenciaId",incidencia.getIdI());
         List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
         model.addAttribute("listaComentarios", listaComentarios);
+        model.addAttribute("listaUsers", usuarioRepository.findAll());
         //model.addAttribute("listaComentarios",comentarioRepository.listaComentario(idincidencia));
 
 
