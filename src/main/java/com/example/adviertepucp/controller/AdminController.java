@@ -163,6 +163,7 @@ public class AdminController extends Usuario {
 
 
 
+    //GETMAPPING DE DIRECCIONAMIENTO A CREAR USUARIO
     @GetMapping("/crearUser")
     public String crearUser(@ModelAttribute("usuario") Usuario usuario,
                             Model model){
@@ -170,6 +171,7 @@ public class AdminController extends Usuario {
         return "admin/newUser";
     }
 
+    //POSTMAPPING QUE RECIBE LOS PARÁMETROS DE CREACIÓN DE USUARIOS Y DIRECCIONA A BASE DATOS
     @PostMapping("/guardarCrearUser")
     public String guardarCrearUsuario(Model model, @RequestParam("id")
                                 String codigo,
@@ -296,6 +298,7 @@ public class AdminController extends Usuario {
     }
 
 
+    //POSTMAPPING QUE RECIBE LOS PARÁMETROS DE EDICIÓN DE USUARIOS Y DIRECCIONA A BASE DATOS
     @GetMapping("/editUser")
     public String listaUserBD(@ModelAttribute("usuario") Usuario usuario,
                               Model model, @RequestParam("id") int id,
@@ -530,6 +533,7 @@ public class AdminController extends Usuario {
             tipoincidencia.setColor(color);
             tipoincidencia.setLogo(fotoalmacenada);
             tipoincidenciaRepository.save(tipoincidencia);
+            attr.addFlashAttribute("msg", "Incidencia creada exitosamente");
             return "redirect:/administrador/incidencias";
         }catch (Exception e){
             e.printStackTrace();
@@ -595,7 +599,9 @@ public class AdminController extends Usuario {
             tipoincidencia.setNombre(nombre);
             tipoincidencia.setColor(color);
             tipoincidencia.setLogo(fotoalmacenada);
+
             tipoincidenciaRepository.save(tipoincidencia);
+            redirectAttributes.addFlashAttribute("msg", "Incidencia creada exitosamente");
             return "redirect:/administrador/incidencias";
 
         }catch (Exception e){
