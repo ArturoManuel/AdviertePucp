@@ -80,10 +80,42 @@
                     <button th:if="${incidencia.estado == 'registrado'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal" style="size: A4">
                         Atender incidencia
                     </button>
+
                     <button th:if="${incidencia.estado == 'en proceso'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
                         Marcar como resuelta
                     </button>
+                    <button type="button" class="btn btn-outline-dark bSalir"
+                            data-bs-toggle="modal" th:attr="data-bs-target='#reportar'+${incidencia.getCreador()}"
+                    >Reportar Usuario</button>
+                    <!-- Modal -->
+                    <div class="modal fade"  data-backdrop="static" data-keyboard="false"
+                         th:attr="id='reportar'+${incidencia.getCreador()}"tabindex="-1"
+                         aria-hidden="true" aria-labelleby="modalTitle">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Reportar Usuario</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form th:action="@{'/seguridad/reportarUser'}" method="post">
+                                    <input type="hidden" th:value="${incidencia.getCreador()}" name="id" >
+                                    <input type="hidden" th:value="${incidencia.getIdI()}" name="id1" >
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                            Cerrar
+                                        </button>
+                                        <button  type="submit" class="btn btn-redtele">
+                                            Reportar
+                                        </button>
 
+                                    </div>
+                                </form>
+
+                            </div>
+
+                        </div>
+
+                    </div>
                     <!-- Modal -->
                     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
                         <div class="modal-dialog">
@@ -197,43 +229,6 @@
                 <div class="card-tele-title" style="font-size: large"> Descripción
                 </div>
                 <div th:text="${incidencia.descripcion}">
-                </div>
-                <div class="card-tele-title" style="font-size: large"> ¿La incidencia es falsa?
-                </div>
-                <div th:text="${incidencia.descripcion}">
-                <!--
-                <button type="button" class="btn btn-redtele accion_button"
-                        style="background-color: #c50606"
-                        data-bs-toggle="modal" th:attr="data-bs-target='#reportar'+${incidencia.getUsuario_codigo()}"
-                >Reportar Usuario</button>
-
-                <div class="modal fade"  data-backdrop="static" data-keyboard="false"
-                     th:attr="id='suspender'+${incidencia.getUsuario_codigo()}"tabindex="-1"
-                     aria-hidden="true" aria-labelleby="modalTitle">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Reportar Usuario</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form th:action="@{'/administrador/suspenderUser'}" method="post">
-                                <input type="hidden" th:value="${incidencia.getUsuario_codigo()}" name="id" >
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
-                                        Cerrar
-                                    </button>
-                                    <button  type="submit" class="btn btn-redtele">
-                                        Reportar
-                                    </button>
-
-                                </div>
-                            </form>
-
-                        </div>
-
-                    </div>
-
-                </div>-->
                 </div>
             </div>
         </div>

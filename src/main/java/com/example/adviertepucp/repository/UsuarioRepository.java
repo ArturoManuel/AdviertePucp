@@ -235,4 +235,20 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             value = "SELECT count(*) FROM incidencia where zonapucp is not null and  publicado=1 and estado!=\"resuelto\" ;")
     public long countIncidencias();
 
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE usuario SET `suspendido` = 1 WHERE (`codigo` = ?1);")
+    void reporteUsuario1(Integer id);
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE usuario SET `suspendido` = 2 WHERE (`codigo` = ?1);")
+    void reporteUsuario2(Integer id);
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE usuario SET `suspendido` = 3 WHERE (`codigo` = ?1);")
+    void reporteUsuario3(Integer id);
 }

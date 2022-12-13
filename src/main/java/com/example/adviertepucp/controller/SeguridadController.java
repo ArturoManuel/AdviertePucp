@@ -46,24 +46,36 @@ public class SeguridadController {
 
     //REPORTAR USER
 
-    /*
+
     @PostMapping("/reportarUser")
-    public String suspenderUser(@RequestParam("id") int id, RedirectAttributes attr){
+    public String reportarUser(@RequestParam("id") String id, RedirectAttributes attr, @RequestParam("id1") String id1){
 
-        int uno = 1;
-        int dos = 2;
-        int tres = 3;
+        System.out.println("CODIGO LLEGO" + id);
+        Usuario usuario1 = usuarioRepository.getById(String.valueOf(id));
 
-        Optional<Usuario> usuario = usuarioRepository.findById(String.valueOf(id));
-
-            admiRepository.suspenderUsuario(uno);
-            attr.addFlashAttribute("success", "Usuario suspendido correctamente");
-            return "redirect:/administrador/";
-
-            return "redirect:/administrador/";
+        if (usuario1.getSuspendido() == 0){
+            usuarioRepository.reporteUsuario1(Integer.valueOf(id));
+            attr.addFlashAttribute("msg", "Usuario Reportado");
+            return "redirect:/seguridad/info?id=" + id1 ;
         }
-    */
+        if (usuario1.getSuspendido() == 1){
+            usuarioRepository.reporteUsuario2(Integer.valueOf(id));
+            attr.addFlashAttribute("msg", "Usuario Reportado");
 
+            return "redirect:/seguridad/info?id=" + id1 ;
+        }
+        if (usuario1.getSuspendido() == 2){
+            usuarioRepository.reporteUsuario3(Integer.valueOf(id));
+            attr.addFlashAttribute("msg", "Usuario Reportado");
+            return "redirect:/seguridad/info?id=" + id1 ;
+        }
+        else {
+            attr.addFlashAttribute("msg", "El usuario ya está suspendido");
+        }
+        return "redirect:/seguridad/info?id=" + id1 ;
+        }
+
+ //"redirect:/info"   |||| "seguridad/MasInfoSeguridad"
 
     private final int personasPaginas =6;
     /*
@@ -464,11 +476,12 @@ public class SeguridadController {
                 break;
             }
         }*/
+
         model.addAttribute("incidencia",incidencia);
         model.addAttribute("incidenciaId",incidencia.getIdI());
+        model.addAttribute("usuario", incidencia.getUsuario_codigo());
         List<IncidenciaComentarioDto> listaComentarios = comentarioRepository.listaComentario(incidencia.getIdI());
         model.addAttribute("listaComentarios", listaComentarios);
-        model.addAttribute("listaUsers", usuarioRepository.findAll());
         //model.addAttribute("listaComentarios",comentarioRepository.listaComentario(idincidencia));
 
 
