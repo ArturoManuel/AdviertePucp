@@ -33,12 +33,23 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     @Query(nativeQuery = true,
             value = "UPDATE incidencia SET estado = 'resuelto' WHERE (idincidencia = ?1)")
     void resolverIncidencia(int idincidencia);
+
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
     value = "UPDATE incidencia SET estado = 'en proceso' WHERE (idincidencia = ?1)")
     void atenderIncidencia(int idincidencia);
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+            value = "UPDATE incidencia SET reabierto=reabierto+1 WHERE (idincidencia = ?1)")
+    void sumarReabierto(int idincidencia);
 
+    @Modifying
+    @Transactional
+    @Query(nativeQuery = true,
+            value = "UPDATE incidencia SET estado = 'en proceso' WHERE (idincidencia = ?1)")
+    void reabrirIncidencia(int idincidencia);
     //agregar comentario
     @Modifying
     @Transactional

@@ -24,7 +24,9 @@ public interface IncidenciaListadto {
     String getZonapucp();
     String getCreador();
     Integer getUsuario_codigo();
+    int getReabierto();
     String getEsfavorito();
+
 
 
 

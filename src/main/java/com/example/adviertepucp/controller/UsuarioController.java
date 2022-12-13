@@ -795,5 +795,21 @@ public class UsuarioController {
         return "usuario/mapa";
     }
 
+    @PostMapping("/reabririncidencia")
+    public String reabrirComentario(@RequestParam("idincidencia")  int idincidencia,
+                                     @RequestParam("codigopucp")  int codigopucp,
+                                     @RequestParam("comentario")  String comentario,
+                                     Model model, HttpSession session){
+        Usuario usuario= (Usuario) session.getAttribute("usuariolog");
+        if (usuario.getSuspendido()==3){
+            return "redirect:/suspendido";
+        }
+        incidenciaRepository.sumarReabierto(idincidencia);
+        incidenciaRepository.reabrirIncidencia(idincidencia);
+        incidenciaRepository.agregarComentario(idincidencia, comentario, codigopucp);
+
+        String direccion= "redirect:/usuario";
+        return direccion;
+    }
 
 }

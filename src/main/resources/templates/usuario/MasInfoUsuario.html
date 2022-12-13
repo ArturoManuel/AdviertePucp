@@ -75,6 +75,36 @@
                             <span th:text="${incidencia.estado}"
                                   style="font-weight: bolder">En proceso</span>
                         </div>
+                        <button th:if="${incidencia.estado == 'resuelto' && session.usuariolog.getId() == incidencia.getCreador() && incidencia.reabierto < 5}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
+                            Reabrir incidencia
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <form method="post" th:action="@{/usuario/reabririncidencia}">
+                                        <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
+                                        <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel4">Reabrir incidente</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="form-floating">
+                                                <textarea name="comentario" class="form-control" placeholder="Comentario..." id="floatingTextarea4" style="height: 100px"></textarea>
+                                                <label for="floatingTextarea4">Agregar comentarios</label>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
+                                            <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir">Reabrir</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <br><br>
