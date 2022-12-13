@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
@@ -41,16 +42,16 @@
 </header>
 
 <div class="container py-5" >
-        <div class="row">
-            <div class="col">
-                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4" >
-                    <ol class="breadcrumb mb-0" style="background-color: #fbfbfb ;">
-                        <li class="breadcrumb-item" style="font-size: large"><a th:href="@{'/seguridad/'}">Inicio</a></li>
-                        <li class="breadcrumb-item active" style="font-size: large" aria-current="page">Incidencia</li>
-                    </ol>
-                </nav>
-            </div>
+    <div class="row">
+        <div class="col">
+            <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4" >
+                <ol class="breadcrumb mb-0" style="background-color: #fbfbfb ;">
+                    <li class="breadcrumb-item" style="font-size: large"><a th:href="@{'/seguridad/'}">Inicio</a></li>
+                    <li class="breadcrumb-item active" style="font-size: large" aria-current="page">Incidencia</li>
+                </ol>
+            </nav>
         </div>
+    </div>
 
     <div class="row">
         <div class="col-lg-6">
@@ -74,17 +75,19 @@
                     <br>
                     <div class="card-tele-subtitle" style="font-size: large">
                         <span>Estado:</span>
-                        <span th:text="${incidencia.estado}"
+                        <span th:if="${incidencia.estado == 'registrado'} or ${incidencia.estado == 'en proceso'} or ${incidencia.estado == 'resuelto'}" th:text="${incidencia.estado}"
                               style="font-weight: bolder">En proceso</span>
+                        <span th:if="${incidencia.getReporteStatus() != 0}"
+                              style="font-weight: bolder">Incidencia Reportada</span>
                     </div>
                     <button th:if="${incidencia.estado == 'registrado'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal" style="size: A4">
                         Atender incidencia
                     </button>
 
-                    <button th:if="${incidencia.estado == 'en proceso'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
+                    <button th:if="${incidencia.estado == 'en proceso'} and ${incidencia.getReporteStatus()==0} " type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
                         Marcar como resuelta
                     </button>
-                    <button type="button" class="btn btn-outline-dark bSalir"
+                    <button th:if="${incidencia.getReporteStatus()==0} and ${incidencia.estado == 'en proceso'}" type="button" class="btn btn-outline-dark bSalir"
                             data-bs-toggle="modal" th:attr="data-bs-target='#reportar'+${incidencia.getCreador()}"
                     >Reportar Usuario</button>
                     <!-- Modal -->
@@ -93,11 +96,18 @@
                          aria-hidden="true" aria-labelleby="modalTitle">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">¿La incidencia del usuario es falsa?</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
                                 <form th:action="@{'/seguridad/reportarUser'}" method="post">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">¿La incidencia del usuario es falsa?</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-floating">
+                                            <textarea name="comentarioReporte" class="form-control" placeholder="Comentario..." id="floatingTextarea5" style="height: 100px"></textarea>
+                                            <label for="floatingTextarea2">Agregar comentarios</label>
+                                        </div>
+                                    </div>
+
                                     <input type="hidden" th:value="${incidencia.getCreador()}" name="id" >
                                     <input type="hidden" th:value="${incidencia.getIdI()}" name="id1" >
                                     <div class="modal-footer">

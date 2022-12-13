@@ -27,6 +27,8 @@ public interface IncidenciaListadto {
     int getReabierto();
     String getEsfavorito();
 
+    int getReporteStatus();
+
 
 
 

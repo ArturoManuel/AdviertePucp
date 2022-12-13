@@ -59,6 +59,8 @@ public class Incidencia {
     @Column(name = "descripcion", length = 500)
     private String descripcion;
 
+
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -66,6 +68,7 @@ public class Incidencia {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
 
     public String getTitulo() {
         return titulo;
@@ -158,3 +161,5 @@ public class Incidencia {
     }
 
 }
+
+

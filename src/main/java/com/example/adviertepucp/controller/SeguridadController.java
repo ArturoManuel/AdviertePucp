@@ -18,12 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -53,34 +48,46 @@ public class SeguridadController {
 
 
     @PostMapping("/reportarUser")
-    public String reportarUser(@RequestParam("id") String id, RedirectAttributes attr, @RequestParam("id1") String id1){
+    public String reportarUser(@RequestParam("id") String id, @RequestParam("id1") String id1,
+                               @RequestParam("comentarioReporte")  String comentario,  Model model,
+                               RedirectAttributes attr){
 
         System.out.println("CODIGO LLEGO" + id);
         Usuario usuario1 = usuarioRepository.getById(String.valueOf(id));
 
+
         if (usuario1.getSuspendido() == 0){
             usuarioRepository.reporteUsuario1(Integer.valueOf(id));
-            attr.addFlashAttribute("msg", "Usuario Reportado");
-            return "redirect:/seguridad/info?id=" + id1 ;
+            usuarioRepository.reporteStatus(Integer.valueOf(id1));
+            incidenciaRepository.resolverIncidencia(Integer.parseInt(id1));
+            incidenciaRepository.agregarComentario(Integer.parseInt(id1), comentario, Integer.parseInt(id));
+            attr.addFlashAttribute("msg", "Incidencia Reportada");
+            return "redirect:/seguridad" ;
         }
         if (usuario1.getSuspendido() == 1){
             usuarioRepository.reporteUsuario2(Integer.valueOf(id));
-            attr.addFlashAttribute("msg", "Usuario Reportado");
+            usuarioRepository.reporteStatus(Integer.valueOf(id1));
+            incidenciaRepository.resolverIncidencia(Integer.parseInt(id1));
+            incidenciaRepository.agregarComentario(Integer.parseInt(id1), comentario, Integer.parseInt(id));
+            attr.addFlashAttribute("msg", "Incidencia Reportada");
 
-            return "redirect:/seguridad/info?id=" + id1 ;
+            return "redirect:/seguridad";
         }
         if (usuario1.getSuspendido() == 2){
             usuarioRepository.reporteUsuario3(Integer.valueOf(id));
-            attr.addFlashAttribute("msg", "Usuario Reportado");
-            return "redirect:/seguridad/info?id=" + id1 ;
+            usuarioRepository.reporteStatus(Integer.valueOf(id1));
+            incidenciaRepository.resolverIncidencia(Integer.parseInt(id1));
+            incidenciaRepository.agregarComentario(Integer.parseInt(id1), comentario, Integer.parseInt(id));
+            attr.addFlashAttribute("msg", "Incidencia Reportada");
+            return "redirect:/seguridad" ;
         }
         else {
             attr.addFlashAttribute("msg", "El usuario ya está suspendido");
         }
-        return "redirect:/seguridad/info?id=" + id1 ;
-        }
+        return "redirect:/seguridad" ;
+    }
 
- //"redirect:/info"   |||| "seguridad/MasInfoSeguridad"
+    //"redirect:/info"   |||| "seguridad/MasInfoSeguridad"
 
     private final int personasPaginas =6;
     /*
@@ -158,7 +165,7 @@ public class SeguridadController {
                                       @RequestParam("estado") String estado,
                                       @RequestParam("nombre") String nombre,
                                       Model model, HttpSession session,
-                                     RedirectAttributes attr) {
+                                      RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         String ruta =  "/seguridad/getfiltro?datetimes="+datetimes+"&estado="+estado+"&nombre="+nombre +"&";
@@ -220,8 +227,8 @@ public class SeguridadController {
     }
     @PostMapping({"filtro2","/filtro2"})
     public String busquedaIncidencia( @RequestParam("pag") Optional<String> pag,@RequestParam("titulo") String titulo,
-                                     Model model, HttpSession session,
-                                     RedirectAttributes attr) {
+                                      Model model, HttpSession session,
+                                      RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         String ruta =  "/seguridad/getfiltro2?titulo=" +titulo +"&";
@@ -395,9 +402,9 @@ public class SeguridadController {
     }
     @PostMapping("/resolverincidencia")
     public String resolverComentario(@RequestParam("idincidencia")  int idincidencia,
-                                    @RequestParam("codigopucp")  int codigopucp,
-                                    @RequestParam("comentario")  String comentario,
-                                    Model model, HttpSession session){
+                                     @RequestParam("codigopucp")  int codigopucp,
+                                     @RequestParam("comentario")  String comentario,
+                                     Model model, HttpSession session){
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
@@ -412,10 +419,10 @@ public class SeguridadController {
 
     @PostMapping("agregarcomentario")
     public String masInformacion(@RequestParam("idincidencia")  int idincidencia,
-                                     @RequestParam("codigopucp")  int codigopucp,
-                                     @RequestParam("comentario")  String comentario,
-                                     Model model, HttpSession session,
-                                     RedirectAttributes attr) {
+                                 @RequestParam("codigopucp")  int codigopucp,
+                                 @RequestParam("comentario")  String comentario,
+                                 Model model, HttpSession session,
+                                 RedirectAttributes attr) {
 
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
         if (usuario.getSuspendido()==3){
@@ -425,15 +432,15 @@ public class SeguridadController {
 
         //model.addAttribute("comentario", incidenciaRepository.agregarComentario(incidencia, comen, codigopucp));
         String direccion= "redirect:/seguridad/info?id=" + idincidencia ;
-       return direccion;
+        return direccion;
     }
-/*
-    @GetMapping("/info")
-    String masInformacion(Model model,
-                          @RequestParam("id") int id){
-        Optional<Incidencia> opt = incidenciaRepository.findById(id);
-        return "seguridad/MasInfoSeguridad";
-    }*/
+    /*
+        @GetMapping("/info")
+        String masInformacion(Model model,
+                              @RequestParam("id") int id){
+            Optional<Incidencia> opt = incidenciaRepository.findById(id);
+            return "seguridad/MasInfoSeguridad";
+        }*/
     @GetMapping({"lista"})
     public String listaIncidencias(Model model, HttpSession session) {
         Usuario usuario= (Usuario) session.getAttribute("usuariolog");
@@ -623,50 +630,6 @@ public class SeguridadController {
         return "seguridad/perfil";
     }
 
-
-    public static MultipartFile reziseImage(final MultipartFile image) throws IOException {
-        BufferedImage originalImage = ImageIO.read(image.getInputStream());
-        BufferedImage resizedImage = new BufferedImage(32, 32, 2);
-        Graphics2D g = resizedImage.createGraphics();
-        g.drawImage(originalImage, 0, 0, 32, 32, (ImageObserver)null);
-        g.dispose();
-        final ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ImageIO.write(resizedImage, "png", os);
-        return new MultipartFile() {
-            public String getName() {
-                return image.getName();
-            }
-
-            public String getOriginalFilename() {
-                return image.getOriginalFilename();
-            }
-
-            public String getContentType() {
-                return "image/png";
-            }
-
-            public boolean isEmpty() {
-                return os.toByteArray().length == 0;
-            }
-
-            public long getSize() {
-                return (long)os.toByteArray().length;
-            }
-
-            public byte[] getBytes() throws IOException {
-                return os.toByteArray();
-            }
-
-            public InputStream getInputStream() throws IOException {
-                return new ByteArrayInputStream(os.toByteArray());
-            }
-
-            public void transferTo(File dest) throws IOException, IllegalStateException {
-                (new FileOutputStream(dest)).write(os.toByteArray());
-            }
-        };
-    }
-
     @PostMapping("/iconoEditar")
     public String editarIcono(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo){
 
@@ -691,7 +654,6 @@ public class SeguridadController {
         Icono icono = new Icono();
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
-            logo=reziseImage(logo);
             blobService.subirArchivo(logo);
             fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
             fotoalmacenada.setTipofoto(logo.getContentType());
@@ -720,3 +682,4 @@ public class SeguridadController {
     }
 
 }
+

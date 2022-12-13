@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package com.example.adviertepucp.repository;
 
 import com.example.adviertepucp.dto.*;
@@ -109,7 +104,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
 
     @Query (value = "select idincidencia as idI , titulo as titulo , descripcion\n" +
             "            as descripcion , concat(substring(i.fecha,1,10),'  (' ,substring(i.fecha,12,5),')') as fecha , estado as estado , urgencia\n" +
-            "            as urgencia, reabierto, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
+            "            as urgencia, reabierto,reporteStatus, t.nombre as tincidencia ,t.color as color,latitud as latitud,\n" +
             "            longitud as longitud ,  z.nombre as zonapucp, subq1.creador\n" +
             "            from incidencia i inner join\n" +
             "            zonapucp z on (z.idzonapucp=i.zonapucp)\n" +
@@ -156,7 +151,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             "from incidencia i left join favorito f on (i.idincidencia=f.incidencia_idincidencia)\n" +
             "where f.usuario_codigo=?) subq2 on (i.idincidencia=subq2.idincidencia)\n" +
             "where publicado=1 and estado!=\"resuelto\" order by i.fecha desc"
-    , nativeQuery = true)
+            , nativeQuery = true)
 
     List<IncidenciaListadto> listaIncidenciaUsuarios(Integer codigo,  Pageable pageable);
 
@@ -194,9 +189,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
             "            usuario u inner join fotoalmacenada f on (u.foto=f.idfotoalmacenada) where u.codigo=?;",nativeQuery = true)
     String fotoAlmacenadaUser(String codigo);
     @Query(nativeQuery = true,
-    value = "select f.idinteraccion,f.usuario_codigo,i.idincidencia\n" +
-            "from favorito f left join incidencia i on (f.incidencia_idincidencia=i.idincidencia)\n" +
-            "where f.usuario_codigo=?1 and f.esfavorito=0 and i.publicado=0;")
+            value = "select f.idinteraccion,f.usuario_codigo,i.idincidencia\n" +
+                    "from favorito f left join incidencia i on (f.incidencia_idincidencia=i.idincidencia)\n" +
+                    "where f.usuario_codigo=?1 and f.esfavorito=0 and i.publicado=0;")
     UsuarioEstaCreandoDto obtenerCreandoUsuario(String codigo);
 
     @Query(nativeQuery = true,
@@ -251,4 +246,14 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     @Query(nativeQuery = true,
             value = "UPDATE usuario SET `suspendido` = 3 WHERE (`codigo` = ?1);")
     void reporteUsuario3(Integer id);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE incidencia SET `reporteStatus` = 1 WHERE (`idincidencia` = ?1);")
+    void reporteStatus(Integer id);
 }
+
+
+
+

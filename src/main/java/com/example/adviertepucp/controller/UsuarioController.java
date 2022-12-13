@@ -429,6 +429,7 @@ public class UsuarioController {
     public String guardarIncidente( @RequestParam(value = "latitud",required = false)   String latitud,
                                     @RequestParam(value = "zonapucp",required = false)   String zonapucp,
                                     @RequestParam(value = "longitud",required = false)  String longitud,
+
                                     @RequestParam(value = "validaciondetitulo",required = false)  String validaciondetitulo,
                                     @RequestParam(value = "validaciondebody",required = false)  String validaciondebody,
                                     @RequestParam("archivos") MultipartFile[] files,
@@ -467,6 +468,8 @@ public class UsuarioController {
                 incidencia.setZonapucp(zonavalida);
 
             }
+
+
 
 
 
