@@ -36,7 +36,7 @@
             <div class="col">
                 <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4" >
                     <ol class="breadcrumb mb-0" style="background-color: #fbfbfb ;">
-                        <li class="breadcrumb-item" style="font-size: large"><a th:href="@{'/usuario/'}">Inicio</a></li>
+                        <li class="breadcrumb-item" style="font-size: large"><a th:href="@{'/seguridad/'}">Inicio</a></li>
                         <li class="breadcrumb-item active" style="font-size: large" aria-current="page">Incidencia</li>
                     </ol>
                 </nav>
@@ -67,6 +67,87 @@
                         <span>Estado:</span>
                         <span th:text="${incidencia.estado}"
                               style="font-weight: bolder">En proceso</span>
+                    </div>
+                    <button th:if="${incidencia.estado == 'registrado'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal" style="size: A4">
+                        Atender incidencia
+                    </button>
+                    <button th:if="${incidencia.estado == 'atendido'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
+                        Resolver incidencia
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" th:action="@{/seguridad/atenderincidencia}">
+                                    <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
+                                    <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel1">Atender incidente</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="form-floating">
+                                            <textarea name="comentario" class="form-control" placeholder="Comentario..." id="floatingTextarea1" style="height: 100px"></textarea>
+                                            <label for="floatingTextarea2">Agregar comentarios</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
+                                        <button style="margin-left: 5px"  type="submit" class="btn btn-outline-warning bSalir">Poner en proceso</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal4" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form method="post" th:action="@{/seguridad/resolverincidencia}">
+                                    <input hidden th:value="${incidenciaId}"  name="idincidencia"/>
+                                    <input hidden th:value="${session.usuariolog.getId()}"  name="codigopucp"/>
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel4">Resolver incidente</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <div class="form-floating">
+                                            <textarea name="comentario" class="form-control" placeholder="Comentario..." id="floatingTextarea4" style="height: 100px"></textarea>
+                                            <label for="floatingTextarea2">Agregar comentarios</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
+                                        <button style="margin-left: 5px"  type="submit" class="btn btn-outline-success bSalir">Resolver</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel2">Reportar incidente</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="form-floating">
+                                        <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                        <label for="floatingTextarea2">Agregar comentarios (opcional)</label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button style="margin-left: 5px"  type="button" class="btn btn-outline-danger bSalir" data-bs-dismiss="modal">Cerrar</button>
+                                    <button style="margin-left: 5px"  type="button" class="btn btn-outline-success bSalir">Guardar</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
