@@ -24,12 +24,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.IOException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.*;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -484,6 +488,53 @@ public class AdminController extends Usuario {
             return "admin/listaUsuarios";
         }
 
+
+
+
+
+    }
+
+    public static MultipartFile reziseImage(final MultipartFile image) throws IOException {
+        BufferedImage originalImage = ImageIO.read(image.getInputStream());
+        BufferedImage resizedImage = new BufferedImage(32, 32, 2);
+        Graphics2D g = resizedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, 32, 32, (ImageObserver)null);
+        g.dispose();
+        final ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write(resizedImage, "png", os);
+        return new MultipartFile() {
+            public String getName() {
+                return image.getName();
+            }
+
+            public String getOriginalFilename() {
+                return image.getOriginalFilename();
+            }
+
+            public String getContentType() {
+                return "image/png";
+            }
+
+            public boolean isEmpty() {
+                return os.toByteArray().length == 0;
+            }
+
+            public long getSize() {
+                return (long)os.toByteArray().length;
+            }
+
+            public byte[] getBytes() throws IOException {
+                return os.toByteArray();
+            }
+
+            public InputStream getInputStream() throws IOException {
+                return new ByteArrayInputStream(os.toByteArray());
+            }
+
+            public void transferTo(File dest) throws IOException, IllegalStateException {
+                (new FileOutputStream(dest)).write(os.toByteArray());
+            }
+        };
     }
     @PostMapping("/guardaCrear")
     public String Crear(@RequestParam("nombre") String nombre ,
@@ -515,6 +566,7 @@ public class AdminController extends Usuario {
 
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
+            logo = reziseImage(logo);
             blobService.subirArchivo(logo);
             fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
             fotoalmacenada.setTipofoto(logo.getContentType());
@@ -578,6 +630,7 @@ public class AdminController extends Usuario {
         }
         Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
         try {
+            logo = reziseImage(logo);
             blobService.subirArchivo(logo);
             fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
             fotoalmacenada.setTipofoto(logo.getContentType());
