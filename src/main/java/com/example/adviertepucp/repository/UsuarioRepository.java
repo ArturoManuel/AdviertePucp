@@ -232,7 +232,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String> {
     List<MisFavoritosDto> misFavoritos(String codigo);
 
     @Query(nativeQuery = true,
-            value = "SELECT count(*) FROM incidencia where zonapucp is not null;")
+            value = "SELECT count(*) FROM incidencia where zonapucp is not null and  publicado=1 and estado!=\"resuelto\" ;")
     public long countIncidencias();
 
 }

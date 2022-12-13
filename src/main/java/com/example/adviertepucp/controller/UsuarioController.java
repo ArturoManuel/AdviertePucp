@@ -87,7 +87,7 @@ public class UsuarioController {
         }
 
         pagina = pagina<1? 1 : pagina;
-        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas);
         pagina = pagina>paginas? paginas : pagina;
         Pageable lista ;
         if (pagina == 0) {

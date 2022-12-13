@@ -89,7 +89,7 @@ public class SeguridadController {
         }
 
         pagina = pagina<1? 1 : pagina;
-        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas)-1;
+        int paginas = (int) Math.ceil((float)usuarioRepository.countIncidencias()/personasPaginas);
         pagina = pagina>paginas? paginas : pagina;
         Pageable lista ;
         if (pagina == 0) {
@@ -486,7 +486,8 @@ public class SeguridadController {
         if (usuario.getSuspendido()==3){
             return "redirect:/suspendido";
         }
-        model.addAttribute("listaIncidentes",usuarioRepository.listaIncidencia());
+        model.addAttribute("usuariomapa",usuarioRepository.usuarioExiste(usuario.getId()));
+        model.addAttribute("listaIncidentes",usuarioRepository.incidenciaMapa());
         return "seguridad/mapa";
     }
 /*
