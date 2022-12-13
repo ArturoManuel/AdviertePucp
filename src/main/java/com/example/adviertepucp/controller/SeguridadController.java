@@ -4,6 +4,7 @@ import com.example.adviertepucp.dto.*;
 import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
 import com.example.adviertepucp.service.BlobService;
+import com.example.adviertepucp.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.imageio.ImageIO;
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -49,19 +51,24 @@ public class SeguridadController {
     @Autowired
     IconoRepository iconoRepository;
 
+    @Autowired
+    MailService mailService;
+
     //REPORTAR USER
 
 
     @PostMapping("/reportarUser")
     public String reportarUser(@RequestParam("id") String id, @RequestParam("id1") String id1,
                                @RequestParam("comentarioReporte")  String comentario,  Model model,
-                               RedirectAttributes attr){
+                               RedirectAttributes attr) throws MessagingException, UnsupportedEncodingException {
 
         System.out.println("CODIGO LLEGO" + id);
         Usuario usuario1 = usuarioRepository.getById(String.valueOf(id));
 
 
         if (usuario1.getSuspendido() == 0){
+            mailService.correoReporte(usuario1.getCorreo(), usuario1.getNombre());
+
             usuarioRepository.reporteUsuario1(Integer.valueOf(id));
             usuarioRepository.reporteStatus(Integer.valueOf(id1));
             incidenciaRepository.resolverIncidencia(Integer.parseInt(id1));
@@ -70,6 +77,7 @@ public class SeguridadController {
             return "redirect:/seguridad" ;
         }
         if (usuario1.getSuspendido() == 1){
+            mailService.correoReporte(usuario1.getCorreo(), usuario1.getNombre());
             usuarioRepository.reporteUsuario2(Integer.valueOf(id));
             usuarioRepository.reporteStatus(Integer.valueOf(id1));
             incidenciaRepository.resolverIncidencia(Integer.parseInt(id1));
@@ -79,6 +87,7 @@ public class SeguridadController {
             return "redirect:/seguridad";
         }
         if (usuario1.getSuspendido() == 2){
+            mailService.correoReporte(usuario1.getCorreo(), usuario1.getNombre());
             usuarioRepository.reporteUsuario3(Integer.valueOf(id));
             usuarioRepository.reporteStatus(Integer.valueOf(id1));
             incidenciaRepository.resolverIncidencia(Integer.parseInt(id1));
@@ -87,7 +96,10 @@ public class SeguridadController {
             return "redirect:/seguridad" ;
         }
         else {
-            attr.addFlashAttribute("msg", "El usuario ya está suspendido");
+            usuarioRepository.reporteStatus(Integer.valueOf(id1));
+            incidenciaRepository.resolverIncidencia(Integer.parseInt(id1));
+            incidenciaRepository.agregarComentario(Integer.parseInt(id1), comentario, Integer.parseInt(id));
+            attr.addFlashAttribute("msg", "Incidencia Reportada");
         }
         return "redirect:/seguridad" ;
     }

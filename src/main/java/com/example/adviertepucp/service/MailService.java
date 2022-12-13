@@ -152,6 +152,31 @@ public class MailService {
         mailSender.send(message);
     }
 
+    @Async
+    public void correoReporte(String correo,String nombre)  throws MessagingException, UnsupportedEncodingException {
+        String subject =null;
+        String content=null;
+        subject = "Su Incidencia ha sido Reportada por el personal de seguridad";
+        content = "Estimado [[name]],<br>"
+                + "Una de las incidencias que ha publicado ha sido reportada por el personal de seguridad. Podrá ver el comentario adjunto al reporte cuando acceda a su incidencia<br>"
+                + "<br>Atentamente,<br>"
+                + "El equipo de AdviertePUCP.";
+
+        String toAddress = correo;
+        String fromAddress = "noreply.adviertepucp@gmail.com";
+        String senderName = "Equipo de AdviertePUCP";
+
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, StandardCharsets.UTF_8.name());
+        helper.setFrom(fromAddress, senderName);
+        helper.setTo(toAddress);
+        helper.setSubject(subject);
+        content = content.replace("[[name]]", nombre);
+
+        helper.setText(content, true);
+        mailSender.send(message);
+    }
+
 
 
 
