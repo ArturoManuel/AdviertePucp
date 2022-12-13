@@ -25,7 +25,7 @@ public interface ComentarioRepository extends JpaRepository<Comentario, String> 
             "            left join usuario u on (c.usuario_codigo= u.codigo)\n" +
             "            left join categoria ca on (ca.idcategoria= u.categoria)\n" +
             "            inner join fotoalmacenada f on (u.foto=f.idfotoalmacenada)\n" +
-            "            where idincidencia=?1",
+            "            where idincidencia=?1 order by c.fecha desc",
             nativeQuery = true)
     List<IncidenciaComentarioDto> listaComentario( Integer idincidencia);
 }

@@ -4990,7 +4990,17 @@ fieldset:disabled .btn {
   border: 1px solid rgba(0, 0, 0, .125);
   border-radius: .5rem
 }
+.card2 {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
 
+  border-radius: .5rem
+}
 .card>hr {
   margin-right: 0;
   margin-left: 0
