@@ -1,10 +1,7 @@
 package com.example.adviertepucp.controller;
 
 import com.example.adviertepucp.dto.*;
-import com.example.adviertepucp.entity.Favorito;
-import com.example.adviertepucp.entity.Fotoalmacenada;
-import com.example.adviertepucp.entity.Comentario;
-import com.example.adviertepucp.entity.Usuario;
+import com.example.adviertepucp.entity.*;
 import com.example.adviertepucp.repository.*;
 import com.example.adviertepucp.service.BlobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import com.example.adviertepucp.entity.Incidencia;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +41,8 @@ public class SeguridadController {
 
     @Autowired
     FotoalmacenadaRepository fotoalmacenadaRepository;
+    @Autowired
+    IconoRepository iconoRepository;
 
     //REPORTAR USER
 
@@ -601,6 +599,57 @@ public class SeguridadController {
             System.out.println(session.getAttribute("usuariolog"));
             session.setAttribute("foto",fotoalmacenada.getFotoalmacenada());
             usuarioRepository.save(usuario);
+        }else{
+            model.addAttribute("err","Ocurrio un error en el guardado");
+        }
+        return "seguridad/perfil";
+    }
+
+    @PostMapping("/iconoEditar")
+    public String editarIcono(@RequestParam("archivo") MultipartFile logo , Model model , @RequestParam("codigo") String codigo){
+
+        if (logo.isEmpty()) {
+            System.out.println("No recibi la imagen");
+            model.addAttribute("msg", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "seguridad/perfil";
+        }
+        switch (logo.getContentType()) {
+
+            case "image/jpeg":
+            case "image/png":
+            case "application/octet-stream":
+                break;
+            default:
+                model.addAttribute("err", "Solo se deben de enviar imágenes");
+                model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+                return "seguridad/perfil";
+        }
+
+        Icono icono = new Icono();
+        Fotoalmacenada fotoalmacenada = new Fotoalmacenada();
+        try {
+            blobService.subirArchivo(logo);
+            fotoalmacenada.setFotoalmacenada(blobService.obtenerUrl(logo.getOriginalFilename()));
+            fotoalmacenada.setTipofoto(logo.getContentType());
+            fotoalmacenadaRepository.save(fotoalmacenada);
+            System.out.println("Se subio la foto");
+        } catch (Exception e){
+            e.printStackTrace();
+            model.addAttribute("err", "Debe subir un archivo");
+            model.addAttribute("listaTipos",incidenciaRepository.listaTipo());
+            return "seguridad/perfil";
+        }
+        System.out.println(codigo);
+        Usuario usuario= usuarioRepository.usuarioExiste(codigo);
+        if( usuario!=null){
+            icono.setNombre(usuario.getId());
+            icono.setFoto(fotoalmacenada);
+            usuario.setIcono(icono);
+
+            iconoRepository.save(icono);
+            usuarioRepository.save(usuario);
+            model.addAttribute("msg","Se agrego tu icono correctamente");
         }else{
             model.addAttribute("err","Ocurrio un error en el guardado");
         }
