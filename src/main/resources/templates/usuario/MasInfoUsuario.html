@@ -148,7 +148,7 @@
                                     <p class="fw-light mb-4 pb-2">(Solo el autor y miembros de seguridad pueden comentar)</p>
                                 </div>
                                 <div class="col-lg-3">
-                                    <button type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                                    <button th:if="${session.usuariolog.getId() == incidencia.getCreador()}" type="button" class="btn btn-outline-dark bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal3">
                                                 Comentar
                                     </button>
                                             <!-- Modal -->
