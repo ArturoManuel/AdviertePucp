@@ -36,7 +36,7 @@ public interface IncidenciaRepository extends JpaRepository<Incidencia, Integer>
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
-    value = "UPDATE incidencia SET estado = 'atendido' WHERE (idincidencia = ?1)")
+    value = "UPDATE incidencia SET estado = 'en proceso' WHERE (idincidencia = ?1)")
     void atenderIncidencia(int idincidencia);
 
     //agregar comentario

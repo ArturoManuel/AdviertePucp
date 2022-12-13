@@ -71,8 +71,8 @@
                     <button th:if="${incidencia.estado == 'registrado'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal" style="size: A4">
                         Atender incidencia
                     </button>
-                    <button th:if="${incidencia.estado == 'atendido'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
-                        Resolver incidencia
+                    <button th:if="${incidencia.estado == 'en proceso'}" type="button" class="btn btn-outline-success bSalir" data-bs-toggle="modal" data-bs-target="#exampleModal4">
+                        Marcar como resuelta
                     </button>
 
                     <!-- Modal -->

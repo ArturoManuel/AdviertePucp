@@ -742,7 +742,7 @@ public class UsuarioController {
         }
 
         IncidenciaListadto incidencia = null;
-        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
+        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidenciaConResueltos();
         for( IncidenciaListadto lista : listaIncidencias){
             if(id == lista.getIdI()){
                 incidencia=lista;

@@ -449,7 +449,7 @@ public class SeguridadController {
 
         IncidenciaListadto incidencia = null;
         IncidenciaComentarioDto comentario = null;
-        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidencia();
+        List<IncidenciaListadto> listaIncidencias = usuarioRepository.listaIncidenciaConResueltos();
         for( IncidenciaListadto lista : listaIncidencias){
             if(id == lista.getIdI()){
                 incidencia=lista;
