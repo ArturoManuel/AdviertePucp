@@ -5,3 +5,4 @@ Contribuidores:
 * Jorge Luis Guillen Rivera
 * Jesús Moises Idrogo Alfaro
 * Caleb Casapaico Meléndez
+* Marcelo Rojas
