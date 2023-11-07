@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<!--asd-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Lista de incidentes')">
+
+    </div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+    <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
+    <script src="html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.debug.js" ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js" ></script>
+    <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+
+
+    <style>
+        .textarea-container {
+            position: relative;
+        }
+        .textarea-container textarea {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .textarea-container button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 5px;
+        }
+    </style>
+
+</head>
+
+<body style="background-color: #eee;">
+<header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
+
+</header>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.6/jspdf.plugin.autotable.min.js"></script>
+<div class="container py-5 px-0" >
+    <!-- Lista incidencias -->
+
+    <input id="subscriptionKey" type="hidden" size="40" value="021e4e88e74549769a919b042a5a2118">
+    <input id="serviceRegion" type="hidden" size="40" value="eastus">
+    <input id="languageSourceOptions" type="hidden" size="40" value="es-ES">
+    <input id="languageTargetOptions" type="hidden" size="40" value="es">
+    <div class="title-28" >
+        Todas las Incidencias
+
+        <button style="margin-left: 5px" type="button" class="btn btn-outline-dark"data-bs-toggle="modal" data-bs-target="#exampleModal">Aplicar filtros</button>
+        <!-- Modal -->
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="post" th:action="@{/seguridad/filtro}">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel1" style="color:black;">Filtrar</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="validationCustom04" class="form-label" style="font-size: medium">Estado</label>
+                            <select class="form-select" id="validationCustom04" required name="estado">
+                                <option hidden selected disabled value="">Seleccionar</option>
+                                <option value="">Todos</option>
+                                <option value="registrado">Registrado</option>
+                                <option value="en proceso">En proceso</option>
+                                <option value="resuelto">Resuelto</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Selecciona un estado válido.
+                            </div>
+
+                            <label for="validationCustom04" class="form-label" style="font-size: medium">Tipo de incidencia</label>
+                            <select class="form-select" id="validationCustom05" required name="nombre">
+                                <option hidden selected disabled value="">Seleccionar</option>
+                                <option value="">Todos</option>
+                                <option th:each="tipoincidencia : ${listaTipoIncidencias}" th:value="${tipoincidencia.getNombre()} " th:text="${tipoincidencia.getNombre()}">Todo</option>
+                            </select>
+                            <div class="invalid-feedback">
+                                Selecciona un estado válido.
+                            </div>
+
+
+
+                            <label style="font-size: medium" >Filtrar por fecha:
+                            </label>
+
+                            <div class="input-group mb-3 col">
+                                <input  type="text" name="datetimes" value="" style="font-size: medium" />
+                            </div>
+                            <script type="text/javascript">
+                                $(function() {
+                                    $('input[name="datetimes"]').daterangepicker({
+
+                                        startDate: moment().startOf('hour'),
+                                        endDate: moment().startOf('hour').add(32, 'hour'),
+                                        "locale": {
+                                            "format": "YYYY/MM/DD",
+                                            "separator": " - ",
+                                            "applyLabel": "Aplicar",
+                                            "cancelLabel": "Cancelar",
+                                            "fromLabel": "From",
+                                            "toLabel": "To",
+                                            "customRangeLabel": "Custom",
+                                            "daysOfWeek": [
+                                                "do",
+                                                "Lu",
+                                                "Ma",
+                                                "Mi",
+                                                "Ju",
+                                                "Vi",
+                                                "Sa"
+                                            ],
+                                            "monthNames": [
+                                                "Enero",
+                                                "Febrero",
+                                                "Marzo",
+                                                "Abril",
+                                                "Mayo",
+                                                "Junio",
+                                                "Julio",
+                                                "Agosto",
+                                                "Septiembre",
+                                                "Octubre",
+                                                "Noviembre",
+                                                "Diciembre"
+                                            ],
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <button type="submit" class="btn btn-primary">Aplicar filtro</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <a style="margin-left: 5px" type="button" href="/seguridad/mapa" class="btn btn-outline-dark">Ver Mapa</a>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-redtele bSalir" data-bs-toggle="modal" data-bs-target="#exportar">
+            Exportar
+        </button>
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="exportar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="col" style="margin-bottom: 0px">
+                            <h5 style="color:black"class="modal-title" id="exampleModalLabel">Generar Reporte</h5>
+                            <p class="fw-light mb-4 pb-2">(se generará reporte de la lista mostrada)</p>
+                            <select hidden class="form-select form-select-sm" style="width: 100px" name="" id="">
+                                <option value="">xls</option>
+                                <option value="">txt</option>
+                                <option value="">pdf</option>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <div class="modal-body" id="exportar2">
+
+                            <table hidden class="table" id = "dataTable">
+                                <thead class="thead-dark">
+                                <tr>
+                                    <th class="text-dark">ID</th>
+                                    <th class="text-dark">Título</th>
+                                    <th class="text-dark">Descripción</th>
+                                    <th class="text-dark">Fecha</th>
+                                    <th class="text-dark">Estado</th>
+                                    <th class="text-dark">Nivel de Urgencia</th>
+                                    <th class="text-dark">Tipo de Incidencia</th>
+                                    <th class="text-dark">Zona PUCP</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="incidencia : ${listaIncidentesSinPaginado}">
+                                        <td class="text-dark" th:text="${incidencia.idI}"></td>
+                                        <td class="text-dark" th:text="${incidencia.titulo}"></td>
+                                        <td class="text-dark" th:text="${incidencia.descripcion}"></td>
+                                        <td class="text-dark" th:text="${incidencia.fecha}"></td>
+                                        <td class="text-dark" th:text="${incidencia.estado}"></td>
+                                        <td class="text-dark" th:text="${incidencia.urgencia}"></td>
+                                        <td class="text-dark" th:text="${incidencia.tincidencia}"></td>
+                                        <td class="text-dark" th:text="${incidencia.zonapucp}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        <div>
+                            <div  hidden class="card h-100 position-relative" th:each="incidencia,indice : ${listaIncidentesSinPaginado}">
+                                <div class="card text-dark" >
+
+                                    <div  class=" card-body text-dark">
+                                        <div   class="card-tele-title" style="font-size: medium">[[${incidencia.titulo}]]
+                                            <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+                                                Leve
+                                            </span>
+                                            <tr></tr>
+                                            <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                                                Objetos perdidos
+                                            </span>
+                                        </div>
+
+                                        <div  class="card-tele-subtitle">
+                                            <i  th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                                        </div>
+                                        <div   class="card-tele-subtitle">
+                                            <span>Estado:</span>
+                                            <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+
+                            </div>
+                            <input type="button" onclick="generate()" class="btn btn-redtele" value="Exportar a PDF" />
+                            <button id="btnExportToCsv" type="submit" class="btn btn-success" >Exportar a txt</button>
+                            <button onclick="ExportToExcel('xlsx')" type="submit" class="btn btn-light">Exportar a xlsx</button>
+                            <script>
+
+                                function ExportToExcel(type, fn, dl) {
+                                    var elt = document.getElementById('dataTable');
+                                    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+                                    return dl ?
+                                        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                                        XLSX.writeFile(wb, fn || ('Reporte.' + (type || 'xlsx')));
+                                }
+
+                            </script>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <form method="post" th:action="@{/seguridad/filtro2}">
+        <div class="textarea-container">
+
+            <button type="submit" hidden></button>
+            <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
+            <input name="titulo" class="form-control mb-3" type="text" id="phraseDiv" placeholder="Buscar por palabra clave"  >
+        </div>
+
+   </form>
+    <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+    <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+    <div th:if="${tit != null}" th:text="${'Mostrando '+resultados+' resultados para &quot;'+tit+'&quot;'}" class="title-22"></div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-3 py-3 mb-3">
+        <div th:each="incidencia,indice : ${listaIncidentes}">
+            <div  class="col" >
+                <div class="card h-100 position-relative">
+                    <div class="card-tele">
+                        <div class="card-tele-img">
+                            <a th:href="@{'/seguridad/info'+'?id='+${incidencia.idI}}" >
+                                <img  th:src="${listaFotos.get(indice.index).get(0)}" alt="Sede" class="img-fluid rounded-start img-cover"/>
+                            </a>
+
+                        </div>
+                        <div class="card-tele-body pb-2">
+                            <p class="card-tele-title" th:inline="text" style="font-size: medium"> [[${incidencia.titulo}]]
+                                <br>
+                                <span  th:text="${incidencia.urgencia}" class="alert alert-primary" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter" >
+                            Leve
+                            </span>
+                                <tr></tr>
+                                <span th:text="${incidencia.tincidencia}" class="alert" th:styleappend="';background-color:'+${incidencia.color}" role="alert" style="max-width: fit-content;max-height: fit-content;font-size: small;padding: 4px;font-weight: lighter; margin-left: 3px" >
+                            Objetos perdidos
+                            </span>
+                            </p>
+
+                            <div class="card-tele-subtitle">
+                                <i th:text="${incidencia.zonapucp}" class="bi bi-geo-alt">Av.Universitaria 1801, San Miguel</i>
+                            </div>
+                            <div class="card-tele-subtitle">
+                                <span>Estado:</span>
+                                <span th:text="${incidencia.estado}" style="font-weight: bolder">En proceso</span>
+                            </div>
+
+                        </div>
+
+                        <div class="card-tele-footer justify-content">
+                            <div class="d-flex align-items-start">
+
+                            </div>
+                            <div class="d-flex align-items-end">
+                                <a class="btn btn-redtele" th:href="@{'/seguridad/info'+'?id='+${incidencia.idI}}">+INFO</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav th:replace="fragmentos/paginacion :: paginacion(${ruta},${pag},${paginas})"></nav>
+</div>
+</div>
+
+
+
+
+
+<!-- Footer -->
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Advierte PUCP 2022</span>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer -->
+
+
+<script type="text/javascript">
+    function generate() {
+        var doc = new jsPDF('p','pt', 'a1', true);
+        var htmlstring = '';
+        var tempVarToCheckPageHeight = 0;
+        var pageHeight = 0;
+        pageHeight = doc.internal.pageSize.height;
+        specialElementHandlers = {
+            // element with id of "bypass" - jQuery style selector
+            '#bypassme': function(element, renderer) {
+                // true = "handled elsewhere, bypass text extraction"
+                return true
+            }
+        };
+        margins = {
+            top: 150,
+            bottom: 60,
+            left: 40,
+            right: 40,
+            width: 600
+        };
+        var y = 20;
+        doc.setLineWidth(2);
+        doc.text(200, y = y + 30, "Reporte de incidencias");
+        doc.autoTable({
+            html: '#dataTable',
+            startY: 70,
+            theme: 'grid',
+            columnStyles: {
+                0: {
+                    cellWidth: 180,
+                },
+                1: {
+                    cellWidth: 180,
+                },
+                2: {
+                    cellWidth: 180,
+                },
+                3: {
+                    cellWidth: 180,
+                },
+                4: {
+                    cellWidth: 180,
+                },
+                5: {
+                    cellWidth: 180,
+                },
+                6: {
+                    cellWidth: 180,
+                },
+                7: {
+                    cellWidth: 180,
+                }
+            },
+            styles: {
+                minCellHeight: 40
+            }
+        })
+        doc.save('Reporte.pdf');
+    }
+</script>
+
+
+<script>
+    const dataTable = document.getElementById("dataTable");
+    const btnExportToCsv = document.getElementById("btnExportToCsv");
+
+    btnExportToCsv.addEventListener("click", () => {
+        const exporter = new TableCSVExporter(dataTable);
+        const csvOutput = exporter.convertToCSV();
+        const csvBlob = new Blob([csvOutput], { type: "text/csv" });
+        const blobUrl = URL.createObjectURL(csvBlob);
+        const anchorElement = document.createElement("a");
+
+        anchorElement.href = blobUrl;
+        anchorElement.download = "reporte.txt";
+        anchorElement.click();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+        }, 500);
+    });
+</script>
+<script>
+    class TableCSVExporter {
+        constructor (table, includeHeaders = true) {
+            this.table = table;
+            this.rows = Array.from(table.querySelectorAll("tr"));
+
+            if (!includeHeaders && this.rows[0].querySelectorAll("th").length) {
+                this.rows.shift();
+            }
+        }
+
+        convertToCSV () {
+            const lines = [];
+            const numCols = this._findLongestRowLength();
+
+            for (const row of this.rows) {
+                let line = "";
+
+                for (let i = 0; i < numCols; i++) {
+                    if (row.children[i] !== undefined) {
+                        line += TableCSVExporter.parseCell(row.children[i]);
+                    }
+
+                    line += (i !== (numCols - 1)) ? "," : "";
+                }
+
+                lines.push(line);
+            }
+
+            return lines.join("\n");
+        }
+
+        _findLongestRowLength () {
+            return this.rows.reduce((l, row) => row.childElementCount > l ? row.childElementCount : l, 0);
+        }
+
+        static parseCell (tableCell) {
+            let parsedValue = tableCell.textContent;
+
+            // Replace all double quotes with two double quotes
+            parsedValue = parsedValue.replace(/"/g, `""`);
+
+            // If value contains comma, new-line or double-quote, enclose in double quotes
+            parsedValue = /[",\n]/.test(parsedValue) ? `"${parsedValue}"` : parsedValue;
+
+            return parsedValue;
+        }
+    }
+
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
+<!-- Speech SDK reference sdk. -->
+<script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+
+<!-- Speech SDK USAGE -->
+<script>
+    // status fields and start button in UI
+    var phraseDiv;
+    var startRecognizeOnceAsyncButton;
+
+    // subscription key and region for speech services.
+    var subscriptionKey, serviceRegion, languageTargetOptions, languageSourceOptions;
+    var SpeechSDK;
+    var recognizer;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
+        subscriptionKey = document.getElementById("subscriptionKey");
+        serviceRegion = document.getElementById("serviceRegion");
+        languageTargetOptions = document.getElementById("languageTargetOptions");
+        languageSourceOptions = document.getElementById("languageSourceOptions");
+        phraseDiv = document.getElementById("phraseDiv");
+
+        startRecognizeOnceAsyncButton.addEventListener("click", function () {
+            startRecognizeOnceAsyncButton.disabled = true;
+            phraseDiv.innerHTML = "";
+
+            if (subscriptionKey.value === "" || subscriptionKey.value === "subscription") {
+                alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+                startRecognizeOnceAsyncButton.disabled = false;
+                return;
+            }
+            var speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
+
+            speechConfig.speechRecognitionLanguage = languageSourceOptions.value;
+            let language = languageTargetOptions.value
+            speechConfig.addTargetLanguage(language)
+
+            var audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            recognizer = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+
+            recognizer.recognizeOnceAsync(
+                function (result) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    if (result.reason === SpeechSDK.ResultReason.TranslatedSpeech) {
+                        let translation = result.translations.get(language);
+                        window.console.log(translation);
+                        phraseDiv.innerHTML += translation;
+                        document.getElementById('phraseDiv').value = translation;
+                    }
+
+                    recognizer.close();
+                    recognizer = undefined;
+                },
+                function (err) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    phraseDiv.innerHTML += err;
+                    document.getElementById('phraseDiv').value = err;
+                    window.console.log(err);
+
+                    recognizer.close();
+                    recognizer = undefined;
+                });
+        });
+
+        if (!!window.SpeechSDK) {
+            SpeechSDK = window.SpeechSDK;
+            startRecognizeOnceAsyncButton.disabled = false;
+
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('warning').style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <title>ListaUsuarios</title>
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Nuevo Incidente')">
+
+    </div>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
+    <!--JQUery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- CSS only -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        *{font-family: Roboto}
+    </style>
+
+
+    <!--<link rel="stylesheet" th:href="@{/css/mdb.min.css}" />-->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+    <link rel="stylesheet" href="/css/suspendido.css">
+    <style>
+        body {
+
+            background-image: url("https://drive.google.com/uc?export=view&id=1npBw0a1IAYQ6OmCwMgOl5oQmtntBxUge");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+
+        }
+        .status{
+            letter-spacing: 0; line-height: 16px;
+            white-space: nowrap; width: fit-content;
+            display: flex; flex-direction: column;
+            justify-content: center;
+            color: var(--bs-white);
+            font-family: var(--bs-body-font-family);
+            font-size: var(--bs-body-font-size);
+            font-weight: 700;
+            font-style: normal;
+            border: 1px none;
+            border-radius: 2px;
+            display: flex;
+            gap: 4px;
+            height: 24px;
+            justify-content: center;
+            margin-top: 37.84px;
+            left: 132px;
+            padding: 8px;
+            margin-top: -8px;
+            top: 0;
+            width: fit-content;
+        }
+        .accion_button{
+            padding: 8px 12px;
+        }
+        .disabled{
+            opacity: 0.4;
+            cursor: not-allowed;
+            padding: 8px 12px;
+        }
+        .title-28{
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--mdb-black);
+            padding-top: 0.5rem !important;
+            padding-bottom: 0.5rem !important
+        }
+    </style>
+
+</head>
+<body>
+
+    <header th:replace="fragmentos/newnavbar.html :: navbar (user='administrador')">
+
+    </header>
+
+    <main>
+        <div class="container px-4 py-5">
+            <div th:if="${msg != null}" th:text="${msg}" id="success-alert" class="alert alert-success" role="alert"></div>
+            <div th:if="${success != null}" th:text="${success}" class="alert alert-success" role="alert"></div>
+            <div th:if="${error != null}" th:text="${error}" class="alert alert-danger" role="alert"></div>
+            <div class="title-28 py-1 d-flex mb-3">
+                Lista de Usuarios
+                <div class="ms-auto">
+                    <a style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem" type="button"
+                            class="btn btn-outline-dark"
+                    th:href="@{'/administrador/crearUser'}">Registrar nuevo usuario</a>
+
+                </div>
+            </div>
+
+        <table id="tablax" class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+            <tr>
+                <th>
+                    <img alt=""  class="icon_lis_admi" src="/images/Bold.png" />Codigo
+                </th>
+                <th><img class="icon_lis_admi" src="/images/Bold.png" />Apellido y Nombre</th>
+                <th><img class="icon_lis_admi" src="/images/Bold.png" />Estado de la cuenta</th>
+                <th><img class="icon_lis_admi" src="/images/action.png" />Rol</th>
+                <th><img class="icon_lis_admi" src="/images/action.png" />Acción</th>
+            </tr>
+            <tbody>
+                <tr th:each="usuarios: ${listaUsuarios}">
+                    <td th:text="${usuarios.getCodigo()}">20196898</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img
+                                    th:src="${usuarios.getFoto()}"
+                                    alt=""
+                                    style="width: 45px; height: 45px" class="rounded-circle"/>
+
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1" th:text="${usuarios.getNombres()}" >Casapaico Meléndez, Rubén Caleb</p>
+                                <p class="text-muted mb-0" th:text="${usuarios.getCorreo()}">calebp@pucp.edu.pe</p>
+                            </div>
+
+                        </div>
+                    </td>
+                    <td>
+                        <div>
+                            <p  th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}" class="status" style="background-color: limegreen" > Activo</p>
+                            <p  th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}" class="status" style="background-color: #c50606" > Suspendido</p>
+                            <p  th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 0}" class="status" style="background-color: rgba(140,130,130,0.83)"  >No registrado</p>
+                        </div>
+                    </td>
+                    <td th:text="${usuarios.getRol()}">Seguridad</td>
+                    <td>
+                        <div th:switch="${usuarios.getId_ca()}">
+                            <div th:case="2">
+
+                                <div>
+                                    <div th:if="${ usuarios.getRegistrado() == 0}">
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                        </div>
+
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                                >Suspender</button>
+                                        <button type="button" style="background-color: #6c757d" class="btn btn-black disabled">Reactivar</button>
+
+                                        <!-- Modal Suspender Seguridad PUCP -->
+                                        <div class="modal fade"  data-backdrop="static" data-keyboard="false"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                        porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <button  type="submit" class="btn btn-redtele">
+                                                            Suspender
+                                                        </button>
+
+                                                    </div>
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
+
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                        <button type="button"; class="btn btn-black disabled"
+                                                style="background-color: #6c757d">Suspender</button>
+                                        <button type="submit"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                               data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div th:case="3">
+
+                                <div>
+
+                                    <div th:if="${ usuarios.getRegistrado() == 0}">
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                    </div>
+
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar
+                                        </a>
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
+                                        <button type="button" style="background-color: #6c757d" class="btn btn-black disabled">Reactivar</button>
+
+                                        <!-- Modal Suspender Usuario PUCP -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1"  data-backdrop="static" data-keyboard="false"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
+
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <button  type="submit" class="btn btn-redtele">
+                                                            Suspender
+                                                        </button>
+                                                    </div>
+                                                    </form>
+
+
+
+
+                                                </div>
+
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                        <button type="button"  class="btn btn-black disabled" style="background-color: #6c757d">Suspender</button>
+                                        <button type="submit" class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="4">
+
+                                <div>
+                                    <div th:if="${ usuarios.getRegistrado() == 0}">
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                    </div>
+
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
+                                        <button type="button"; class="btn btn-black disabled" style="background-color: #6c757d"
+                                                data-bs-toggle="modal" data-bs-target="#Activar1">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1" data-backdrop="static" data-keyboard="false"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <button  type="submit" class="btn btn-redtele">
+                                                            Suspender
+                                                        </button>
+
+                                                    </div>
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+
+                                        <button type="button" style="background-color: #6c757d" class="btn btn-black disabled">Suspender</button>
+                                        <button type="submit"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="5">
+
+                                <div>
+                                    <div th:if="${ usuarios.getRegistrado() == 0}">
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                    </div>
+
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+
+
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
+                                        <button type="button" style="background-color: #6c757d" class="btn btn-black disabled">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1" data-backdrop="static" data-keyboard="false"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <button  type="submit" class="btn btn-redtele">
+                                                            Suspender
+                                                        </button>
+
+                                                    </div>
+                                                    </form>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
+
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+
+                                        <button type="button" style="background-color: #6c757d" class="btn btn-black disabled">Suspender</button>
+                                        <button type="submit"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="6">
+
+                                <div>
+                                    <div th:if="${ usuarios.getRegistrado() == 0}">
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+                                    </div>
+
+                                    <div th:if="${usuarios.getEstado() == 0 and usuarios.getRegistrado() == 1}"> <!--CASO ACTIVO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+
+                                        <button type="button" class="btn btn-redtele accion_button"
+                                                style="background-color: #c50606"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#suspender'+${usuarios.getCodigo()}"
+                                        >Suspender</button>
+                                        <button type="button" style="background-color: #6c757d" class="btn btn-black disabled">Reactivar</button>
+
+                                        <!-- Modal Suspender -->
+                                        <div class="modal fade"
+                                             th:attr="id='suspender'+${usuarios.getCodigo()}"tabindex="-1" data-backdrop="static" data-keyboard="false"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Suspender Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <form th:action="@{'/administrador/suspenderUser'}" method="post">
+                                                        <input type="hidden" th:value="${usuarios.getCodigo()}" name="id" >
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de suspender a <span th:text="${usuarios.getNombres()}"></span>?. Si es asi,
+                                                            porfavor indique el motivo de la suspensión:</p>
+                                                        <textarea   minlength="11" maxlength="300" name="mensajesuspendido" class="form-control" rows="6"  aria-describedby="passwordHelpBlock" required></textarea>
+
+                                                        <div class="form-text">El comentario debe tener entre 11 y 300 caracteres</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <button  type="submit" class="btn btn-redtele">
+                                                            Suspender
+                                                        </button>
+
+                                                    </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div th:if="${usuarios.getEstado() == 3 and usuarios.getRegistrado() == 1}"> <!--CASO SUSPENDIDO-->
+                                        <a  type="button"; class="btn btn-redtele accion_button"
+                                            th:href="@{'/administrador/editUser?id=' + ${usuarios.getCodigo()}}"
+                                            style="background-color: #3a7dec">Editar </a>
+
+                                        <button type="button" style="background-color: #6c757d" class="btn btn-black disabled">Suspender</button>
+                                        <button type="submit"; class="btn btn-redtele accion_button"
+                                                style="background-color: limegreen"
+                                                data-bs-toggle="modal" th:attr="data-bs-target='#activar'+${usuarios.getCodigo()}"
+                                        >Reactivar</button>
+                                        <!-- Modal Activar -->
+                                        <div class="modal fade"
+                                             th:attr="id='activar'+${usuarios.getCodigo()}"tabindex="-1"
+                                             aria-hidden="true" aria-labelleby="modalTitle">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Reactivar Usuario</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p> ¿Está seguro de reactivar a <span th:text="${usuarios.getNombres()}"></span>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                                                            Cerrar
+                                                        </button>
+                                                        <a th:href="@{'/administrador/activarUser'+'?id='+${usuarios.getCodigo()}}" type="button" class="btn btn-redtele">
+                                                            Reactivar
+                                                        </a>
+
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div th:case="1">
+                                 <!--Editar1 es el ID de este Usuario-->
+                            </div>
+
+                        </div>
+
+                    </td>
+                </tr>
+            </tbody>
+            </thead>
+
+
+
+        </table>
+
+    </div>
+    </div>
+
+    </main>
+
+
+
+    <!-- JQUERY -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+            integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous">
+    </script>
+    <!-- DATATABLES -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">
+    </script>
+    <!-- BOOTSTRAP -->
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#tablax').DataTable({
+                language: {
+                    processing: "Tratamiento en curso...",
+                    search: "Buscar&nbsp;:",
+                    lengthMenu: "Agrupar de _MENU_ items",
+                    info: "Mostrando del item _START_ al _END_ de un total de _TOTAL_ items",
+                    infoEmpty: "No existen datos.",
+                    infoFiltered: "(filtrado de _MAX_ elementos en total)",
+                    infoPostFix: "",
+                    lengthMenu: "",
+                    loadingRecords: "Cargando...",
+                    zeroRecords: "No se encontraron datos con tu busqueda",
+                    emptyTable: "No hay datos disponibles en la tabla.",
+                    paginate: {
+                        first: "Primero",
+                        previous: "Anterior",
+                        next: "Siguiente",
+                        last: "Ultimo"
+                    },
+                    aria: {
+                        sortAscending: ": active para ordenar la columna en orden ascendente",
+                        sortDescending: ": active para ordenar la columna en orden descendente"
+                    }
+                },
+                scrollY: 400,
+                lengthMenu: [ [4, 10, -1], [4, 10, "All"] ],
+            });
+        });
+    </script>
+<script>
+    $(document).ready(function() {
+        $("#success-alert").hide();
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+                $("#success-alert").slideUp(500);
+            });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div  th:replace="fragmentos/loginfragment.html :: cabecera(title='AdviertePUCP-RestablecerContraseña')"></div>
+</head>
+<body>
+
+<section class="vh-100" style="background-color: hsl(0, 0%, 96%)">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+
+
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="/images/loguin.png" style="width: 800px; height:670px"
+             class="img-fluid logueoimg" alt="Sample image">
+      </div>
+
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <img style="height: 165px;width: 393px" class="img-fluid " src="/images/quillaloguin.png">
+
+        <p><br></p>
+
+        <div class="card text-center"  style="max-width: 368px">
+          <div class="card-header" style="font-size: 20px;padding-top: 10px">
+            Sistema de Reporte de Incidencias
+          </div>
+        </div>
+
+
+        <br>
+        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;font-family: Roboto">Restablecer Contraseña</h3>
+
+
+        <div style="max-width: 368px">
+          <div th:if="${invalidtoken != null}" th:text="${invalidtoken}" class="alert alert-danger" role="alert"></div>
+          <div th:if="${fail != null}" th:text="${fail}" class="alert alert-danger" role="alert"></div>
+          <div th:if="${success != null}" th:text="${success}" class="alert alert-success" role="alert"></div>
+          <div th:if="${already != null}" th:text="${already}" class="alert alert-warning" role="alert"></div>
+          <div th:if="${tresintentos != null}"  class="alert alert-warning" role="alert">Ya se envió un correo de validación.Por favor,verifica tu bandeja de entrada, o inténtalo de nuevo dentro de <span id="time"></span>. </div>
+        </div>
+
+
+
+        <form th:action="@{'/enviaDatosRestablecer'}" method="post" class="formulario" style="width: 23rem">
+
+          <div class="form-outline mb-4">
+            <label class="form-label" for="id">Código PUCP</label>
+            <input name="id" th:value="${id}" type="text" id="id" class="form-control form-control-lg"   />
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="correo" >Correo PUCP (@pucp.edu.pe/@pucp.pe)</label>
+            <input name="correo" th:value="${correo}" type="text" id="correo" class="form-control form-control-lg"   />
+          </div>
+
+
+          <div class="card text-center border-light bg-transparent" style="max-width: 368px">
+            <button type="submit" class="btn btn-outline-primary btn-lg"
+                    style="padding-left: 2.5rem; padding-right: 2.5rem">Envia un correo de confirmación</button>
+            <p class="small fw-bold mt-2 pt-1 mb-0">Regresar al <a href="/" class="link-primary">Inicio de Sesión</a></p>
+          </div>
+          </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+</body>
+<script>
+
+  (function() {
+    var start = changeTimeZone(new Date(), 'America/Lima');
+    start.setHours(23, 59, 59); // 11pm
+
+    function pad(num) {
+      return ("0" + parseInt(num)).substr(-2);
+    }
+
+    function tick() {
+      var now = changeTimeZone(new Date(), 'America/Lima');
+      if (now > start) { // too late, go to tomorrow
+        start.setDate(start.getDate() + 1);
+      }
+      var remain = ((start - now) / 1000);
+      var hh = pad((remain / 60 / 60) % 60);
+      var mm = pad((remain / 60) % 60);
+      var ss = pad(remain % 60);
+      document.getElementById('time').innerHTML =
+              hh + " hora(s) " + mm + " minuto(s)" ;
+      setTimeout(tick, 1000);
+    }
+
+    document.addEventListener('DOMContentLoaded', tick);
+  })();
+
+
+  function changeTimeZone(date, timeZone) {
+    if (typeof date === 'string') {
+      return new Date(
+              new Date(date).toLocaleString('en-US', {
+                timeZone,
+              }),
+      );
+    }
+
+    return new Date(
+            date.toLocaleString('en-US', {
+              timeZone,
+            }),
+    );
+  }
+
+</script>
+
+</html>

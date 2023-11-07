@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Estadísticas')">
+
+    </div>
+
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/5d5f09a262.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
+    <!--JQUery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- MDB -->
+
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+    <link rel="stylesheet" href="/css/suspendido.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+
+    <style>
+        *{font-family: Roboto}
+    </style>
+
+</head>
+
+<body>
+    <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)"></header>
+
+        <!-- Page Wrapper -->
+        <div >
+            <!-- End of Sidebar -->
+
+            <!-- Page Wrapper -->
+            <div id="wrapper" class="container py-3">
+                <!-- End of Sidebar -->
+
+                <!-- Content Wrapper -->
+                <div id="content-wrapper" class="d-flex flex-column">
+
+                    <!-- Main Content -->
+                    <div id="content">
+
+                        <!-- Begin Page Content -->
+                        <div class="container-fluid" id="reporte">
+
+                            <!-- Page Heading -->
+                            <p></p>
+                            <br>
+                            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                                <h1 class="h3 m-0 font-weight-bold text-dark">Estadísticas</h1>
+                            </div>
+
+                            <!-- Content Row -->
+                            <div class="row">
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                        # de incidencias registradas (Mensual)</div>
+
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${num_incidenciasPorMes}">  400,00  </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-success shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                        #  de incidencias registradas (Anual)</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${num_incidenciasPorAnio}">28,000</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <i class="far fa-calendar fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Earnings (Monthly) Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-info shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Incidencias atendidas
+                                                    </div>
+                                                    <div class="row no-gutters align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${num_incidenciasAtendidas}" >
+                                                                <span th:text="${num_incidenciasAtendidas}"></span>90%</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <br>
+                                                    <i class="far fa-solid fa-check fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pending Requests Card Example -->
+                                <div class="col-xl-3 col-md-6 mb-4">
+                                    <div class="card border-left-warning shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col mr-2">
+                                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                        Porcentaje de usuarios reportados</div>
+                                                    <div class="h5 mb-0 font-weight-bold text-gray-800"  th:text="${num_usuariosReportados}">18</div>
+                                                </div>
+                                                <div class="col-auto">
+                                                    <br>
+                                                    <i class="fas fa-solid fa-user-slash fa-2x text-gray-300"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Content Row -->
+
+
+                            <!-- Content Row -->
+
+                            <div class="row">
+
+                                <!-- Area Chart -->
+                                <div class="col-xl-7 col-lg-7">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">Ubicaciones PUCP</h6>
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div
+                                                id="myChart" style="width:100%; max-width:100%; height:500px;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Pie Chart -->
+                                <div class="col-xl-5 col-lg-5">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                            <h6 class="m-0 font-weight-bold text-primary">Top 10 usuarios con más incidencias registradas</h6>
+
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area">
+                                                <table class="table table-sm">
+                                                    <tr>
+                                                        <th>Usuario</th>
+                                                        <th># Incidencias</th>
+                                                    </tr>
+                                                    <tr th:each="userMas : ${lista_UsariosconMasIncidencias}">
+                                                        <td th:text="${userMas.getNombre()}">
+                                                        <td th:text="${userMas.getCantidad()}"></td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <script th:inline="javascript">
+                                var listanombre = [[${lista_ubicacionesNombrePUCP}]];
+                               // var nombreValues = Object.values(listanombre);
+                                var nombrePUCP = [];
+                                for (i=0;i<listanombre.length;i++){
+                                    //console.log(listanombre[i]);
+                                    //console.log(Object.values(listanombre[i]));
+                                    nombrePUCP += Object.values(listanombre[i]) + "? ";
+
+                                }
+                                var nombreSplit = nombrePUCP.split('?');
+                                console.log(nombrePUCP);
+                                console.log(nombreSplit);
+
+
+
+                                var listazona = [[${lista_ubicacionesZonaPUCP}]]
+                               // var zonaValues = Object.values(listazona);
+                                var zonaPUCP = [];
+                                for (i=0;i<listazona.length;i++){
+                                    zonaPUCP += Object.values(listazona[i]) + "? ";
+
+                                }
+                                var zonaSplit = zonaPUCP.split('?');
+                                console.log(zonaSplit);
+
+
+                                var xArray = ["Auditorio de Ciencias Sociales (Gustavo Gutiérrez Merino)", "Asociación de egresados y graduados",
+                                    "Área de Deportes #ParadaSaludable", "Anfiteatro José Dammert Bellido - Facultad de Derecho", "Tontodromo"];
+                                var yArray = [55, 49, 44, 24, 15];
+                                console.log(yArray);
+
+                                var layout = {title:""};
+
+                                var data = [{labels: nombreSplit , values:zonaSplit, type:"pie"}];
+
+                                Plotly.newPlot("myChart", data, layout);
+                            </script>
+
+                            <!----------------------------------- Usuarios con más incidencias registradas--------------------------- -->
+                            <div class="row">
+                                <div class="card shadow mb-4">
+                                    <div
+                                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                        <h6 class="m-0 font-weight-bold text-primary">Usuarios con más incidencias registradas</h6>
+                                    </div>
+
+                                    <canvas id="myChart2" style="width:100%;max-width:100%"></canvas>
+
+                                </div>
+                            </div>
+
+                            <script th:inline="javascript">
+                                var listaUsuario = [[${lista_NombreUsariosconMasIncidencias}]]
+                                // var zonaValues = Object.values(listazona);
+                                var usuarioPUCP = [];
+                                for (i=0;i<listaUsuario.length;i++){
+                                    usuarioPUCP += Object.values(listaUsuario[i]) + "? ";
+
+                                }
+                                var usuarioPUCPSplit = usuarioPUCP.split('?');
+                                console.log(usuarioPUCPSplit);
+
+                                var listaUsuarioCantidad = [[${lista_CantidadUsariosconMasIncidencias}]]
+                                // var zonaValues = Object.values(listazona);
+                                var usuariocantidadPUCP = [];
+                                for (i=0;i<listaUsuarioCantidad.length;i++){
+                                    usuariocantidadPUCP += Object.values(listaUsuarioCantidad[i]) + "? ";
+
+                                }
+                                var usuariocantidadPUCPSplit = usuariocantidadPUCP.split('?');
+                                console.log(usuariocantidadPUCPSplit);
+
+
+                                var xValues = ["Ruben Caleb Casapaico Melendez","Jorge Guillen Rivera", "Angel Alvaro Bautista Cutipa", "Marcelo Rojas", "Jesus Idrogo"];
+                                var yValues = [55, 49, 44, 24, 20];
+                                var barColors = ["red", "green","blue","orange","brown","red", "green","blue","orange","brown"];
+
+                                new Chart("myChart2", {
+                                    type: "bar",
+                                    data: {
+                                        labels: usuarioPUCPSplit, //xValues
+                                        datasets: [{
+                                            backgroundColor: "rgba(0,0,255,0.1)", //barColors
+                                            data: usuariocantidadPUCPSplit //yValues
+                                        }]
+                                    },
+                                    options: {
+                                        legend: {display: false},
+                                        title: {
+                                            display: true,
+                                        }
+                                    }
+                                });
+                            </script>
+
+                        </div>
+                        <!-- /.container-fluid -->
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    
+                </div>
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Core plugin JavaScript-->
+        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+        <!-- Custom scripts for all pages-->
+        <script src="js/sb-admin-2.min.js"></script>
+
+        <!-- Page level plugins -->
+        <script src="vendor/chart.js/Chart.min.js"></script>
+
+        <!-- Page level custom scripts -->
+        <script src="js/demo/chart-area-demo.js"></script>
+        <script src="js/demo/chart-pie-demo.js"></script>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+                <span>Copyright &copy; Advierte PUCP 2022</span>
+            </div>
+        </div>
+    </footer>
+    <!-- End of Footer -->
+        </body>
+
+</html>

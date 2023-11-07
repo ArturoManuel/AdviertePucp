@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head  >
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Nuevo Incidente')">
+        <!--asd-->
+    </div>
+    <title th:text="AdviertePUCP"></title>
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
+    <!--JQUery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Google Fonts -->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- MDB -->
+
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+    <link rel="stylesheet" href="/css/suspendido.css">
+    <style>
+        p{
+            color:black;
+
+        }
+        #galeria{
+            display: flex;
+        }
+        #galeria img{
+            width: 85px;
+            height: 85px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.2);
+            opacity: 85%;
+        }
+        .textarea-container {
+            position: relative;
+        }
+        .textarea-container textarea {
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        .textarea-container button {
+            position: absolute;
+            top: 0;
+            right: 0;
+            max-width: 5px;
+        }
+
+    </style>
+</head>
+<body style="background-color: #eee;" id="container">
+<header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
+
+</header>
+<section style="background-color: #eee; margin-top: 0;">
+
+    <div class="container py-5 px-0" id="maincontainer">
+        <div class="row">
+            <div class="col">
+                <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item" style="font-size: medium"><a th:href="@{'/usuario/'}">Inicio</a></li>
+                        <li class="breadcrumb-item active" style="font-size: medium" aria-current="page">Crear incidencia</li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+        <div th:if="${err != null}" th:text="${err}" class="alert alert-warning" role="alert"></div>
+        <div th:if="${errZona != null}" th:text="${errZona}" class="alert alert-warning" role="alert"></div>
+        <!--  -->
+        <input id="subscriptionKey" type="hidden" size="40" value="021e4e88e74549769a919b042a5a2118">
+        <input id="serviceRegion" type="hidden" size="40" value="eastus">
+        <input id="languageSourceOptions" type="hidden" size="40" value="es-ES">
+        <input id="languageTargetOptions" type="hidden" size="40" value="es">
+
+
+        <form method="post" th:action="@{'/usuario/guardarincidente'}" id="guardarincident" enctype="multipart/form-data" th:object="${incidencia}">
+            <div id="coordinates" hidden ></div>
+            <input type="hidden" name="latitud" id="latitud" />
+            <input type="hidden" name="longitud" id="longitud" />
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img id="preview2" src="https://img.freepik.com/premium-vector/camera-icon-cartoon-flat-design_387795-125.jpg?w=2000" alt="avatar"
+                             class=" img-fluid" style="width: 255px;">
+                        <h5 class="my-3" style="color: black">Fotos de lo sucedido</h5>
+                        <div id="galeria"></div>
+                        <div class="d-flex justify-content-center mb-1">
+                            <label for="subirfotos" class="btn btn-lg-primary">Agregar Imágenes</label>
+                            <input onchange="document.getElementById('preview2').src = window.URL.createObjectURL(this.files[0]);previewMultiple(event)" name="archivos" id="subirfotos" multiple hidden type="file">
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <input th:value="${nuevaIncidenciaId}" hidden name="id" type="number" class="form-control"/>
+    
+                            <div class="col-sm-3">
+                                <p class="mb-0">¿Qué sucedio?</p>
+
+                            </div>
+                            <div class="col-sm-9" id="titleincidencia">
+                                <input  type="text" name="validaciondetitulo" id="tituloincidencia" class="form-control" maxlength="60" />
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Describe lo sucedido a detalle</p>
+                            </div>
+                            <div class="col-sm-9 textarea-container" id="bodyincidencia">
+                                <button id="startRecognizeOnceAsyncButton"  class="btn btn-transparent" style="background-color: transparent;margin-right: 15px;padding-left: 12px  "><i  class="bi bi-mic-fill"></i></button>
+                                <textarea name="validaciondebody" maxlength="400" class="form-control" id="phraseDiv" rows="4" required></textarea>
+
+                            </div>
+
+
+                        </div>
+                        <br>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">¿Dónde sucedió?</p>
+
+                            </div>
+                            <div class="col-sm-9">
+                                <input th:field="*{zonapucp}" list="zonapucp" name="zonapucp" type="text" id="zonapucpinput" class="form-control"/>
+                                <datalist id="zonapucp">
+                                    <option
+                                            th:each="zona:${listaZonas}"
+                                            th:value="${zona.getNombre()}"
+                                            >
+
+                                </datalist>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Tipo de incidencia</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <select th:field="*{tipoincidencia}" name="tipoincidencia" class="form-select" style="font-size: small">
+                                    <option value="Seleccionar" hidden>Seleccionar</option>
+                                    <option
+                                            th:each="tipo:${listaTiposIncidencia}"
+                                            th:value="${tipo.getId()}"
+                                            th:text="${tipo.getNombre()}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Nivel de urgencia</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <select th:field="*{urgencia}" name="urgencia" class="form-select" style="font-size: small">
+                                    <option value="Seleccionar" hidden>Seleccionar</option>
+                                    <option value="leve">Leve</option>
+                                    <option value="moderado">Moderado</option>
+                                    <option value="critico">Crítico</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="d-grid gap-2">
+                            <button type="button" id="publicar" class="btn btn-primary">Publicar Incidencia</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+
+    </div>
+</section>
+
+
+
+<script src="/js/presidio.js"></script>
+
+</body>
+    <script>
+
+        function previewMultiple(event){
+            var saida = document.getElementById("subirfotos");
+            var quantos = saida.files.length;
+            for(i = 0; i < quantos; i++){
+                var urls = URL.createObjectURL(event.target.files[i]);
+                document.getElementById("galeria").innerHTML += '<img src="'+urls+'">';
+            }
+        }
+    </script>
+<!-- Latitude and Longitude script -->
+<script>
+    $(document).ready(function(){
+        getLocation();
+    });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+
+    }
+    function showPosition(position) {
+        document.getElementById("coordinates").innerHTML = "Latitude: " + position.coords.latitude +
+            "<br>Longitude: " + position.coords.longitude;
+        document.getElementById("latitud").value = position.coords.latitude;
+        document.getElementById("longitud").value = position.coords.longitude;
+    }
+</script>
+
+<!-- EOF -->
+<!-- Speech SDK reference sdk. -->
+<script src="https://aka.ms/csspeech/jsbrowserpackageraw"></script>
+<!-- Speech SDK USAGE -->
+<script>
+    // status fields and start button in UI
+    var phraseDiv;
+    var startRecognizeOnceAsyncButton;
+
+    // subscription key and region for speech services.
+    var subscriptionKey, serviceRegion, languageTargetOptions, languageSourceOptions;
+    var SpeechSDK;
+    var recognizer;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        startRecognizeOnceAsyncButton = document.getElementById("startRecognizeOnceAsyncButton");
+        subscriptionKey = document.getElementById("subscriptionKey");
+        serviceRegion = document.getElementById("serviceRegion");
+        languageTargetOptions = document.getElementById("languageTargetOptions");
+        languageSourceOptions = document.getElementById("languageSourceOptions");
+        phraseDiv = document.getElementById("phraseDiv");
+
+        startRecognizeOnceAsyncButton.addEventListener("click", function () {
+            startRecognizeOnceAsyncButton.disabled = true;
+            phraseDiv.innerHTML = "";
+
+            if (subscriptionKey.value === "" || subscriptionKey.value === "subscription") {
+                alert("Please enter your Microsoft Cognitive Services Speech subscription key!");
+                startRecognizeOnceAsyncButton.disabled = false;
+                return;
+            }
+            var speechConfig = SpeechSDK.SpeechTranslationConfig.fromSubscription(subscriptionKey.value, serviceRegion.value);
+
+            speechConfig.speechRecognitionLanguage = languageSourceOptions.value;
+            let language = languageTargetOptions.value
+            speechConfig.addTargetLanguage(language)
+
+            var audioConfig  = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
+            recognizer = new SpeechSDK.TranslationRecognizer(speechConfig, audioConfig);
+
+            recognizer.recognizeOnceAsync(
+                function (result) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    if (result.reason === SpeechSDK.ResultReason.TranslatedSpeech) {
+                        let translation = result.translations.get(language);
+                        window.console.log(translation);
+                        phraseDiv.innerHTML += translation;
+
+                    }
+
+                    recognizer.close();
+                    recognizer = undefined;
+                },
+                function (err) {
+                    startRecognizeOnceAsyncButton.disabled = false;
+                    phraseDiv.innerHTML += err;
+                    window.console.log(err);
+
+                    recognizer.close();
+                    recognizer = undefined;
+                });
+        });
+        if (!!window.SpeechSDK) {
+            SpeechSDK = window.SpeechSDK;
+            startRecognizeOnceAsyncButton.disabled = false;
+
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('warning').style.display = 'none';
+        }
+    });
+</script>
+
+
+    
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div  th:replace="fragmentos/loginfragment.html :: cabecera(title='AdviertePUCP-Verificación de dos pasos')"></div>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/loguin.css">
+</head>
+<body>
+
+<section class="vh-100 gradient-custom" style="background-color: hsl(0, 0%, 96%)">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+
+                        <div class="mb-md-5 mt-md-4 pb-5">
+
+                            <h2 style="color: white"><i class="bi bi-shield-lock-fill" style="color: white"></i>&nbsp;Verificación de dos pasos</h2>
+                            <img src="/images/2FA.png" class="img-fluid" alt="" style="max-width: 250px;max-height: 250px">
+                            <p class="text-white-50 mb-5">Esta cuenta está protegida mediante verificación de dos pasos.
+                                Para verificar que eres tú, obtén tu código en la aplicación de autenticación e introdúcelo a continuación</p>
+                            <form th:action="@{/enviaAutenticacion}" method="post">
+                                <div class="py-2">
+                                    <input type="text" class="form-control" name="code" style="text-align: center">
+                                    <p th:if="${invalidcode!=null}"  style="color: red">Código incorrecto</p>
+
+                                </div>
+
+                                    <button class="btn-hover color-4" type="submit"  style="border-radius: 10px;height: 90%;padding: 12px;"><b style="color: black">Verificar</b></button>
+
+                            </form>
+
+
+                            <form th:action="@{/logout}" method="post">
+                                <button type="submit"  class="btn btn-outline-danger btn-md px-5" >Cerrar Sesión</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

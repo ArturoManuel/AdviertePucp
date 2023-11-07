@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <div  th:replace="fragmentos/loginfragment.html :: cabecera(title='AdviertePUCP-Nueva Contraseña')"></div>
+</head>
+
+<body>
+<section class="vh-100" style="background-color: hsl(0, 0%, 96%)">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+
+
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img src="/images/loguin.png" style="width: 800px; height:670px"
+             class="img-fluid logueoimg" alt="Sample image">
+      </div>
+
+
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <img style="height: 165px;width: 393px" class="img-fluid " src="/images/quillaloguin.png">
+
+        <p><br></p>
+
+        <div class="card text-center"  style="max-width: 368px">
+          <div class="card-header" style="font-size: 20px;padding-top: 10px">
+            Sistema de Reporte de Incidencias
+          </div>
+        </div>
+
+        <br>
+        <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px;font-family: Roboto">Establecer una nueva contraseña</h3>
+
+        <div class="alert alert-primary alert-dismissible fade show" role="alert" style="max-width:368px ">
+          <h5 class="alert-heading">🐿️⚠️Consideraciones para la contraseña</h5>
+          <p class="mb-0">La contraseña debe contener un mínimo de 8 caracteres, una minúscula, una mayúscula y uno de los siguientes caracteres especiales: @#$%^&+=</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div style="max-width: 368px">
+          <div th:if="${invalidtoken != null}" th:text="${invalidtoken}" class="alert alert-alert" role="alert"></div>
+          <div th:if="${noregistrado != null}" th:text="${noregistrado}" class="alert alert-warning" role="alert"></div>
+        </div>
+
+
+        <form th:action="@{'/nuevopwd'}" method="post" class="formulario" style="width: 23rem">
+          <input type="hidden" th:value="${token}" name="token" />
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example28">Ingresa la nueva contraseña</label>
+            <input name="pwd" th:value="${pwd}" type="password" id="form2Example28" class="form-control form-control-lg"    th:classappend="${fail==null?'':'is-invalid'}"/>
+            <div  th:if="${fail != null}" th:text="${fail}" class="invalid-feedback"></div>
+
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="form2Example29" >Ingresa la contraseña nuevamente</label>
+            <input name="confirmpwd" th:value="${confirmpwd}" type="password" id="form2Example29" class="form-control form-control-lg" th:classappend="${fail==null?'':'is-invalid'}"  />
+            <div  th:if="${fail != null}" th:text="${fail}" class="invalid-feedback"></div>
+
+          </div>
+          <br><div class="d-flex justify-content-start"><input class="form-check-input" type="checkbox" onclick="myFunction();myFunctionv2() ">&nbsp;Mostrar contraseñas</div>
+
+
+
+          <div class="card text-center border-light bg-transparent" style="max-width: 368px">
+            <button type="submit" class="btn btn-outline-primary btn-lg"
+                    style="padding-left: 2.5rem; padding-right: 2.5rem">Guardar mi contraseña</button>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+
+
+</html>

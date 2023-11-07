@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="header (title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" th:href="@{/css/mdb.min.css}" />-->
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+    <link rel="stylesheet" href="/css/suspendido.css">
+
+
+    <style>
+
+      .status{
+        letter-spacing: 0; line-height: 16px;
+        white-space: nowrap; width: fit-content;
+        display: flex; flex-direction: column;
+        justify-content: center;
+        color: var(--bs-white);
+        font-family: var(--bs-body-font-family);
+        font-size: var(--bs-body-font-size);
+        font-weight: 700;
+        font-style: normal;
+        border: 1px none;
+        border-radius: 2px;
+        display: flex;
+        gap: 4px;
+        height: 24px;
+        justify-content: center;
+        margin-top: 37.84px;
+        left: 132px;
+        padding: 8px;
+        margin-top: -8px;
+        top: 0;
+        width: fit-content;
+      }
+      .accion_button{
+        padding: 8px 12px;
+      }
+      .disabled{
+        opacity: 0.4;
+        cursor: not-allowed;
+        padding: 8px 12px;
+      }
+      .title-28{
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--mdb-black);
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important
+      }
+      .navbar .navbar-nav {
+        display: inline-block;
+        float: none;
+        vertical-align: top;
+      }
+
+      .navbar .navbar-collapse {
+        text-align: center;
+      }
+
+    </style>
+  </head>
+  <body>
+    <nav style="background-color: #FFFFFF;"class="navbar navbar-expand-lg navbar-light mb-4" th:fragment="navbar">
+      <div class="container-fluid">
+        <img  style="width: 240px ; height: 39px" src="/images/logoNavbar.png">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div style=" float: right;margin-right: 20px; left: 10px;" class="collapse navbar-collapse " id="menu">
+
+          <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+            <a style="margin-top:10px;margin-left: 5px;margin-right: 10px" type="button" href="/administrador" class="btn btn-outline-dark">Inicio</a>
+            <a style="margin-top:10px ;margin-left: 5px ;
+            font-family: Roboto ; text-decoration: none ; color: black;margin-right: 10px" type="button" href="/usuario/perfil" >
+              <img
+                      src=https://media-exp1.licdn.com/dms/image/C4D03AQGiJgn4I5EHaQ/profile-displayphoto-shrink_200_200/0/1642133637953?e=2147483647&v=beta&t=qppaPsmBD1eSQXlnX362qhVbVv_Bh88WTvVpW1kx_mY
+                      alt=""
+                      style="width: 45px; height: 45px"
+                      class="rounded-circle"
+              />
+              Caleb<p style="font-weight: bold;color: #2B67F6">Administrador</p>
+            </a>
+
+            <button style="margin-top:10px;margin-left: 5px" type="button" class="btn btn-outline-dark">Cerrar Sesión</button>
+          </ul>
+        </div>
+
+        </div>
+      </div>
+    </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  </body>
+</html>

@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html lang="en"       xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+  <title>TipoIncidencias</title>
+  <div  th:replace="fragmentos/newnavbar.html :: cabecera(title='Nuevo Incidente')">
+
+  </div>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
+  <script src="https://kit.fontawesome.com/b101dc44ce.js" crossorigin="anonymous"></script>
+  <!--JQUery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    *{font-family: Roboto}
+  </style>
+
+
+  <!--<link rel="stylesheet" th:href="@{/css/mdb.min.css}" />-->
+  <link rel="stylesheet" th:href="@{/css/mdb.min.css}" />
+  <link rel="stylesheet" href="/css/suspendido.css">
+  <style>
+    body {
+
+      background-image: url("https://drive.google.com/uc?export=view&id=1npBw0a1IAYQ6OmCwMgOl5oQmtntBxUge");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-attachment: fixed;
+
+    }
+    .status{
+      letter-spacing: 0; line-height: 16px;
+      white-space: nowrap; width: fit-content;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      color: var(--bs-white);
+      font-family: var(--bs-body-font-family);
+      font-size: var(--bs-body-font-size);
+      font-weight: 700;
+      font-style: normal;
+      border: 1px none;
+      border-radius: 2px;
+      display: flex;
+      gap: 4px;
+      height: 24px;
+      justify-content: center;
+      margin-top: 37.84px;
+      left: 132px;
+      padding: 8px;
+      margin-top: -8px;
+      top: 0;
+      width: fit-content;
+    }
+    .accion_button{
+      padding: 8px 12px;
+    }
+    .disabled{
+      opacity: 0.4;
+      cursor: not-allowed;
+      padding: 8px 12px;
+    }
+    .title-28{
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--mdb-black);
+      padding-top: 0.5rem !important;
+      padding-bottom: 0.5rem !important
+    }
+  </style>
+
+</head>
+<body style="background-color: #eee;">
+  <header th:replace="fragmentos/newnavbar.html :: navbar (user=null)">
+
+  </header>
+  <main>
+      <div class="container px-4 py-5">
+        <div th:if="${msg != null}" th:text="${msg}" class="alert alert-success" role="alert"></div>
+        <div th:if="${err != null}" th:text="${err}" class="alert alert-danger" role="alert"></div>
+        <div class="title-28 py-1 d-flex mb-3">
+            Tipo de Incidencias
+          <div class="ms-auto">
+            <button style="margin-left: 5px;align-self: self-end; border-radius: 0.5rem"
+                    type="button" class="btn btn-outline-dark"
+                    data-bs-toggle="modal"
+                    data-bs-target='#crear'>Crear nuevo tipo</button>
+          </div>
+        </div>
+          <!-- Crear-->
+          <div class="modal fade"
+               id="crear"
+               tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <form method="post" th:action="@{'/administrador/guardaCrear'}"   enctype="multipart/form-data">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="crearNew">Nueva Incidencia</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="d-flex flex-row">
+                      <label> Color : </label>
+                      <input  name="color" type="color"   style="margin-left: 10px" />
+                    </div>
+                    <div class="d-flex flex-row">
+                      <label> Icono : </label>
+                      <input type="file" name="archivo"
+                             accept=".jpg, .jpeg, .png" style="margin-left: 10px">
+                    </div>
+
+                    <div class="d-flex flex-row">
+                      <label> Nombre : </label>
+                      <input type="text" class="form-control "  name="nombre" placeholder="incidencia"/>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                    <button type="submit" class="btn btn-primary">Guardar </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        <table id="tablax" class="table align-middle mb-0 bg-white" style="">
+          <thead class="bg-light">
+            <tr>
+              <th>#</th>
+              <th>
+                <img    alt=""
+                        class="icon_lis_admi"
+                        src="/images/Bold.png" />Color
+              </th>
+              <th><img class="icon_lis_admi" src="/images/Bold.png" />Icono</th>
+              <th><img class="icon_lis_admi" src="/images/Bold.png" />Nombre</th>
+              <th><img class="icon_lis_admi" src="/images/action.png" />Accion</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="incidencia,info : ${listaTipos}">
+              <td th:text="${info.index+1}"></td>
+              <td>
+                  <div th:style="'background-color:'+${incidencia.colort}+';width: 60px;height: 40px;'"
+                       onclick="changeColor()" class="d-flex align-items-center">
+                  </div>
+              </td>
+              <td>
+                <img style="width: 60px ; height: 60px" class="icon_lis_admi" th:src="${incidencia.fotot}"/>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <div class="ms-3">
+                    <p class="fw-bold mb-1" th:text="${incidencia.nombret}"></p>
+                  </div>
+                </div>
+              </td>
+
+              <td>
+                <!-- botton Modal elimnar -->
+                <button type="button" class="btn btn btn-danger"
+                        data-bs-toggle="modal" th:attr="data-bs-target='#eliminar'+${incidencia.idt}">Eliminar</button>
+                <!-- Modal Eliminar -->
+                <div class="modal fade"
+                     th:attr="id='eliminar'+${incidencia.idt}"tabindex="-1"
+                     aria-hidden="true" aria-labelleby="modalTitle">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p> ¿Esta seguro que quieres eliminar la incidencia?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" >
+                          Cerrar
+                        </button>
+                        <a th:href="@{'/administrador/delete'+'?id='+${incidencia.idt}}" type="button" class="btn btn-secondary"  >
+                          Aceptar
+                        </a>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                </div>
+                <!-- Button Modal editar -->
+                <button type="button" class="btn btn-success" style="background-color: limegreen;color:white" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#editar'+${incidencia.idt}">
+                  Editar
+                </button>
+
+                <!-- ModalEditar-->
+                <div class="modal fade"
+                     th:attr="id='editar'+${incidencia.idt}"
+                     tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <form method="post" th:action="@{'/administrador/guardarEditar'}"   enctype="multipart/form-data">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel" style="color: black">Editar icono</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        <input  name="id" type="hidden" th:value="${incidencia.idt}">
+                        <div class="d-flex flex-row">
+                          <div class="col-sm-2">
+                            <label> Color: </label>
+                          </div>
+                          <div class="col-sm-10">
+                            <input th:value="${incidencia.colort} " name="color" type="color"   style="margin-left: 10px" />
+                          </div>
+                        </div>
+                        <br>
+                        <div class="d-flex flex-row">
+                          <div class="col-sm-2">
+                            <label> Icono: </label>
+                          </div>
+                          <div class="col-sm-10">
+                            <input type="file" id="profile_pic" name="archivo"
+                                   accept=".jpg, .jpeg, .png" style="margin-left: 10px"
+                                   >
+                          </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                          <div class="col-sm-2">
+                            <label> Nombre:</label>
+                          </div>
+                          <div class="col-sm-9" >
+                            <input type="text" class="form-control " th:value="${incidencia.nombret}" name="nombre" placeholder="incidencia" style="margin-left: 8px;margin-right: 10px"/>
+                          </div>
+                        </div>
+                        <br>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancelar </button>
+                        <button type="submit" class="btn btn-primary">Guardar </button>
+                      </div>
+                    </div>
+                  </div>
+                  </form>
+                </div>
+              </td>
+            </tr>
+
+
+
+
+          </tbody>
+        </table>
+      </div>
+    </main>
+    <!-- Script para paginado -->
+    </script>
+    <!-- DATATABLES -->
+    <script src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js">
+    </script>
+    <!-- BOOTSTRAP -->
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js">
+    </script>
+    <script>
+      $(document).ready(function () {
+        $('#tablax').DataTable({
+          language: {
+            processing: "Tratamiento en curso...",
+            search: "Buscar&nbsp;:",
+            lengthMenu: "Agrupar de _MENU_ items",
+            info: "Mostrando del item _START_ al _END_ de un total de _TOTAL_ items",
+            infoEmpty: "No existen datos.",
+            infoFiltered: "(filtrado de _MAX_ elementos en total)",
+            infoPostFix: "",
+            lengthMenu: "",
+            loadingRecords: "Cargando...",
+            zeroRecords: "No se encontraron datos con tu busqueda",
+            emptyTable: "No hay datos disponibles en la tabla.",
+            paginate: {
+              first: "Primero",
+              previous: "Anterior",
+              next: "Siguiente",
+              last: "Ultimo"
+            },
+            aria: {
+              sortAscending: ": active para ordenar la columna en orden ascendente",
+              sortDescending: ": active para ordenar la columna en orden descendente"
+            }
+          },
+          scrollY: 400,
+          lengthMenu: [ [4, 10, -1], [4, 10, "Todos"] ],
+        });
+      });
+    </script>
+
+  <script>
+    $(document).ready(function() {
+      $("#success-alert").hide();
+      $("#success-alert").fadeTo(2000, 500).slideUp(500, function() {
+        $("#success-alert").slideUp(500);
+      });
+    });
+  </script>
+
+
+
+  </body>
+</html>
+
+
+
+
